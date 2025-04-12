@@ -13,7 +13,7 @@
     body {
       margin: 0;
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(to right, #667eea, #764ba2);
+      background: linear-gradient(120deg, #4b6cb7, #182848);
       height: 100vh;
       display: flex;
       align-items: center;
@@ -21,47 +21,54 @@
       overflow: hidden;
     }
 
-    .card {
-      background: #ffffff;
-      padding: 2.5rem;
+    .container {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 3rem 2rem;
       border-radius: 20px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       width: 100%;
       max-width: 420px;
-      animation: fadeInUp 1s ease forwards;
+      animation: fadeIn 1s ease-in-out;
     }
 
-    @keyframes fadeInUp {
+    @keyframes fadeIn {
       from {
-        transform: translateY(40px);
         opacity: 0;
+        transform: translateY(30px);
       }
       to {
-        transform: translateY(0);
         opacity: 1;
+        transform: translateY(0);
       }
     }
 
     h2 {
       text-align: center;
-      color: #333;
-      margin-bottom: 1.5rem;
+      color: #ffffff;
+      margin-bottom: 2rem;
     }
 
     input {
       width: 100%;
       padding: 14px;
       margin-bottom: 1.2rem;
-      border: 1px solid #ddd;
+      border: none;
       border-radius: 10px;
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff;
       font-size: 15px;
       transition: 0.3s;
     }
 
+    input::placeholder {
+      color: #ccc;
+    }
+
     input:focus {
-      border-color: #667eea;
       outline: none;
-      box-shadow: 0 0 5px rgba(102, 126, 234, 0.4);
+      background: rgba(255, 255, 255, 0.3);
     }
 
     .buttons {
@@ -75,31 +82,33 @@
       padding: 12px;
       border: none;
       border-radius: 12px;
-      background: #667eea;
-      color: #fff;
+      background: #00c6ff;
+      background: linear-gradient(to right, #0072ff, #00c6ff);
+      color: white;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: 0.3s ease;
     }
 
     button:hover {
-      background: #5a67d8;
+      transform: scale(1.05);
+      box-shadow: 0 4px 15px rgba(0, 198, 255, 0.4);
     }
 
     .login-btn {
-      background: #edf2f7;
-      color: #333;
+      background: #f0f0f0;
+      color: #222;
     }
 
     .login-btn:hover {
-      background: #e2e8f0;
+      background: #e2e2e2;
     }
 
     .message {
       text-align: center;
       margin-top: 1rem;
       font-size: 14px;
-      color: #444;
+      color: #fff;
       min-height: 24px;
       transition: 0.3s;
     }
@@ -108,7 +117,7 @@
       display: inline-block;
       width: 20px;
       height: 20px;
-      border: 3px solid #667eea;
+      border: 3px solid #fff;
       border-top-color: transparent;
       border-radius: 50%;
       animation: spin 0.8s linear infinite;
@@ -127,10 +136,10 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
 </head>
 <body>
-  <div class="card">
-    <h2>Quiz Registration</h2>
-    <input type="email" id="email" placeholder="Enter Email" />
-    <input type="password" id="password" placeholder="Enter Password" />
+  <div class="container">
+    <h2>Join the Quiz</h2>
+    <input type="email" id="email" placeholder="Email Address" />
+    <input type="password" id="password" placeholder="Password" />
     <div class="buttons">
       <button onclick="register()">Register</button>
       <button onclick="login()" class="login-btn">Login</button>
@@ -150,7 +159,6 @@
 
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
-
     const messageBox = document.getElementById("message");
 
     function showMessage(text, isLoading = false) {
@@ -164,8 +172,7 @@
     function register() {
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
-
-      showMessage("Registering...", true);
+      showMessage("Creating account...", true);
 
       auth.createUserWithEmailAndPassword(email, password)
         .then((userCredential) => {
@@ -182,7 +189,6 @@
     function login() {
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
-
       showMessage("Logging in...", true);
 
       auth.signInWithEmailAndPassword(email, password)
