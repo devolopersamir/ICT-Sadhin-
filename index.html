@@ -1,18 +1,217 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <title>BD Hero - Learn to Lead</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICT Olympiad Bangladesh</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            width: 300px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #5D5FEF;
+        }
+
+        input[type="email"],
+        input[type="password"],
+        button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #5D5FEF;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #4E4DFF;
+        }
+
+        .links {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .links a {
+            color: #5D5FEF;
+        }
+
+        .dashboard {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px;
+        }
+
+        .dashboard button {
+            margin: 5px;
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 600px) {
+            .container {
+                width: 80%;
+            }
+        }
+    </style>
 </head>
-<body class="landing">
-  <div class="hero">
-    <h1>BD Hero Learning Platform</h1>
-    <p>Your coding journey begins here!</p>
-    <div class="buttons">
-      <a href="login.html" class="btn">Login</a>
-      <a href="register.html" class="btn">Register</a>
+
+<body>
+    <!-- Login / Register Form -->
+    <div class="container" id="auth-container">
+        <h2 id="auth-title">Login to ICT Olympiad</h2>
+        <form id="auth-form">
+            <input type="email" id="email" placeholder="Enter your email" required />
+            <input type="password" id="password" placeholder="Enter your password" required />
+            <button type="submit" id="auth-button">Login</button>
+        </form>
+        <p class="links">Don't have an account? <a href="#" id="toggle-auth">Register Here</a></p>
     </div>
-  </div>
+
+    <!-- Dashboard (visible after login) -->
+    <div class="dashboard" id="dashboard" style="display: none;">
+        <h2>Welcome to ICT Olympiad</h2>
+        <button onclick="startQuiz()">Start Quiz</button>
+        <button onclick="viewProfile()">View Profile</button>
+        <button onclick="viewLeaderboard()">Leaderboard</button>
+        <button onclick="logout()">Logout</button>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"></script>
+
+    <script>
+        // Firebase Configuration (Updated with your API Key)
+        const firebaseConfig = {
+            apiKey: "AIzaSyC9OHn_xF7Z218clygJm-tvGl9bE0FvbEY",
+            authDomain: "ictsadhin-ff4d9.firebaseapp.com",
+            projectId: "ictsadhin-ff4d9",
+            appId: "1:420661343314:web:ddadf4427af520a9b9db8b"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // Auth Container Elements
+        const authContainer = document.getElementById('auth-container');
+        const authForm = document.getElementById('auth-form');
+        const authTitle = document.getElementById('auth-title');
+        const authButton = document.getElementById('auth-button');
+        const toggleAuthLink = document.getElementById('toggle-auth');
+
+        // Dashboard Elements
+        const dashboard = document.getElementById('dashboard');
+
+        // Toggle between Login and Register Form
+        toggleAuthLink.addEventListener('click', () => {
+            if (authTitle.innerHTML === 'Login to ICT Olympiad') {
+                authTitle.innerHTML = 'Register for ICT Olympiad';
+                authButton.innerHTML = 'Register';
+                toggleAuthLink.innerHTML = 'Already have an account? Login';
+            } else {
+                authTitle.innerHTML = 'Login to ICT Olympiad';
+                authButton.innerHTML = 'Login';
+                toggleAuthLink.innerHTML = 'Don\'t have an account? Register Here';
+            }
+        });
+
+        // Login / Register User
+        authForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            if (authButton.innerHTML === 'Login') {
+                // Login User
+                auth.signInWithEmailAndPassword(email, password)
+                    .then(userCredential => {
+                        console.log('User logged in');
+                        showDashboard();
+                    })
+                    .catch(error => {
+                        alert(error.message);
+                    });
+            } else {
+                // Register User
+                auth.createUserWithEmailAndPassword(email, password)
+                    .then(userCredential => {
+                        alert('Registration Successful! Please verify your email.');
+                        userCredential.user.sendEmailVerification();
+                        showDashboard();
+                    })
+                    .catch(error => {
+                        alert(error.message);
+                    });
+            }
+        });
+
+        // Show Dashboard
+        function showDashboard() {
+            authContainer.style.display = 'none';
+            dashboard.style.display = 'flex';
+        }
+
+        // Logout Function
+        function logout() {
+            auth.signOut().then(() => {
+                authContainer.style.display = 'flex';
+                dashboard.style.display = 'none';
+            });
+        }
+
+        // Sample Functions for Quiz, Profile, Leaderboard
+        function startQuiz() {
+            alert('Starting Quiz...');
+        }
+
+        function viewProfile() {
+            alert('Viewing Profile...');
+        }
+
+        function viewLeaderboard() {
+            alert('Viewing Leaderboard...');
+        }
+
+        // Check if user is logged in
+        auth.onAuthStateChanged(user => {
+            if (user && user.emailVerified) {
+                showDashboard();
+            } else {
+                authContainer.style.display = 'flex';
+                dashboard.style.display = 'none';
+            }
+        });
+    </script>
 </body>
-</html>
+
+  </html>
