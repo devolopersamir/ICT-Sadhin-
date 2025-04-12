@@ -4,118 +4,143 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Bangladesh Quiz Registration</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Quicksand:wght@300&display=swap" rel="stylesheet" />
   <style>
     * {
+      margin: 0;
+      padding: 0;
       box-sizing: border-box;
     }
 
     body {
-      margin: 0;
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(to right, #006a4e, #004d38);
-      height: 100vh;
+      background: linear-gradient(135deg, #006a4e, #004d38);
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
+      height: 100vh;
       overflow: hidden;
     }
 
     .container {
       background: rgba(255, 255, 255, 0.1);
-      padding: 3rem 2rem;
-      border-radius: 20px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-      backdrop-filter: blur(12px);
+      padding: 40px;
+      border-radius: 25px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(8px);
       width: 100%;
-      max-width: 420px;
-      animation: slideIn 1s ease;
+      max-width: 450px;
       text-align: center;
+      animation: slideUp 1s ease-out;
     }
 
-    @keyframes slideIn {
-      from {
-        transform: translateY(40px);
+    @keyframes slideUp {
+      0% {
+        transform: translateY(50px);
         opacity: 0;
       }
-      to {
+      100% {
         transform: translateY(0);
         opacity: 1;
       }
     }
 
-    .flag-circle {
-      width: 60px;
-      height: 60px;
+    .logo {
+      width: 80px;
+      height: 80px;
       background: #f42a41;
       border-radius: 50%;
       margin: 0 auto 20px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      animation: bounce 1.5s ease-in-out infinite;
+    }
+
+    @keyframes bounce {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+      100% { transform: translateY(0); }
     }
 
     h2 {
+      font-family: 'Quicksand', sans-serif;
       color: #fff;
       margin-bottom: 1rem;
+      font-weight: 600;
+      font-size: 28px;
+      text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     }
 
     input {
       width: 100%;
       padding: 14px;
-      margin-bottom: 1.2rem;
-      border: none;
+      margin-bottom: 18px;
       border-radius: 10px;
+      border: none;
       background: rgba(255, 255, 255, 0.2);
-      color: #fff;
+      color: white;
       font-size: 16px;
-    }
-
-    input::placeholder {
-      color: #ccc;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
     }
 
     input:focus {
       outline: none;
       background: rgba(255, 255, 255, 0.3);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
     }
 
-    .buttons {
+    input::placeholder {
+      color: #ccc;
+      font-style: italic;
+    }
+
+    .button-container {
       display: flex;
       gap: 10px;
-      margin-top: 1rem;
+      margin-top: 20px;
     }
 
     button {
-      flex: 1;
-      padding: 12px;
-      border: none;
+      width: 100%;
+      padding: 14px;
       border-radius: 10px;
       font-weight: bold;
-      cursor: pointer;
+      border: none;
       transition: 0.3s ease;
+      cursor: pointer;
+      font-size: 16px;
     }
 
     .register-btn {
-      background: #f42a41;
+      background-color: #f42a41;
       color: white;
+      transform: scale(1);
+      transition: transform 0.3s ease;
     }
 
     .register-btn:hover {
-      background: #e02538;
+      background-color: #e02538;
+      transform: scale(1.05);
     }
 
     .login-btn {
-      background: #d1e7dd;
+      background-color: #d1e7dd;
       color: #000;
+      transform: scale(1);
+      transition: transform 0.3s ease;
     }
 
     .login-btn:hover {
-      background: #bcdccf;
+      background-color: #bcdccf;
+      transform: scale(1.05);
     }
 
     .message {
-      margin-top: 1rem;
       color: white;
-      min-height: 24px;
       font-size: 14px;
+      margin-top: 20px;
+      min-height: 20px;
+      font-weight: 500;
     }
 
     .loader {
@@ -142,11 +167,11 @@
 </head>
 <body>
   <div class="container">
-    <div class="flag-circle"></div>
+    <div class="logo"></div>
     <h2>Join Bangladesh Quiz</h2>
     <input type="email" id="email" placeholder="Enter your email" />
     <input type="password" id="password" placeholder="Enter your password" />
-    <div class="buttons">
+    <div class="button-container">
       <button onclick="register()" class="register-btn">Register</button>
       <button onclick="login()" class="login-btn">Login</button>
     </div>
