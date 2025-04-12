@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -90,7 +91,6 @@
 <body>
   <div class="card">
     <h2>Quiz Registration</h2>
-    <input type="text" id="name" placeholder="Full Name">
     <input type="email" id="email" placeholder="Email">
     <input type="password" id="password" placeholder="Password">
     <div class="buttons">
@@ -101,27 +101,24 @@
   </div>
 
   <script>
-    // Firebase config (replace with your actual config)
     const firebaseConfig = {
       apiKey: "AIzaSyC9OHn_xF7Z218clygJm-tvGl9bE0FvbEY",
-      authDomain: "ictsadhin-ff4d9.firebaseapp.com", // Firebase Auth Domain
-      projectId: "ictsadhin-ff4d9", // Your Project ID
-      storageBucket: "ictsadhin-ff4d9.appspot.com", // Storage Bucket
-      messagingSenderId: "420661343314", // Messaging Sender ID
-      appId: "1:420661343314:web:ddadf4427af520a9b9db8b" // App ID
+      authDomain: "ictsadhin-ff4d9.firebaseapp.com",
+      projectId: "ictsadhin-ff4d9",
+      storageBucket: "ictsadhin-ff4d9.appspot.com",
+      messagingSenderId: "420661343314",
+      appId: "1:420661343314:web:ddadf4427af520a9b9db8b"
     };
 
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
     function register() {
-      const name = document.getElementById('name').value;
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
 
       auth.createUserWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-          userCredential.user.updateProfile({ displayName: name });
+        .then(() => {
           document.getElementById('message').innerText = 'Registration successful!';
         })
         .catch((error) => {
@@ -135,7 +132,7 @@
 
       auth.signInWithEmailAndPassword(email, password)
         .then(() => {
-          document.getElementById('message').innerText = 'Login successful!';
+          window.location.href = "success.html";
         })
         .catch((error) => {
           document.getElementById('message').innerText = error.message;
