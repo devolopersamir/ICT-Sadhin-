@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Quiz Registration</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <title>Bangladesh Quiz Registration</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
   <style>
     * {
       box-sizing: border-box;
@@ -13,7 +13,7 @@
     body {
       margin: 0;
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(120deg, #4b6cb7, #182848);
+      background: linear-gradient(to right, #006a4e, #004d38);
       height: 100vh;
       display: flex;
       align-items: center;
@@ -25,29 +25,36 @@
       background: rgba(255, 255, 255, 0.1);
       padding: 3rem 2rem;
       border-radius: 20px;
-      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
       backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
       width: 100%;
       max-width: 420px;
-      animation: fadeIn 1s ease-in-out;
+      animation: slideIn 1s ease;
+      text-align: center;
     }
 
-    @keyframes fadeIn {
+    @keyframes slideIn {
       from {
+        transform: translateY(40px);
         opacity: 0;
-        transform: translateY(30px);
       }
       to {
-        opacity: 1;
         transform: translateY(0);
+        opacity: 1;
       }
+    }
+
+    .flag-circle {
+      width: 60px;
+      height: 60px;
+      background: #f42a41;
+      border-radius: 50%;
+      margin: 0 auto 20px;
     }
 
     h2 {
-      text-align: center;
-      color: #ffffff;
-      margin-bottom: 2rem;
+      color: #fff;
+      margin-bottom: 1rem;
     }
 
     input {
@@ -58,8 +65,7 @@
       border-radius: 10px;
       background: rgba(255, 255, 255, 0.2);
       color: #fff;
-      font-size: 15px;
-      transition: 0.3s;
+      font-size: 16px;
     }
 
     input::placeholder {
@@ -81,36 +87,35 @@
       flex: 1;
       padding: 12px;
       border: none;
-      border-radius: 12px;
-      background: #00c6ff;
-      background: linear-gradient(to right, #0072ff, #00c6ff);
-      color: white;
-      font-weight: 600;
+      border-radius: 10px;
+      font-weight: bold;
       cursor: pointer;
       transition: 0.3s ease;
     }
 
-    button:hover {
-      transform: scale(1.05);
-      box-shadow: 0 4px 15px rgba(0, 198, 255, 0.4);
+    .register-btn {
+      background: #f42a41;
+      color: white;
+    }
+
+    .register-btn:hover {
+      background: #e02538;
     }
 
     .login-btn {
-      background: #f0f0f0;
-      color: #222;
+      background: #d1e7dd;
+      color: #000;
     }
 
     .login-btn:hover {
-      background: #e2e2e2;
+      background: #bcdccf;
     }
 
     .message {
-      text-align: center;
       margin-top: 1rem;
-      font-size: 14px;
-      color: #fff;
+      color: white;
       min-height: 24px;
-      transition: 0.3s;
+      font-size: 14px;
     }
 
     .loader {
@@ -131,17 +136,18 @@
     }
   </style>
 
-  <!-- Firebase -->
+  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
 </head>
 <body>
   <div class="container">
-    <h2>Join the Quiz</h2>
-    <input type="email" id="email" placeholder="Email Address" />
-    <input type="password" id="password" placeholder="Password" />
+    <div class="flag-circle"></div>
+    <h2>Join Bangladesh Quiz</h2>
+    <input type="email" id="email" placeholder="Enter your email" />
+    <input type="password" id="password" placeholder="Enter your password" />
     <div class="buttons">
-      <button onclick="register()">Register</button>
+      <button onclick="register()" class="register-btn">Register</button>
       <button onclick="login()" class="login-btn">Login</button>
     </div>
     <div class="message" id="message"></div>
@@ -172,6 +178,7 @@
     function register() {
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
+
       showMessage("Creating account...", true);
 
       auth.createUserWithEmailAndPassword(email, password)
@@ -189,6 +196,7 @@
     function login() {
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
+
       showMessage("Logging in...", true);
 
       auth.signInWithEmailAndPassword(email, password)
