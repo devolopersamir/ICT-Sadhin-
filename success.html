@@ -14,10 +14,11 @@
 
     body {
       font-family: 'Poppins', sans-serif;
-      background: #f0f2f5;
+      background: #f0f4f8;
+      color: #333;
       display: flex;
       justify-content: center;
-      align-items: center;
+      align-items: flex-start;
       height: 100vh;
       overflow: hidden;
       margin: 0;
@@ -28,92 +29,119 @@
       max-width: 1200px;
       display: flex;
       flex-direction: row;
-      background: #fff;
+      background: #ffffff;
       border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      flex-wrap: wrap;
     }
 
     .sidebar {
       width: 250px;
       background: #006a4e;
       color: white;
-      padding: 20px;
+      padding: 40px 20px;
       border-radius: 20px 0 0 20px;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: space-between;
+      align-items: flex-start;
+      justify-content: flex-start;
     }
 
     .sidebar h2 {
-      font-size: 24px;
-      margin-bottom: 30px;
+      font-size: 26px;
+      margin-bottom: 50px;
       font-weight: 600;
     }
 
     .menu-item {
       width: 100%;
       padding: 15px;
-      margin: 5px 0;
-      text-align: center;
-      background: #f42a41;
-      border-radius: 10px;
+      margin: 10px 0;
+      text-align: left;
       font-size: 18px;
       color: white;
+      background: #f42a41;
+      border-radius: 10px;
       cursor: pointer;
       transition: 0.3s ease;
     }
 
     .menu-item:hover {
       background: #e02538;
+      transform: translateX(5px);
     }
 
     .content {
       flex-grow: 1;
       padding: 40px;
+      width: 100%;
+      overflow-y: auto;
+      height: calc(100vh - 100px);
     }
 
     .welcome {
-      font-size: 28px;
+      font-size: 30px;
       font-weight: 600;
       color: #333;
       margin-bottom: 30px;
+      text-align: center;
+      animation: fadeIn 1s ease-out;
+    }
+
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .card-container {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 30px;
     }
 
     .card {
-      background: #fff;
-      padding: 20px;
-      margin: 10px;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      background: #ffffff;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
       text-align: center;
+      width: calc(33.333% - 20px);
       transition: 0.3s ease;
+      cursor: pointer;
     }
 
     .card:hover {
       transform: translateY(-5px);
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
     }
 
     .card h3 {
       font-size: 22px;
+      margin-bottom: 15px;
       color: #333;
-      margin-bottom: 10px;
     }
 
     .card p {
       font-size: 16px;
       color: #666;
+      margin-bottom: 20px;
     }
 
     .card button {
-      margin-top: 20px;
-      padding: 10px 20px;
-      border: none;
       background: #f42a41;
       color: white;
-      font-size: 16px;
+      padding: 10px 20px;
       border-radius: 10px;
+      border: none;
+      font-size: 16px;
       cursor: pointer;
       transition: 0.3s ease;
     }
@@ -122,6 +150,26 @@
       background: #e02538;
     }
 
+    @media screen and (max-width: 768px) {
+      .sidebar {
+        width: 100%;
+        border-radius: 0;
+        padding: 20px;
+      }
+
+      .content {
+        padding: 20px;
+      }
+
+      .card-container {
+        display: block;
+        gap: 20px;
+      }
+
+      .card {
+        width: 100%;
+      }
+    }
   </style>
 </head>
 <body>
@@ -142,46 +190,48 @@
       <div class="welcome">
         Welcome to your Dashboard, <span id="user-name">User</span>!
       </div>
-      
-      <div class="card">
-        <h3>Your Courses</h3>
-        <p>Explore the available courses to improve your skills</p>
-        <button onclick="navigate('courses')">View Courses</button>
-      </div>
 
-      <div class="card">
-        <h3>Registration</h3>
-        <p>Complete your registration to participate in upcoming events</p>
-        <button onclick="navigate('registration')">Register Now</button>
-      </div>
+      <div class="card-container">
+        <div class="card" onclick="navigate('courses')">
+          <h3>Your Courses</h3>
+          <p>Explore and join various courses to boost your skills</p>
+          <button>View Courses</button>
+        </div>
 
-      <div class="card">
-        <h3>Team</h3>
-        <p>Meet your team and collaborate effectively</p>
-        <button onclick="navigate('team')">View Team</button>
-      </div>
+        <div class="card" onclick="navigate('registration')">
+          <h3>Registration</h3>
+          <p>Complete your registration and become a part of the community</p>
+          <button>Register Now</button>
+        </div>
 
-      <div class="card">
-        <h3>Classes</h3>
-        <p>View and attend your scheduled classes</p>
-        <button onclick="navigate('class')">View Classes</button>
-      </div>
+        <div class="card" onclick="navigate('team')">
+          <h3>Team</h3>
+          <p>Meet your team members and collaborate for success</p>
+          <button>View Team</button>
+        </div>
 
-      <div class="card">
-        <h3>Notices</h3>
-        <p>Check out the latest notices and updates</p>
-        <button onclick="navigate('notices')">View Notices</button>
+        <div class="card" onclick="navigate('class')">
+          <h3>Classes</h3>
+          <p>Check out the classes and schedules available</p>
+          <button>View Classes</button>
+        </div>
+
+        <div class="card" onclick="navigate('notices')">
+          <h3>Notices</h3>
+          <p>Stay updated with the latest announcements and notices</p>
+          <button>View Notices</button>
+        </div>
       </div>
     </div>
   </div>
 
   <script>
     function navigate(page) {
-      window.location.href = `${page}.html`; // Reroute to specific page (courses.html, registration.html, etc.)
+      window.location.href = `${page}.html`; // Navigate to respective page (courses.html, registration.html, etc.)
     }
 
-    // Example: Set the username (this can be dynamically loaded from Firebase)
-    const userName = "John Doe";  // Replace with dynamic data (Firebase user name)
+    // Set the username dynamically (replace with actual Firebase data)
+    const userName = "John Doe"; // Replace with dynamic user name from Firebase
     document.getElementById("user-name").innerText = userName;
   </script>
 
