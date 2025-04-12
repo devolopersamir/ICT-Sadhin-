@@ -1,0 +1,56 @@
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(to right, #006400, #228B22);
+  color: white;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+.landing .hero {
+  margin-top: 20%;
+}
+
+.btn, button {
+  padding: 10px 20px;
+  margin: 10px;
+  background-color: #FF4500;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.btn:hover, button:hover {
+  transform: scale(1.05);
+}
+
+.form-container {
+  margin: 100px auto;
+  max-width: 400px;
+  background-color: #ffffff11;
+  padding: 30px;
+  border-radius: 10px;
+}
+
+input {
+  width: 90%;
+  margin: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+}
+
+.dashboard ul {
+  list-style: none;
+  padding: 0;
+}
+
+.dashboard li {
+  padding: 10px;
+  margin: 5px;
+  background: #ffffff22;
+  border-radius: 5px;
+}
