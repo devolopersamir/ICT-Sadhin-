@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Register - BD Hero</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="form-container">
+    <h2>Register</h2>
+    <input type="email" id="regEmail" placeholder="Email">
+    <input type="password" id="regPassword" placeholder="Password">
+    <button onclick="register()">Register</button>
+    <p id="registerMsg"></p>
+  </div>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"></script>
+  <script src="common.js"></script>
+  <script>
+    function register() {
+      const email = regEmail.value;
+      const password = regPassword.value;
+      firebase.auth().createUserWithEmailAndPassword(email, password)
+        .then(userCred => {
+          userCred.user.sendEmailVerification();
+          registerMsg.innerText = "Registered! Please verify your email.";
+        })
+        .catch(err => registerMsg.innerText = err.message);
+    }
+  </script>
+</body>
+</html>
