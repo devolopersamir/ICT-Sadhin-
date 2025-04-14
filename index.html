@@ -1,51 +1,132 @@
-<!DOCTYPE html>
-<html lang="bn">
+<!DOCTYPE html><html lang="bn">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>টাঙ্গাইল জেলা সেবা</title>
-  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>কুইজ প্রতিযোগিতা</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(to right, #c3dafe, #e9d8fd);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .card {
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 500px;
+      text-align: center;
+    }
+    .question {
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+    .options button {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      font-size: 16px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .options button.selected {
+      background-color: #667eea;
+      color: white;
+    }
+    .next-btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #6b46c1;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .result {
+      font-size: 22px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <h1>টাঙ্গাইল জেলা সেবা</h1>
-    <nav>
-      <ul class="menu">
-        <li><a href="#">হোম</a></li>
-        <li><a href="#">জেলার তথ্য</a></li>
-        <li><a href="#">নাগরিক সেবা</a></li>
-        <li><a href="#">নোটিশ</a></li>
-        <li><a href="#">যোগাযোগ</a></li>
-      </ul>
-    </nav>
-  </header>
+  <div class="card" id="quiz-container">
+    <!-- কুইজ এখানে লোড হবে -->
+  </div>  <script>
+    const questions = [
+      {
+        question: "বাংলাদেশের রাজধানী কোনটি?",
+        options: ["চট্টগ্রাম", "ঢাকা", "রাজশাহী", "সিলেট"],
+        answer: "ঢাকা"
+      },
+      {
+        question: "পৃথিবীর সবচেয়ে বড় মহাদেশ কোনটি?",
+        options: ["আফ্রিকা", "ইউরোপ", "এশিয়া", "দক্ষিণ আমেরিকা"],
+        answer: "এশিয়া"
+      },
+      {
+        question: "বাংলা বর্ণমালায় মোট কয়টি স্বরবর্ণ আছে?",
+        options: ["১১টি", "৭টি", "৯টি", "১০টি"],
+        answer: "১১টি"
+      }
+    ];
 
-  <main>
-    <section id="welcome">
-      <h2>স্বাগতম টাঙ্গাইল জেলা সেবায়</h2>
-      <p>এখানে আপনি টাঙ্গাইল জেলার সকল সরকারি সেবা ও তথ্য খুঁজে পাবেন।</p>
-    </section>
+    let current = 0;
+    let score = 0;
+    let selectedOption = null;
 
-    <section id="services">
-      <h3>নাগরিক সেবা</h3>
-      <ul>
-        <li>জন্ম সনদ আবেদন</li>
-        <li>নাগরিক সনদ</li>
-        <li>ট্রেড লাইসেন্স</li>
-        <li>সরকারি ফরম ডাউনলোড</li>
-      </ul>
-    </section>
+    function loadQuestion() {
+      const container = document.getElementById("quiz-container");
+      if (current >= questions.length) {
+        container.innerHTML = `
+          <div class="result">আপনার স্কোর: ${score} / ${questions.length}</div>
+          <button class="next-btn" onclick="restartQuiz()">আবার শুরু করুন</button>
+        `;
+        return;
+      }
 
-    <section id="notices">
-      <h3>নোটিশ বোর্ড</h3>
-      <ul id="noticeList"></ul>
-    </section>
-  </main>
+      const q = questions[current];
+      container.innerHTML = `
+        <div class="question">প্রশ্ন ${current + 1}: ${q.question}</div>
+        <div class="options">
+          ${q.options.map(opt => `<button onclick="selectOption(this)">${opt}</button>`).join('')}
+        </div>
+        <button class="next-btn" onclick="nextQuestion()" disabled>পরবর্তী</button>
+      `;
+    }
 
-  <footer>
-    <p>&copy; ২০২৫ টাঙ্গাইল জেলা প্রশাসন</p>
-  </footer>
+    function selectOption(btn) {
+      document.querySelectorAll(".options button").forEach(b => b.classList.remove("selected"));
+      btn.classList.add("selected");
+      selectedOption = btn.innerText;
+      document.querySelector(".next-btn").disabled = false;
+    }
 
-  <script src="script.js"></script>
-</body>
+    function nextQuestion() {
+      if (selectedOption === questions[current].answer) {
+        score++;
+      }
+      current++;
+      selectedOption = null;
+      loadQuestion();
+    }
+
+    function restartQuiz() {
+      current = 0;
+      score = 0;
+      selectedOption = null;
+      loadQuestion();
+    }
+
+    // Start quiz on page load
+    loadQuestion();
+  </script></body>
 </html>
