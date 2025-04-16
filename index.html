@@ -8,11 +8,11 @@
   <style>
     :root {
       --bg: #0f172a;
-      --text: #e2e8f0;
+      --text: #f8fafc;
       --card: #1e293b;
-      --accent: #38bdf8;
-      --accent-hover: #0ea5e9;
-      --shadow: rgba(0, 0, 0, 0.4);
+      --accent: #3b82f6;
+      --accent-hover: #2563eb;
+      --shadow: rgba(0, 0, 0, 0.5);
     }
     * {
       margin: 0;
@@ -20,84 +20,96 @@
       box-sizing: border-box;
     }
     body {
-      font-family: 'Inter', sans-serif;
-      background: var(--bg);
+      background-color: var(--bg);
       color: var(--text);
+      font-family: 'Inter', sans-serif;
       display: flex;
       flex-direction: column;
       min-height: 100vh;
     }
     header {
-      background: #1e40af;
-      padding: 1rem 2rem;
-      color: white;
+      background: #1e293b;
+      padding: 1.5rem 2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 2px 12px var(--shadow);
+      box-shadow: 0 4px 12px var(--shadow);
     }
     header h1 {
-      font-size: 1.5rem;
-      font-weight: bold;
+      font-size: 1.75rem;
+      color: var(--accent);
     }
     .logout-btn {
-      background: transparent;
-      border: 2px solid white;
+      background-color: transparent;
+      border: 2px solid var(--accent);
+      color: var(--accent);
       padding: 0.5rem 1rem;
       border-radius: 8px;
-      color: white;
       cursor: pointer;
+      transition: 0.3s;
+    }
+    .logout-btn:hover {
+      background-color: var(--accent);
+      color: #000;
     }
     .container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 2rem;
       padding: 2rem;
+      max-width: 1200px;
+      margin: auto;
       flex: 1;
     }
     .card {
       background: var(--card);
       padding: 1.5rem;
+      margin-bottom: 2rem;
       border-radius: 16px;
       box-shadow: 0 4px 12px var(--shadow);
-      animation: fadeIn 0.5s ease-in-out;
     }
     .card h2 {
+      font-size: 1.25rem;
       margin-bottom: 1rem;
-      border-left: 4px solid var(--accent);
-      padding-left: 0.5rem;
     }
-    textarea, input, button {
+    .dashboard-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .dashboard-cards .card {
+      text-align: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+    input, textarea, button {
       width: 100%;
-      margin-top: 0.75rem;
       padding: 0.75rem;
-      border-radius: 10px;
-      border: none;
+      margin-top: 10px;
       font-size: 1rem;
+      border: none;
+      border-radius: 10px;
     }
-    textarea, input {
-      background: #334155;
-      color: white;
+    input, textarea {
+      background-color: #334155;
+      color: var(--text);
     }
     button {
       background: var(--accent);
-      color: black;
+      color: #000;
       font-weight: bold;
-      cursor: pointer;
     }
     button:hover {
       background: var(--accent-hover);
     }
     ul {
       list-style: none;
-      padding: 0;
       margin-top: 1rem;
+      padding: 0;
     }
     li {
-      background: #475569;
+      background: #334155;
       padding: 0.75rem;
       margin-top: 0.5rem;
-      border-radius: 8px;
+      border-radius: 10px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -105,143 +117,142 @@
     .login-box {
       max-width: 400px;
       margin: 10vh auto;
-      padding: 2rem;
       background: var(--card);
+      padding: 2.5rem;
+      text-align: center;
       border-radius: 16px;
-      box-shadow: 0 4px 12px var(--shadow);
-      text-align: center;
+      box-shadow: 0 6px 16px var(--shadow);
     }
-    .login-box h2 {
-      margin-bottom: 1rem;
-    }
-    footer {
-      background: #1e293b;
-      text-align: center;
-      padding: 1rem;
-      font-size: 0.875rem;
-      color: #94a3b8;
-    }
-    .time-box {
-      font-size: 0.9rem;
-      margin-top: 0.5rem;
-      color: #38bdf8;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    .hidden { display: none; }
   </style>
 </head>
 <body>
-  <div id="login-section" class="active">
+  <div id="login-section">
     <div class="login-box">
-      <h2>Enter Security Key</h2>
-      <input type="password" id="password" placeholder="Security Key">
+      <h2>Login to Dashboard</h2>
+      <input type="password" id="password" placeholder="Enter Security Key">
       <button onclick="login()">Login</button>
       <p id="login-msg"></p>
     </div>
-  </div>  <div id="app-section" style="display:none;">
+  </div>  <div id="app-section" class="hidden">
     <header>
       <h1>Sadhin Dashboard</h1>
       <div>
-        <div class="time-box" id="datetime"></div>
-        <button class="logout-btn" onclick="logout()">Logout</button>
+        <span id="dateTime" style="margin-right:1rem;"></span>
+        <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
       </div>
     </header>
     <div class="container">
-      <div class="card">
-        <h2>Notebook</h2>
-        <textarea id="noteArea" oninput="saveNotebook()" rows="6"></textarea>
-      </div>
-      <div class="card">
-        <h2>Contact List</h2>
-        <input id="name" placeholder="Name">
-        <input id="phone" placeholder="Phone">
-        <button onclick="addContact()">Add</button>
-        <ul id="contactList"></ul>
-      </div>
-    </div>
-  </div>  <footer>Crafted with care — Sadhin Premium UI</footer>  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyBj793HyDwnviSLNQKpi_QgpHGJ6E7-m9M",
-      authDomain: "sadhin-57b7f.firebaseapp.com",
-      projectId: "sadhin-57b7f",
-      storageBucket: "sadhin-57b7f.appspot.com",
-      messagingSenderId: "515400453995",
-      appId: "1:515400453995:web:cea3a57d8cd0db9e72062e"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
+      <div class="dashboard-cards">
+        <div class="card">Total Notes: <span id="noteCount">0</span></div>
+        <div class="card">Total Contacts: <span id="contactCount">0</span></div>
+      </div><div class="card">
+    <h2><i class="fas fa-pen"></i> Notebook</h2>
+    <textarea id="noteArea" oninput="saveNotebook()" rows="6"></textarea>
+  </div>
 
-    let attempts = 0;
-    function login() {
-      const key = document.getElementById("password").value;
-      if (attempts >= 5) {
-        document.getElementById("login-msg").textContent = "Too many attempts. Try again later.";
-        return;
+  <div class="card">
+    <h2><i class="fas fa-address-book"></i> Contact List</h2>
+    <input id="name" placeholder="Name">
+    <input id="phone" placeholder="Phone">
+    <button onclick="addContact()">Add Contact</button>
+    <ul id="contactList"></ul>
+  </div>
+</div>
+
+  </div><script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script><script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script><script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyBj793HyDwnviSLNQKpi_QgpHGJ6E7-m9M",
+    authDomain: "sadhin-57b7f.firebaseapp.com",
+    projectId: "sadhin-57b7f",
+    storageBucket: "sadhin-57b7f.appspot.com",
+    messagingSenderId: "515400453995",
+    appId: "1:515400453995:web:cea3a57d8cd0db9e72062e"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  let attempts = 0;
+
+  function login() {
+    const key = document.getElementById("password").value;
+    if (attempts >= 5) {
+      document.getElementById("login-msg").textContent = "Too many attempts. Try after 10 minutes.";
+      return;
+    }
+    if (key === "Samuthe10@Sadhin") {
+      document.getElementById("login-section").classList.add("hidden");
+      document.getElementById("app-section").classList.remove("hidden");
+      updateDateTime();
+      loadNotebook();
+      renderContacts();
+    } else {
+      attempts++;
+      document.getElementById("login-msg").textContent = `Wrong key. ${5 - attempts} tries left.`;
+    }
+  }
+
+  function logout() {
+    document.getElementById("app-section").classList.add("hidden");
+    document.getElementById("login-section").classList.remove("hidden");
+    document.getElementById("password").value = "";
+  }
+
+  function updateDateTime() {
+    const now = new Date();
+    document.getElementById("dateTime").textContent = now.toLocaleString();
+  }
+
+  function saveNotebook() {
+    const notes = document.getElementById("noteArea").value;
+    db.collection("users").doc("me").set({ notes });
+    updateNoteCount();
+  }
+
+  function loadNotebook() {
+    db.collection("users").doc("me").get().then(doc => {
+      if (doc.exists) {
+        document.getElementById("noteArea").value = doc.data().notes;
       }
-      if (key === "Samuthe10@Sadhin") {
-        document.getElementById("login-section").style.display = 'none';
-        document.getElementById("app-section").style.display = 'block';
-        showDateTime();
-        loadNotebook();
-        renderContacts();
-        attempts = 0;
-      } else {
-        attempts++;
-        document.getElementById("login-msg").textContent = `Wrong key. ${5 - attempts} tries left.`;
-      }
-    }
-    function logout() {
-      document.getElementById("app-section").style.display = 'none';
-      document.getElementById("login-section").style.display = 'block';
-      document.getElementById("password").value = "";
-    }
-    function showDateTime() {
-      const now = new Date();
-      const timeString = now.toLocaleString();
-      document.getElementById("datetime").textContent = `Logged in: ${timeString}`;
-    }
-    function saveNotebook() {
-      const notes = document.getElementById("noteArea").value;
-      db.collection("users").doc("me").set({ notes });
-    }
-    function loadNotebook() {
-      db.collection("users").doc("me").get().then(doc => {
-        if (doc.exists) {
-          document.getElementById("noteArea").value = doc.data().notes;
-        }
+      updateNoteCount();
+    });
+  }
+
+  function addContact() {
+    const name = document.getElementById("name").value;
+    const phone = document.getElementById("phone").value;
+    if (!name || !phone) return;
+    db.collection("users").doc("me").collection("contacts").add({ name, phone }).then(() => {
+      document.getElementById("name").value = "";
+      document.getElementById("phone").value = "";
+      renderContacts();
+    });
+  }
+
+  function renderContacts() {
+    const list = document.getElementById("contactList");
+    list.innerHTML = "";
+    db.collection("users").doc("me").collection("contacts").get().then(snapshot => {
+      document.getElementById("contactCount").textContent = snapshot.size;
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const li = document.createElement("li");
+        li.innerHTML = `<span>${data.name} — ${data.phone}</span><button onclick="deleteContact('${doc.id}')"><i class='fas fa-trash'></i></button>`;
+        list.appendChild(li);
       });
-    }
-    function addContact() {
-      const name = document.getElementById("name").value;
-      const phone = document.getElementById("phone").value;
-      if (!name || !phone) return;
-      db.collection("users").doc("me").collection("contacts").add({ name, phone }).then(() => {
-        document.getElementById("name").value = "";
-        document.getElementById("phone").value = "";
-        renderContacts();
-      });
-    }
-    function renderContacts() {
-      const list = document.getElementById("contactList");
-      list.innerHTML = "";
-      db.collection("users").doc("me").collection("contacts").get().then(snapshot => {
-        snapshot.forEach(doc => {
-          const data = doc.data();
-          const li = document.createElement("li");
-          li.innerHTML = `
-            <span>${data.name} — ${data.phone}</span>
-            <button onclick="deleteContact('${doc.id}')"><i class='fas fa-trash'></i></button>
-          `;
-          list.appendChild(li);
-        });
-      });
-    }
-    function deleteContact(id) {
-      db.collection("users").doc("me").collection("contacts").doc(id).delete().then(() => {
-        renderContacts();
-      });
-    }
-  </script></body>
+    });
+  }
+
+  function deleteContact(id) {
+    db.collection("users").doc("me").collection("contacts").doc(id).delete().then(() => {
+      renderContacts();
+    });
+  }
+
+  function updateNoteCount() {
+    const text = document.getElementById("noteArea").value.trim();
+    const count = text ? text.split(/\n+/).length : 0;
+    document.getElementById("noteCount").textContent = count;
+  }
+</script></body>
 </html>
