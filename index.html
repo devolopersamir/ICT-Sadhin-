@@ -60,6 +60,10 @@
   border-radius: 16px;
   padding: 30px;
   box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 90vh;
 }
 
 .dark-mode .container {
@@ -81,22 +85,6 @@
 .topbar h2 {
   font-size: 24px;
   font-weight: bold;
-}
-
-.topbar button {
-  margin-left: 10px;
-  padding: 10px 16px;
-  border: none;
-  border-radius: 10px;
-  font-weight: 600;
-  background: #2563eb;
-  color: white;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-.topbar button:hover {
-  background: #1d4ed8;
 }
 
 nav {
@@ -174,6 +162,27 @@ li {
   background: #dc2626;
 }
 
+.bottom-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+
+.bottom-actions button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  background: #2563eb;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.bottom-actions button:hover {
+  background: #1d4ed8;
+}
+
 @media (max-width: 600px) {
   .topbar h2 {
     font-size: 20px;
@@ -199,10 +208,7 @@ li {
     <div class="container">
       <div class="topbar">
         <h2><i class="fas fa-shield-alt"></i> Secure Dashboard</h2>
-        <div>
-          <button onclick="toggleDarkMode()"><i class="fas fa-moon"></i></button>
-          <button onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
-        </div>
+        <button onclick="toggleDarkMode()"><i class="fas fa-moon"></i></button>
       </div><nav>
     <button onclick="showSection('notes')">Notepad</button>
     <button onclick="showSection('contacts')">Contacts</button>
@@ -221,20 +227,41 @@ li {
     <input type="text" id="search" placeholder="Search contacts..." oninput="renderContacts()">
     <ul id="contactList"></ul>
   </div>
+
+  <div class="bottom-actions">
+    <button onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+  </div>
 </div>
 
   </div>  <script>
     const correctPassword = "Samuthe10@Sadhin";
+    let loginAttempts = parseInt(localStorage.getItem("loginAttempts")) || 0;
+    let blockedUntil = parseInt(localStorage.getItem("blockedUntil")) || 0;
 
     function login() {
+      const now = Date.now();
+      if (now < blockedUntil) {
+        document.getElementById("error").innerText = "Blocked for 10 minutes due to multiple failed attempts.";
+        return;
+      }
+
       const password = document.getElementById("password").value;
       if (password === correctPassword) {
         document.getElementById("login-section").style.display = "none";
         document.getElementById("app-section").style.display = "flex";
         loadNotebook();
         renderContacts();
+        localStorage.setItem("loginAttempts", "0");
       } else {
-        document.getElementById("error").innerText = "Incorrect password.";
+        loginAttempts++;
+        localStorage.setItem("loginAttempts", loginAttempts);
+        if (loginAttempts >= 5) {
+          blockedUntil = Date.now() + 10 * 60 * 1000; // 10 minutes
+          localStorage.setItem("blockedUntil", blockedUntil);
+          document.getElementById("error").innerText = "Too many failed attempts. Try again in 10 minutes.";
+        } else {
+          document.getElementById("error").innerText = `Incorrect password. Attempts left: ${5 - loginAttempts}`;
+        }
       }
     }
 
