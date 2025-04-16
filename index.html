@@ -2,69 +2,130 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Secure Upload & Notebook</title>
+  <title>Secure Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(to right, #dfe9f3, #ffffff);
-      padding: 20px;
+    * {
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
     }
-    .hidden { display: none; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      transition: background 0.3s, color 0.3s;
+    }
+    :root {
+      --bg: #f8fafc;
+      --text: #1a202c;
+      --card: #ffffff;
+      --accent: #4f46e5;
+      --hover: #4338ca;
+    }
+    .dark-mode {
+      --bg: #0f172a;
+      --text: #f1f5f9;
+      --card: #1e293b;
+      --accent: #6366f1;
+      --hover: #4f46e5;
+    }
     .container {
-      max-width: 600px;
-      margin: auto;
-      background: white;
-      padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 40px;
+      background: var(--card);
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    }
+    h2, h3 {
+      margin-top: 0;
     }
     input, textarea, button {
       width: 100%;
-      padding: 12px;
+      padding: 12px 15px;
       margin: 10px 0;
       border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 16px;
+      border-radius: 10px;
+      font-size: 15px;
+      background: var(--bg);
+      color: var(--text);
+    }
+    textarea {
+      resize: vertical;
     }
     button {
-      background-color: #4CAF50;
+      background-color: var(--accent);
       color: white;
+      font-weight: 600;
       border: none;
       cursor: pointer;
       transition: background 0.3s;
     }
     button:hover {
-      background-color: #45a049;
+      background-color: var(--hover);
     }
-    h2, h3 {
-      color: #333;
+    .hidden {
+      display: none;
     }
     ul {
       padding-left: 20px;
     }
     li {
-      margin-bottom: 5px;
+      background: rgba(100,100,255,0.05);
+      padding: 8px 12px;
+      border-radius: 6px;
+      margin-bottom: 6px;
+    }
+    #filePreview {
+      margin-top: 10px;
+      font-size: 14px;
+    }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .toggle-dark {
+      padding: 6px 12px;
+      background: none;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <div id="login-section">
-      <h2>Login</h2>
-      <input type="password" id="password" placeholder="Enter Password">
-      <button onclick="login()">Login</button>
-      <p id="error" style="color: red;"></p>
-    </div><div id="app-section" class="hidden">
-  <h2>File Upload</h2>
-  <input type="file" id="fileInput">
+    <div class="topbar">
+      <h2 id="dashboard-title">Secure Dashboard</h2>
+      <button class="toggle-dark" onclick="toggleDarkMode()">Toggle Dark Mode</button>
+    </div><div id="login-section">
+  <input type="password" id="password" placeholder="Enter your password">
+  <button onclick="login()">Login</button>
+  <p id="error" style="color: red; font-size: 14px;"></p>
+</div>
 
-  <h2>Notebook</h2>
-  <textarea id="notebook" rows="5" placeholder="Write your notes here..." oninput="saveNotebook()"></textarea>
+<div id="app-section" class="hidden">
+  <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+    <div style="flex: 1 1 45%;">
+      <h3>Upload File</h3>
+      <input type="file" id="fileInput" onchange="previewFile()">
+      <div id="filePreview"></div>
+    </div>
 
-  <h2>Add Contact</h2>
-  <input type="text" id="name" placeholder="Name">
+    <div style="flex: 1 1 45%;">
+      <h3>Notebook</h3>
+      <textarea id="notebook" rows="6" placeholder="Write your notes..." oninput="saveNotebook()"></textarea>
+    </div>
+  </div>
+
+  <h3>Add Contact</h3>
+  <input type="text" id="name" placeholder="Full Name">
   <input type="text" id="mobile" placeholder="Mobile Number">
-  <button onclick="addContact()">Add to List</button>
+  <button onclick="addContact()">Add Contact</button>
 
   <h3>Contact List</h3>
   <ul id="contactList"></ul>
@@ -81,9 +142,9 @@
         document.getElementById("login-section").classList.add("hidden");
         document.getElementById("app-section").classList.remove("hidden");
         loadNotebook();
-        loadContacts();
+        renderContacts();
       } else {
-        error.textContent = "Incorrect password!";
+        error.textContent = "Incorrect password. Please try again.";
       }
     }
 
@@ -102,20 +163,15 @@
     function addContact() {
       const name = document.getElementById("name").value.trim();
       const mobile = document.getElementById("mobile").value.trim();
-      const list = document.getElementById("contactList");
+
       if (name && mobile) {
-        const contact = { name, mobile };
         const contacts = JSON.parse(localStorage.getItem("contacts") || "[]");
-        contacts.push(contact);
+        contacts.push({ name, mobile });
         localStorage.setItem("contacts", JSON.stringify(contacts));
         renderContacts();
         document.getElementById("name").value = "";
         document.getElementById("mobile").value = "";
       }
-    }
-
-    function loadContacts() {
-      renderContacts();
     }
 
     function renderContacts() {
@@ -127,6 +183,20 @@
         li.textContent = `${c.name} - ${c.mobile}`;
         list.appendChild(li);
       });
+    }
+
+    function previewFile() {
+      const fileInput = document.getElementById("fileInput");
+      const preview = document.getElementById("filePreview");
+      if (fileInput.files.length > 0) {
+        preview.textContent = `Selected file: ${fileInput.files[0].name}`;
+      } else {
+        preview.textContent = "";
+      }
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark-mode");
     }
   </script></body>
 </html>
