@@ -4,152 +4,151 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Secure Dashboard</title>
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#6366f1">
-  <link rel="icon" href="icon.png">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://www.gstatic.com/firebasejs/9.9.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.9.0/firebase-database.js"></script>
   <style>
-    * {
-      box-sizing: border-box;
-      font-family: 'Inter', sans-serif;
-    }
     body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f7fa;
+      color: #333;
       margin: 0;
-      background: var(--bg);
-      color: var(--text);
-      transition: background 0.3s, color 0.3s;
+      padding: 0;
+      transition: background-color 0.3s ease;
     }
-    :root {
-      --bg: #f9fafb;
-      --text: #1f2937;
-      --card: #ffffff;
-      --accent: #6366f1;
-      --hover: #4f46e5;
-      --border: #e5e7eb;
-    }
+
     .dark-mode {
-      --bg: #0f172a;
-      --text: #f8fafc;
-      --card: #1e293b;
-      --accent: #8b5cf6;
-      --hover: #7c3aed;
-      --border: #334155;
+      background-color: #121212;
+      color: #f1f1f1;
     }
+
     .container {
-      max-width: 850px;
-      margin: 50px auto;
-      padding: 40px;
-      background: var(--card);
-      border-radius: 16px;
-      box-shadow: 0 25px 60px rgba(0,0,0,0.1);
-      transition: background 0.3s, box-shadow 0.3s ease;
+      width: 80%;
+      margin: 0 auto;
     }
-    h2, h3 {
-      margin-top: 0;
-    }
-    input, textarea, button {
-      width: 100%;
-      padding: 14px 16px;
-      margin: 10px 0;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      font-size: 15px;
-      background: var(--bg);
-      color: var(--text);
-      transition: all 0.3s;
-    }
-    textarea {
-      resize: vertical;
-    }
-    button {
-      background-color: var(--accent);
-      color: white;
-      font-weight: 600;
-      border: none;
-      cursor: pointer;
-      transition: background 0.3s, transform 0.2s ease;
-      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
-    }
-    button:hover {
-      background-color: var(--hover);
-      transform: scale(1.05);
-    }
-    .hidden {
-      display: none;
-    }
-    ul {
-      padding-left: 0;
-      list-style: none;
-    }
-    li {
-      background: rgba(99,102,241,0.1);
-      padding: 10px 14px;
-      border-radius: 10px;
-      margin-bottom: 8px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 15px;
-      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.1);
-    }
+
     .topbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 24px;
+      background-color: #333;
+      color: white;
+      padding: 20px;
     }
+
+    .topbar h2 {
+      margin: 0;
+    }
+
     .toggle-dark {
-      padding: 8px 20px;
-      background: linear-gradient(to right, #6366f1, #8b5cf6);
+      padding: 10px 15px;
+      background-color: #666;
       border: none;
       color: white;
-      border-radius: 9999px;
-      font-size: 14px;
-      font-weight: bold;
       cursor: pointer;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      box-shadow: 0 4px 10px rgba(99,102,241,0.3);
+      border-radius: 5px;
     }
+
     .toggle-dark:hover {
-      transform: scale(1.05);
+      background-color: #555;
     }
-    nav {
+
+    #login-section {
       display: flex;
-      gap: 12px;
-      margin-bottom: 20px;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
     }
-    nav button {
-      width: auto;
-      flex: 1;
-      border-radius: 10px;
-      transition: all 0.3s ease;
+
+    #login-section input {
+      padding: 10px;
+      margin: 5px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
     }
-    nav button:hover {
-      background-color: var(--hover);
-      transform: scale(1.02);
+
+    #login-section button {
+      padding: 10px 20px;
+      margin-left: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
     }
-    .section {
+
+    #login-section button:hover {
+      background-color: #45a049;
+    }
+
+    #app-section {
       display: none;
     }
-    .section.active {
+
+    #app-section.hidden {
+      display: none;
+    }
+
+    #app-section .section {
+      display: none;
+    }
+
+    #app-section .section.active {
       display: block;
     }
-    .delete-btn {
-      background: #ef4444;
-      border: none;
-      padding: 6px 10px;
-      color: white;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 12px;
-      transition: background-color 0.3s ease;
+
+    .section input,
+    .section textarea {
+      padding: 10px;
+      margin: 10px 0;
+      width: 100%;
+      font-size: 16px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
     }
+
+    .section button {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .section button:hover {
+      background-color: #45a049;
+    }
+
+    .section ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .section li {
+      padding: 10px;
+      border: 1px solid #ccc;
+      margin: 5px 0;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .delete-btn {
+      background-color: #f44336;
+      color: white;
+      border: none;
+      cursor: pointer;
+      padding: 5px 10px;
+      border-radius: 5px;
+    }
+
     .delete-btn:hover {
-      background: #d32f2f;
+      background-color: #d32f2f;
     }
   </style>
 </head>
 <body>
+
   <div class="container">
     <div class="topbar">
       <h2 id="dashboard-title">Secure Dashboard</h2>
@@ -159,23 +158,27 @@
       </div>
     </div>
 
+    <!-- Login Section -->
     <div id="login-section">
       <input type="password" id="password" placeholder="Enter your password">
       <button onclick="login()">Login</button>
       <p id="error" style="color: red; font-size: 14px;"></p>
     </div>
 
+    <!-- App Section -->
     <div id="app-section" class="hidden">
       <nav>
         <button onclick="showSection('notes')">Notepad</button>
         <button onclick="showSection('contacts')">Contacts</button>
       </nav>
 
+      <!-- Notebook Section -->
       <div id="notes" class="section active">
         <h3>Notebook</h3>
         <textarea id="notebook" rows="6" placeholder="Write your notes..." oninput="saveNotebook()"></textarea>
       </div>
 
+      <!-- Contacts Section -->
       <div id="contacts" class="section">
         <h3>Add Contact</h3>
         <input type="text" id="name" placeholder="Full Name">
@@ -191,6 +194,21 @@
   </div>
 
   <script>
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyBj793HyDwnviSLNQKpi_QgpHGJ6E7-m9M",
+      authDomain: "sadhin-57b7f.firebaseapp.com",
+      projectId: "sadhin-57b7f",
+      storageBucket: "sadhin-57b7f.firebasestorage.app",
+      messagingSenderId: "515400453995",
+      appId: "1:515400453995:web:cea3a57d8cd0db9e72062e",
+      measurementId: "G-7582R4NBP0"
+    };
+
+    // Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const database = firebase.database(app);
+
     const correctPassword = "Samuthe10@Sadhin";
 
     function login() {
@@ -215,14 +233,19 @@
 
     function saveNotebook() {
       const notes = document.getElementById("notebook").value;
-      localStorage.setItem("notebook", notes);
+      // Save the notebook data to Firebase Realtime Database
+      database.ref('notebook').set(notes);
     }
 
     function loadNotebook() {
-      const savedNotes = localStorage.getItem("notebook");
-      if (savedNotes) {
-        document.getElementById("notebook").value = savedNotes;
-      }
+      // Load the notebook data from Firebase Realtime Database
+      const notebookRef = database.ref('notebook');
+      notebookRef.on('value', (snapshot) => {
+        const notes = snapshot.val();
+        if (notes) {
+          document.getElementById("notebook").value = notes;
+        }
+      });
     }
 
     function addContact() {
@@ -230,32 +253,48 @@
       const mobile = document.getElementById("mobile").value.trim();
 
       if (name && mobile) {
-        const contacts = JSON.parse(localStorage.getItem("contacts") || "[]");
-        contacts.push({ name, mobile });
-        localStorage.setItem("contacts", JSON.stringify(contacts));
-        renderContacts();
-        document.getElementById("name").value = "";
-        document.getElementById("mobile").value = "";
+        const newContactRef = database.ref('contacts').push();
+        newContactRef.set({
+          name: name,
+          mobile: mobile
+        })
+        .then(() => {
+          renderContacts();
+          document.getElementById("name").value = "";
+          document.getElementById("mobile").value = "";
+        })
+        .catch((error) => {
+          console.error("Error adding contact: ", error);
+        });
       }
     }
 
-    function deleteContact(index) {
-      const contacts = JSON.parse(localStorage.getItem("contacts") || "[]");
-      contacts.splice(index, 1);
-      localStorage.setItem("contacts", JSON.stringify(contacts));
-      renderContacts();
+    function deleteContact(contactId) {
+      // Delete the contact from Firebase Realtime Database
+      database.ref('contacts/' + contactId).remove()
+        .then(() => {
+          renderContacts();
+        })
+        .catch((error) => {
+          console.error("Error deleting contact: ", error);
+        });
     }
 
     function renderContacts() {
       const list = document.getElementById("contactList");
       const search = document.getElementById("search").value.toLowerCase();
       list.innerHTML = "";
-      const contacts = JSON.parse(localStorage.getItem("contacts") || "[]");
-      contacts.forEach((c, i) => {
-        if (c.name.toLowerCase().includes(search) || c.mobile.includes(search)) {
-          const li = document.createElement("li");
-          li.innerHTML = `${c.name} - ${c.mobile} <button class='delete-btn' onclick='deleteContact(${i})'>Delete</button>`;
-          list.appendChild(li);
+
+      const contactsRef = database.ref('contacts');
+      contactsRef.on('value', (snapshot) => {
+        const contacts = snapshot.val();
+        for (const contactId in contacts) {
+          const c = contacts[contactId];
+          if (c.name.toLowerCase().includes(search) || c.mobile.includes(search)) {
+            const li = document.createElement("li");
+            li.innerHTML = `${c.name} - ${c.mobile} <button class='delete-btn' onclick='deleteContact("${contactId}")'>Delete</button>`;
+            list.appendChild(li);
+          }
         }
       });
     }
