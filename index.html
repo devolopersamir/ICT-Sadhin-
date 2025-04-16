@@ -2,172 +2,160 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Secure Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <title>Secure Dashboard with Firestore</title>
   <style>
-    * {
-      box-sizing: border-box;
+    body {
       margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #0f0f0f;
+      color: #f5f5f5;
+    }
+    .container {
+      padding: 2rem;
+      max-width: 800px;
+      margin: auto;
+    }
+    #login-section, #app-section {
+      display: none;
+      text-align: center;
+      padding-top: 10vh;
+    }
+    #login-section.active, #app-section.active {
+      display: block;
+    }
+    input, textarea, button {
+      padding: 10px;
+      margin: 10px 0;
+      width: 100%;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    textarea {
+      height: 150px;
+      resize: vertical;
+    }
+    button {
+      background-color: #1f1f1f;
+      color: #fff;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background-color: #333;
+    }
+    ul {
+      list-style: none;
       padding: 0;
-    }body {
-  font-family: 'Inter', sans-serif;
-  background: linear-gradient(to right, #2c3e50, #3498db);
-  color: #fff;
-  transition: all 0.3s ease;
-}
-
-#login-section, #app-section {
-  display: none;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  animation: fadeIn 0.6s ease-in-out;
-}
-
-#login-section.active, #app-section.active {
-  display: flex;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.login-box, .app-container {
-  background-color: #1a1a2e;
-  padding: 40px;
-  border-radius: 20px;
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-  width: 90%;
-  max-width: 400px;
-  text-align: center;
-}
-
-h1 {
-  margin-bottom: 20px;
-}
-
-input, textarea {
-  width: 100%;
-  padding: 12px;
-  margin: 10px 0;
-  border-radius: 10px;
-  border: none;
-  font-size: 16px;
-}
-
-button {
-  padding: 12px 20px;
-  border: none;
-  border-radius: 10px;
-  background: #00b894;
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-button:hover {
-  background: #019875;
-}
-
-nav {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
-}
-
-.section {
-  display: none;
-}
-
-.section.active {
-  display: block;
-}
-
-ul {
-  list-style: none;
-  padding: 0;
-  margin-top: 10px;
-}
-
-li {
-  background: #34495e;
-  padding: 10px;
-  margin: 5px 0;
-  border-radius: 8px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.logout {
-  margin-top: 30px;
-  text-align: center;
-}
-
-.logout button {
-  background-color: #e74c3c;
-}
-
+    }
+    li {
+      background: #1c1c1c;
+      padding: 10px;
+      margin: 5px 0;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+    }
   </style>
 </head>
 <body>
   <div id="login-section" class="active">
-    <div class="login-box">
-      <h1>Enter Security Key</h1>
-      <input type="password" id="password" placeholder="Security Key">
-      <button onclick="login()">Login</button>
-      <p id="login-msg" style="margin-top: 10px; color: #f39c12;"></p>
-    </div>
+    <h1>Enter Security Key</h1>
+    <input type="password" id="password" placeholder="Security Key">
+    <button onclick="login()">Login</button>
+    <p id="login-msg"></p>
   </div>  <div id="app-section">
-    <div class="app-container">
-      <nav>
-        <button onclick="showSection('notes')">Notebook</button>
-        <button onclick="showSection('contacts')">Contacts</button>
-      </nav><div id="notes" class="section active">
-    <h2>Notebook</h2>
-    <textarea rows="10" id="noteArea" placeholder="Write your notes..."></textarea>
-  </div>
+    <div class="container">
+      <h2>Notebook</h2>
+      <textarea id="noteArea" oninput="saveNotebook()"></textarea><h2>Contacts</h2>
+  <input id="name" placeholder="Name">
+  <input id="phone" placeholder="Phone">
+  <button onclick="addContact()">Add</button>
+  <ul id="contactList"></ul>
 
-  <div id="contacts" class="section">
-    <h2>Contact List</h2>
-    <input type="text" id="name" placeholder="Name">
-    <input type="text" id="phone" placeholder="Mobile Number">
-    <button onclick="addContact()">Add Contact</button>
-    <ul id="contactList"></ul>
-  </div>
-
-  <div class="logout">
-    <button onclick="logout()">Logout</button>
-  </div>
+  <button onclick="logout()">Logout</button>
 </div>
 
-  </div>  <script>
-    const correctPassword = "Samuthe10@Sadhin";
-    let attempts = 0;
+  </div>  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.9.0/firebase-app.js";
+    import {
+      getFirestore, doc, setDoc, getDoc, collection,
+      addDoc, getDocs, deleteDoc
+    } from "https://www.gstatic.com/firebasejs/9.9.0/firebase-firestore.js";
 
+    const firebaseConfig = {
+      apiKey: "AIzaSyBj793HyDwnviSLNQKpi_QgpHGJ6E7-m9M",
+      authDomain: "sadhin-57b7f.firebaseapp.com",
+      projectId: "sadhin-57b7f",
+      storageBucket: "sadhin-57b7f.appspot.com",
+      messagingSenderId: "515400453995",
+      appId: "1:515400453995:web:cea3a57d8cd0db9e72062e"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    window.saveNotebook = async () => {
+      const notes = document.getElementById("noteArea").value;
+      await setDoc(doc(db, "users", "me"), { notes });
+    };
+
+    window.loadNotebook = async () => {
+      const snap = await getDoc(doc(db, "users", "me"));
+      if (snap.exists()) {
+        document.getElementById("noteArea").value = snap.data().notes;
+      }
+    };
+
+    window.addContact = async () => {
+      const name = document.getElementById("name").value;
+      const phone = document.getElementById("phone").value;
+      if (!name || !phone) return;
+      await addDoc(collection(db, "users", "me", "contacts"), { name, phone });
+      document.getElementById("name").value = "";
+      document.getElementById("phone").value = "";
+      renderContacts();
+    };
+
+    window.renderContacts = async () => {
+      const list = document.getElementById("contactList");
+      list.innerHTML = "";
+      const snapshot = await getDocs(collection(db, "users", "me", "contacts"));
+      snapshot.forEach(docSnap => {
+        const { name, phone } = docSnap.data();
+        const li = document.createElement("li");
+        li.innerHTML = `
+          ${name} — ${phone}
+          <button onclick="deleteContact('${docSnap.id}')">Delete</button>
+        `;
+        list.appendChild(li);
+      });
+    };
+
+    window.deleteContact = async (id) => {
+      await deleteDoc(doc(db, "users", "me", "contacts", id));
+      renderContacts();
+    };
+
+    window.addEventListener("DOMContentLoaded", () => {
+      loadNotebook();
+      renderContacts();
+    });
+
+    let attempts = 0;
     function login() {
-      const entered = document.getElementById("password").value;
-      const msg = document.getElementById("login-msg");
-      if (entered === correctPassword) {
+      const key = document.getElementById("password").value;
+      if (attempts >= 5) {
+        document.getElementById("login-msg").textContent = "Too many attempts. Try after 10 mins.";
+        return;
+      }
+      if (key === "Samuthe10@Sadhin") {
         document.getElementById("login-section").classList.remove("active");
         document.getElementById("app-section").classList.add("active");
-        msg.textContent = "";
+        attempts = 0;
       } else {
         attempts++;
-        msg.textContent = `Wrong key. Attempts left: ${5 - attempts}`;
-        if (attempts >= 5) {
-          msg.textContent = "Too many attempts. Try again in 10 minutes.";
-          document.getElementById("password").disabled = true;
-          setTimeout(() => {
-            attempts = 0;
-            document.getElementById("password").disabled = false;
-            msg.textContent = "You can try again now.";
-          }, 600000);
-        }
+        document.getElementById("login-msg").textContent = `Wrong key. ${5 - attempts} tries left.`;
       }
     }
 
@@ -175,24 +163,6 @@ li {
       document.getElementById("app-section").classList.remove("active");
       document.getElementById("login-section").classList.add("active");
       document.getElementById("password").value = "";
-    }
-
-    function showSection(id) {
-      document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
-      document.getElementById(id).classList.add("active");
-    }
-
-    function addContact() {
-      const name = document.getElementById("name").value;
-      const phone = document.getElementById("phone").value;
-      const list = document.getElementById("contactList");
-      if (name && phone) {
-        const li = document.createElement("li");
-        li.innerHTML = `${name} - ${phone} <button onclick="this.parentElement.remove()">Delete</button>`;
-        list.appendChild(li);
-        document.getElementById("name").value = "";
-        document.getElementById("phone").value = "";
-      }
     }
   </script></body>
 </html>
