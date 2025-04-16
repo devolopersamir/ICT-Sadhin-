@@ -1,169 +1,66 @@
-<!DOCTYPE html><html lang="bn">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>স্বাধীন কুইজ</title>
+  <title>Secure Upload & Notebook</title>
   <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to right, #fdfbfb, #ebedee);
-    }
-    .hero {
-      height: 100vh;
-      background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://source.unsplash.com/1600x900/?education,quiz');
-      background-size: cover;
-      background-position: center;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: white;
-      text-align: center;
-      flex-direction: column;
-      animation: fadeIn 1.5s ease-in-out;
-    }
-    .form-container {
-      background: white;
-      padding: 30px;
-      max-width: 420px;
-      margin: 30px auto;
-      border-radius: 12px;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-      animation: slideIn 0.8s ease-in-out;
-    }
-    input, button {
-      width: 100%;
-      padding: 14px;
-      margin: 12px 0;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 16px;
-      transition: 0.3s;
-    }
-    input:focus {
-      border-color: #7c3aed;
-      outline: none;
-    }
-    button {
-      background-color: #7c3aed;
-      color: white;
-      font-weight: bold;
-      position: relative;
-    }
-    button.loading::after {
-      content: '';
-      position: absolute;
-      right: 20px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 16px;
-      height: 16px;
-      border: 3px solid white;
-      border-top: 3px solid transparent;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-    button:hover {
-      background-color: #5b21b6;
-    }
+    body { font-family: sans-serif; background: #f0f0f0; padding: 20px; }
     .hidden { display: none; }
-    .center { text-align: center; }@keyframes spin {
-  0% { transform: translateY(-50%) rotate(0deg); }
-  100% { transform: translateY(-50%) rotate(360deg); }
-}
-@keyframes fadeIn {
-  from {opacity: 0; transform: translateY(-20px);}
-  to {opacity: 1; transform: translateY(0);}
-}
-@keyframes slideIn {
-  from {opacity: 0; transform: translateY(40px);}
-  to {opacity: 1; transform: translateY(0);}
-}
-
+    .container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    input, textarea, button { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; }
+    ul { padding-left: 20px; }
   </style>
 </head>
 <body>
-  <div class="hero">
-    <h1 style="font-size: 2.5rem; margin-bottom: 10px;">স্বাগতম স্বাধীন কুইজে</h1>
-    <p style="font-size: 1.2rem;">নিচে লগইন বা রেজিস্ট্রেশন করুন কুইজে অংশ নিতে</p>
-  </div>  <div class="form-container" id="register-box">
-    <h2>রেজিস্ট্রেশন</h2>
-    <input type="text" id="reg-name" placeholder="নাম" required>
-    <input type="email" id="reg-email" placeholder="ইমেইল" required>
-    <input type="password" id="reg-password" placeholder="পাসওয়ার্ড" required>
-    <button id="reg-btn" onclick="registerUser()">রেজিস্টার</button>
-    <p class="center">আগেই রেজিস্টার করেছেন? <a href="#" onclick="toggleForms()">লগইন করুন</a></p>
-  </div>  <div class="form-container hidden" id="login-box">
-    <h2>লগইন</h2>
-    <input type="email" id="login-email" placeholder="ইমেইল" required>
-    <input type="password" id="login-password" placeholder="পাসওয়ার্ড" required>
-    <button id="login-btn" onclick="loginUser()">লগইন</button>
-    <p class="center">নতুন ব্যবহারকারী? <a href="#" onclick="toggleForms()">রেজিস্টার করুন</a></p>
-  </div>  <div class="form-container hidden" id="quiz-box">
-    <h2>কুইজ শুরু হবে এখানে!</h2>
-    <p>ইমেইল ভেরিফিকেশন সফল হয়েছে!</p>
-  </div>  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
+  <div class="container">
+    <div id="login-section">
+      <h2>Login</h2>
+      <input type="password" id="password" placeholder="Enter Password">
+      <button onclick="login()">Login</button>
+      <p id="error" style="color: red;"></p>
+    </div><div id="app-section" class="hidden">
+  <h2>File Upload</h2>
+  <input type="file" id="fileInput">
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyAwg7vOyhRQbRD_voaKZp9BBzqxKw3MN8Q",
-      authDomain: "ictsadhinquiz.firebaseapp.com",
-      projectId: "ictsadhinquiz",
-      storageBucket: "ictsadhinquiz.appspot.com",
-      messagingSenderId: "85267517603",
-      appId: "1:85267517603:web:f21a91a737055e1b406f16"
-    };
+  <h2>Notebook</h2>
+  <textarea id="notebook" rows="5" placeholder="Write your notes here..."></textarea>
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
+  <h2>Add Contact</h2>
+  <input type="text" id="name" placeholder="Name">
+  <input type="text" id="mobile" placeholder="Mobile Number">
+  <button onclick="addContact()">Add to List</button>
 
-    window.toggleForms = () => {
-      document.getElementById('register-box').classList.toggle('hidden');
-      document.getElementById('login-box').classList.toggle('hidden');
+  <h3>Contact List</h3>
+  <ul id="contactList"></ul>
+</div>
+
+  </div>  <script>
+    const correctPassword = "Samuthe10@Sadhin";
+
+    function login() {
+      const inputPassword = document.getElementById("password").value;
+      const error = document.getElementById("error");
+
+      if (inputPassword === correctPassword) {
+        document.getElementById("login-section").classList.add("hidden");
+        document.getElementById("app-section").classList.remove("hidden");
+      } else {
+        error.textContent = "Incorrect password!";
+      }
     }
 
-    window.registerUser = () => {
-      const btn = document.getElementById('reg-btn');
-      btn.classList.add('loading');
-      const name = document.getElementById('reg-name').value;
-      const email = document.getElementById('reg-email').value;
-      const password = document.getElementById('reg-password').value;
+    function addContact() {
+      const name = document.getElementById("name").value;
+      const mobile = document.getElementById("mobile").value;
+      const list = document.getElementById("contactList");
 
-      createUserWithEmailAndPassword(auth, email, password)
-        .then(userCredential => {
-          sendEmailVerification(userCredential.user)
-            .then(() => {
-              alert("রেজিস্ট্রেশন সফল! একটি ভেরিফিকেশন ইমেইল পাঠানো হয়েছে। দয়া করে মেইল চেক করুন।");
-              btn.classList.remove('loading');
-            });
-        })
-        .catch(error => {
-          alert(error.message);
-          btn.classList.remove('loading');
-        });
-    }
-
-    window.loginUser = () => {
-      const btn = document.getElementById('login-btn');
-      btn.classList.add('loading');
-      const email = document.getElementById('login-email').value;
-      const password = document.getElementById('login-password').value;
-
-      signInWithEmailAndPassword(auth, email, password)
-        .then(userCredential => {
-          if (userCredential.user.emailVerified) {
-            document.getElementById('login-box').classList.add('hidden');
-            document.getElementById('quiz-box').classList.remove('hidden');
-          } else {
-            alert("দয়া করে আগে ইমেইল ভেরিফাই করুন।");
-          }
-          btn.classList.remove('loading');
-        })
-        .catch(error => {
-          alert(error.message);
-          btn.classList.remove('loading');
-        });
+      if (name && mobile) {
+        const li = document.createElement("li");
+        li.textContent = `${name} - ${mobile}`;
+        list.appendChild(li);
+        document.getElementById("name").value = "";
+        document.getElementById("mobile").value = "";
+      }
     }
   </script></body>
 </html>
