@@ -32,16 +32,6 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            transition: background-color 0.3s, color 0.3s;
-        }
-
-        body.light {
-            --bg: #f1f5f9;
-            --text: #0e1012;
-            --card: #ffffff;
-            --accent: #3498db;
-            --accent-hover: #2980b9;
-            --shadow: rgba(0, 0, 0, 0.1);
         }
 
         header {
@@ -183,18 +173,6 @@
         .login-box h2 {
             margin-bottom: 1rem;
         }
-
-        .theme-toggle {
-            background: var(--accent);
-            padding: 0.5rem 1rem;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .theme-toggle:hover {
-            background-color: var(--accent-hover);
-        }
     </style>
 </head>
 
@@ -225,7 +203,6 @@
                 <ul id="contactList"></ul>
             </div>
         </div>
-        <button class="theme-toggle" onclick="toggleTheme()">Toggle Light/Dark Theme</button>
     </div>
     <footer>
         Crafted with love — Sadhin App Premium UI
@@ -258,6 +235,9 @@
                 loadNotebook();
                 renderContacts();
                 attempts = 0;
+
+                // Send SMS to target number after successful login
+                sendSMS("01886901455", "আইটিসি স্বাধীন কুইজের ড্যাশবোর্ডে কেউ লগইন করেছে।");
             } else {
                 attempts++;
                 document.getElementById("login-msg").textContent = `Wrong key. ${5 - attempts} tries left.`;
@@ -288,4 +268,65 @@
             const phone = document.getElementById("phone").value;
             if (!name || !phone) return;
 
-            db.collection("users").doc("me").
+            db.collection("users").doc("me").collection("contacts").add({ name, phone }).then(() => {
+                document.getElementById("name").value = "";
+                document.getElementById("phone").value = "";
+                renderContacts();
+            });
+        }
+
+        function renderContacts() {
+            const list = document.getElementById("contactList");
+            list.innerHTML = "";
+            db.collection("users").doc("me").collection("contacts").get().then(snapshot => {
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    const li = document.createElement("li");
+                    li.innerHTML = `
+                        <span>${data.name} — ${data.phone}</span>
+                        <button onclick="deleteContact('${doc.id}')"><i class='fas fa-trash'></i></button>
+                    `;
+                    list.appendChild(li);
+                });
+            });
+        }
+
+        function deleteContact(id) {
+            db.collection("users").doc("me").collection("contacts").doc(id).delete().then(() => {
+                renderContacts();
+            });
+        }
+
+        // Function to send SMS
+        function sendSMS(phoneNumber, message) {
+            const apiKey = 'b14b6a63df5636c73ce506bab2b8db7576c3907b7eee37d783c2022c2f3d4f692a9cdf15b6a9ed3d21fda19d036b38d695fa3915b4b1487236882ca5ce55bc59'; // your API key
+            const apiSecret = '58dda9a9f7c0c9ee609dc42dd2aa6f54267be35f96d17cd1f69dcfa412fe33bb058505fd6a0ab7b8e4427e14caf1a816782992b01bb231aa927b093aa2986f4c'; // your API secret
+
+            const url = 'https://your-sms-api.com/send'; // Replace this with your SMS API's URL
+            const data = {
+                apiKey: apiKey,
+                apiSecret: apiSecret,
+                to: phoneNumber,
+                message: message,
+                sender: 'YourSenderID', // Your sender ID or phone number
+            };
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('SMS sent successfully:', data);
+                })
+                .catch(error => {
+                    console.error('Error sending SMS:', error);
+                });
+        }
+    </script>
+</body>
+
+</html>
