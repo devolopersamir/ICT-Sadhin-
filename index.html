@@ -1,118 +1,126 @@
 <!DOCTYPE html><html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Secure Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTTXRMbHTN8XtM7d1ZgA1HZUlYUpvRY9hfLozL1oJz0iIv+KgQ9HEU6z+6js1uMNx3J1rLwcVA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
     * {
       box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }body {
   font-family: 'Inter', sans-serif;
-  margin: 0;
-  padding: 0;
-  background: #f4f6f8;
-  color: #333;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  background: #f3f4f6;
+  color: #111827;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 .dark-mode {
-  background-color: #0e1117;
-  color: #e0e0e0;
+  background-color: #1f2937;
+  color: #f9fafb;
+}
+
+#login-section, #app-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+#login-section input, #login-section button {
+  width: 100%;
+  max-width: 350px;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+#login-section button {
+  background-color: #4f46e5;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+#login-section button:hover {
+  background-color: #4338ca;
+}
+
+.container {
+  width: 100%;
+  max-width: 1000px;
+  background: white;
+  border-radius: 16px;
+  padding: 30px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+}
+
+.dark-mode .container {
+  background: #111827;
 }
 
 .topbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: linear-gradient(90deg, #6a11cb, #2575fc);
-  padding: 20px;
-  border-radius: 16px;
-  color: white;
-  box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+  padding-bottom: 20px;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.dark-mode .topbar {
+  border-color: #374151;
+}
+
+.topbar h2 {
+  font-size: 24px;
+  font-weight: bold;
 }
 
 .topbar button {
-  padding: 10px 20px;
-  background: white;
+  margin-left: 10px;
+  padding: 10px 16px;
   border: none;
-  color: #2575fc;
-  font-size: 15px;
-  font-weight: 600;
   border-radius: 10px;
+  font-weight: 600;
+  background: #2563eb;
+  color: white;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background 0.3s;
 }
 
 .topbar button:hover {
-  background-color: #e3f2fd;
-}
-
-.container {
-  width: 95%;
-  max-width: 1000px;
-  margin: 30px auto;
-  background: white;
-  padding: 30px;
-  border-radius: 16px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.05);
-}
-
-#login-section {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  flex-direction: column;
-  background: linear-gradient(to bottom right, #dfe9f3, #ffffff);
-}
-
-#login-section input,
-#login-section button {
-  padding: 15px;
-  margin: 10px;
-  font-size: 16px;
-  border-radius: 10px;
-  border: 1px solid #ccc;
-  width: 320px;
-}
-
-#login-section button {
-  background: #2575fc;
-  color: white;
-  font-weight: 600;
-  border: none;
-  transition: background 0.3s ease;
-}
-
-#login-section button:hover {
-  background: #1a5fd0;
-}
-
-#app-section {
-  display: none;
+  background: #1d4ed8;
 }
 
 nav {
-  margin-top: 20px;
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
+  margin: 20px 0;
 }
 
 nav button {
-  padding: 12px 18px;
-  border: none;
-  border-radius: 10px;
-  background-color: #6a11cb;
+  flex: 1;
+  min-width: 140px;
+  padding: 12px;
+  background: #6d28d9;
   color: white;
   font-weight: 600;
+  border: none;
+  border-radius: 10px;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: background 0.3s;
 }
 
 nav button:hover {
-  background-color: #4d089a;
+  background: #5b21b6;
 }
 
 .section {
@@ -121,93 +129,112 @@ nav button:hover {
 
 .section.active {
   display: block;
-  margin-top: 20px;
 }
 
-textarea,
-input {
+textarea, input[type="text"] {
   width: 100%;
-  padding: 14px;
-  margin: 10px 0;
+  padding: 12px;
+  margin-top: 10px;
   border-radius: 10px;
   border: 1px solid #ccc;
+  font-size: 16px;
 }
 
 ul {
-  list-style-type: none;
+  list-style: none;
+  margin-top: 20px;
   padding: 0;
 }
 
 li {
-  background: #f9f9f9;
-  padding: 14px;
-  margin-bottom: 10px;
-  border-radius: 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
+  padding: 12px;
+  margin-bottom: 10px;
+  background: #f9fafb;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.dark-mode li {
+  background: #374151;
 }
 
 .delete-btn {
-  background-color: #e53935;
+  background: #ef4444;
   color: white;
   border: none;
-  padding: 8px 14px;
   border-radius: 8px;
+  padding: 6px 10px;
   cursor: pointer;
-  transition: background 0.3s ease;
 }
 
 .delete-btn:hover {
-  background-color: #c62828;
+  background: #dc2626;
+}
+
+@media (max-width: 600px) {
+  .topbar h2 {
+    font-size: 20px;
+  }
+
+  nav {
+    flex-direction: column;
+  }
+
+  nav button {
+    width: 100%;
+  }
 }
 
   </style>
 </head>
 <body>
   <div id="login-section">
-    <input type="password" id="password" placeholder="Enter your password" />
+    <input type="password" id="password" placeholder="Enter password">
     <button onclick="login()">Login</button>
-    <p id="error" style="color: red;"></p>
-  </div>  <div id="app-section" class="container">
-    <div class="topbar">
-      <h2><i class="fas fa-lock"></i> Secure Dashboard</h2>
-      <div>
-        <button onclick="toggleDarkMode()"><i class="fas fa-moon"></i></button>
-        <button onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
-      </div>
-    </div><nav>
-  <button onclick="showSection('notes')"><i class="fas fa-sticky-note"></i> Notepad</button>
-  <button onclick="showSection('contacts')"><i class="fas fa-address-book"></i> Contacts</button>
-</nav>
+    <p id="error" style="color:red;"></p>
+  </div>  <div id="app-section" style="display:none">
+    <div class="container">
+      <div class="topbar">
+        <h2><i class="fas fa-shield-alt"></i> Secure Dashboard</h2>
+        <div>
+          <button onclick="toggleDarkMode()"><i class="fas fa-moon"></i></button>
+          <button onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        </div>
+      </div><nav>
+    <button onclick="showSection('notes')">Notepad</button>
+    <button onclick="showSection('contacts')">Contacts</button>
+  </nav>
 
-<div id="notes" class="section active">
-  <h3>Notepad</h3>
-  <textarea id="notebook" rows="6" placeholder="Write your notes..."></textarea>
-</div>
+  <div id="notes" class="section active">
+    <h3>Notepad</h3>
+    <textarea id="notebook" rows="6" placeholder="Write your notes..."></textarea>
+  </div>
 
-<div id="contacts" class="section">
-  <h3>Contact List</h3>
-  <input type="text" id="name" placeholder="Full Name" />
-  <input type="text" id="mobile" placeholder="Mobile Number" />
-  <button onclick="addContact()">Add Contact</button>
-  <input type="text" id="search" placeholder="Search contacts..." oninput="renderContacts()" />
-  <ul id="contactList"></ul>
+  <div id="contacts" class="section">
+    <h3>Contact List</h3>
+    <input type="text" id="name" placeholder="Full Name">
+    <input type="text" id="mobile" placeholder="Mobile Number">
+    <button onclick="addContact()">Add Contact</button>
+    <input type="text" id="search" placeholder="Search contacts..." oninput="renderContacts()">
+    <ul id="contactList"></ul>
+  </div>
 </div>
 
   </div>  <script>
     const correctPassword = "Samuthe10@Sadhin";
 
     function login() {
-      const inputPassword = document.getElementById("password").value;
-      if (inputPassword === correctPassword) {
+      const password = document.getElementById("password").value;
+      if (password === correctPassword) {
         document.getElementById("login-section").style.display = "none";
-        document.getElementById("app-section").style.display = "block";
+        document.getElementById("app-section").style.display = "flex";
         loadNotebook();
         renderContacts();
       } else {
-        document.getElementById("error").textContent = "Incorrect password.";
+        document.getElementById("error").innerText = "Incorrect password.";
       }
     }
 
@@ -221,7 +248,7 @@ li {
     }
 
     function showSection(id) {
-      document.querySelectorAll(".section").forEach(sec => sec.classList.remove("active"));
+      document.querySelectorAll(".section").forEach(el => el.classList.remove("active"));
       document.getElementById(id).classList.add("active");
     }
 
@@ -237,14 +264,13 @@ li {
     function addContact() {
       const name = document.getElementById("name").value;
       const mobile = document.getElementById("mobile").value;
-      if (name && mobile) {
-        const contacts = JSON.parse(localStorage.getItem("contacts") || "[]");
-        contacts.push({ name, mobile });
-        localStorage.setItem("contacts", JSON.stringify(contacts));
-        document.getElementById("name").value = "";
-        document.getElementById("mobile").value = "";
-        renderContacts();
-      }
+      if (!name || !mobile) return;
+      const contacts = JSON.parse(localStorage.getItem("contacts") || "[]");
+      contacts.push({ name, mobile });
+      localStorage.setItem("contacts", JSON.stringify(contacts));
+      document.getElementById("name").value = "";
+      document.getElementById("mobile").value = "";
+      renderContacts();
     }
 
     function renderContacts() {
@@ -252,10 +278,10 @@ li {
       const contacts = JSON.parse(localStorage.getItem("contacts") || "[]");
       const list = document.getElementById("contactList");
       list.innerHTML = "";
-      contacts.forEach((contact, index) => {
-        if (contact.name.toLowerCase().includes(search) || contact.mobile.includes(search)) {
+      contacts.forEach((c, i) => {
+        if (c.name.toLowerCase().includes(search) || c.mobile.includes(search)) {
           const li = document.createElement("li");
-          li.innerHTML = `${contact.name} - ${contact.mobile} <button class="delete-btn" onclick="deleteContact(${index})">Delete</button>`;
+          li.innerHTML = `${c.name} - ${c.mobile} <button class='delete-btn' onclick='deleteContact(${i})'>Delete</button>`;
           list.appendChild(li);
         }
       });
@@ -268,4 +294,4 @@ li {
       renderContacts();
     }
   </script></body>
-</html>ষ
+</html>
