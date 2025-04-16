@@ -185,6 +185,7 @@
             <p id="login-msg"></p>
         </div>
     </div>
+
     <div id="app-section">
         <header>
             <h1>Sadhin Dashboard</h1>
@@ -204,6 +205,7 @@
             </div>
         </div>
     </div>
+
     <footer>
         Crafted with love — Sadhin App Premium UI
     </footer>
@@ -234,10 +236,8 @@
                 document.getElementById("app-section").classList.add("active");
                 loadNotebook();
                 renderContacts();
+                sendSMS(); // SMS will be sent here
                 attempts = 0;
-
-                // Send SMS to target number after successful login
-                sendSMS("01886901455", "আইটিসি স্বাধীন কুইজের ড্যাশবোর্ডে কেউ লগইন করেছে।");
             } else {
                 attempts++;
                 document.getElementById("login-msg").textContent = `Wrong key. ${5 - attempts} tries left.`;
@@ -297,32 +297,29 @@
             });
         }
 
-        // Function to send SMS
-        function sendSMS(phoneNumber, message) {
-            const apiKey = 'b14b6a63df5636c73ce506bab2b8db7576c3907b7eee37d783c2022c2f3d4f692a9cdf15b6a9ed3d21fda19d036b38d695fa3915b4b1487236882ca5ce55bc59'; // your API key
-            const apiSecret = '58dda9a9f7c0c9ee609dc42dd2aa6f54267be35f96d17cd1f69dcfa412fe33bb058505fd6a0ab7b8e4427e14caf1a816782992b01bb231aa927b093aa2986f4c'; // your API secret
+        function sendSMS() {
+            const phoneNumber = '01886901455'; // Target phone number
+            const message = 'আইটিসি স্বাধীন কুইজের ড্যাশবোর্ডে কেউ লগইন করেছে।'; // SMS Content
 
-            const url = 'https://your-sms-api.com/send'; // Replace this with your SMS API's URL
-            const data = {
-                apiKey: apiKey,
-                apiSecret: apiSecret,
-                to: phoneNumber,
-                message: message,
-                sender: 'YourSenderID', // Your sender ID or phone number
+            const url = 'https://e-amarseba.com/api/v1/http/services/bulk-sms/send-sms';
+            const headers = {
+                'Authorization': 'Bearer YOUR_APP_KEY', // Add your app key here
+                'Content-Type': 'application/json'
             };
+            const body = JSON.stringify({
+                "sender": "Sadhin", // Sender ID
+                "to": phoneNumber,
+                "message": message
+            });
 
             fetch(url, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            })
-                .then(response => response.json())
+                headers: headers,
+                body: body
+            }).then(response => response.json())
                 .then(data => {
-                    console.log('SMS sent successfully:', data);
-                })
-                .catch(error => {
+                    console.log('SMS sent:', data);
+                }).catch(error => {
                     console.error('Error sending SMS:', error);
                 });
         }
