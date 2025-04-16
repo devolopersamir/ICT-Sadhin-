@@ -1,329 +1,258 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sadhin Dashboard</title>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-    <style>
-        :root {
-            --bg: #0e1012;
-            --text: #f1f5f9;
-            --card: #1c1f24;
-            --accent: #00d1ff;
-            --accent-hover: #00b1dd;
-            --shadow: rgba(0, 0, 0, 0.5);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background-color: var(--bg);
-            color: var(--text);
-            font-family: 'Inter', sans-serif;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        header {
-            background-color: #14161a;
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 10px var(--shadow);
-        }
-
-        header h1 {
-            font-size: 1.5rem;
-            color: var(--accent);
-        }
-
-        .logout-btn {
-            background: transparent;
-            border: 2px solid var(--accent);
-            color: var(--accent);
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .logout-btn:hover {
-            background: var(--accent);
-            color: #000;
-        }
-
-        .container {
-            padding: 2rem;
-            max-width: 1000px;
-            margin: auto;
-            flex: 1;
-        }
-
-        .card {
-            background: var(--card);
-            border-radius: 16px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 4px 12px var(--shadow);
-            animation: fadeIn 0.5s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        h2 {
-            font-size: 1.25rem;
-            margin-bottom: 1rem;
-            border-left: 4px solid var(--accent);
-            padding-left: 0.5rem;
-        }
-
-        input,
-        textarea,
-        button {
-            width: 100%;
-            margin-top: 10px;
-            padding: 0.75rem;
-            border: none;
-            border-radius: 10px;
-            font-size: 1rem;
-        }
-
-        input,
-        textarea {
-            background: #2a2d33;
-            color: var(--text);
-        }
-
-        button {
-            background: var(--accent);
-            color: #000;
-            font-weight: bold;
-            transition: 0.3s;
-        }
-
-        button:hover {
-            background: var(--accent-hover);
-        }
-
-        ul {
-            list-style: none;
-            margin-top: 1rem;
-            padding: 0;
-        }
-
-        li {
-            background: #2a2d33;
-            padding: 0.75rem;
-            margin-top: 0.5rem;
-            border-radius: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        footer {
-            text-align: center;
-            padding: 1rem;
-            color: #777;
-            background: #0a0c10;
-        }
-
-        #login-section,
-        #app-section {
-            display: none;
-        }
-
-        #login-section.active,
-        #app-section.active {
-            display: block;
-        }
-
-        .login-box {
-            max-width: 400px;
-            margin: auto;
-            padding: 3rem;
-            margin-top: 10vh;
-            background: var(--card);
-            border-radius: 16px;
-            box-shadow: 0 4px 16px var(--shadow);
-            text-align: center;
-        }
-
-        .login-box h2 {
-            margin-bottom: 1rem;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sadhin Dashboard</title>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #0e1012;
+      --text: #f1f5f9;
+      --card: #1c1f24;
+      --accent: #00d1ff;
+      --accent-hover: #00b1dd;
+      --shadow: rgba(0,0,0,0.5);
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      background-color: #14161a;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px var(--shadow);
+    }
+    header h1 {
+      font-size: 1.5rem;
+      color: var(--accent);
+    }
+    .logout-btn {
+      background: transparent;
+      border: 2px solid var(--accent);
+      color: var(--accent);
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .logout-btn:hover {
+      background: var(--accent);
+      color: #000;
+    }
+    .container {
+      padding: 2rem;
+      max-width: 1000px;
+      margin: auto;
+      flex: 1;
+    }
+    .card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 12px var(--shadow);
+      animation: fadeIn 0.5s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(10px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+    h2 {
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+      border-left: 4px solid var(--accent);
+      padding-left: 0.5rem;
+    }
+    input, textarea, button {
+      width: 100%;
+      margin-top: 10px;
+      padding: 0.75rem;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+    }
+    input, textarea {
+      background: #2a2d33;
+      color: var(--text);
+    }
+    button {
+      background: var(--accent);
+      color: #000;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: var(--accent-hover);
+    }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      color: #777;
+      background: #0a0c10;
+    }
+    #login-section, #app-section {
+      display: none;
+    }
+    #login-section.active, #app-section.active {
+      display: block;
+    }
+    .login-box {
+      max-width: 400px;
+      margin: 100px auto;
+      padding: 2rem;
+      background: var(--card);
+      border-radius: 12px;
+      box-shadow: 0 0 10px var(--shadow);
+      text-align: center;
+    }
+    ul#contactList li {
+      display: flex;
+      justify-content: space-between;
+      background: #2a2d33;
+      padding: 0.75rem;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+    ul#contactList li button {
+      background: transparent;
+      border: none;
+      color: red;
+      font-size: 1.2rem;
+    }
+  </style>
 </head>
-
 <body>
-    <div id="login-section" class="active">
-        <div class="login-box">
-            <h2>Enter Security Key</h2>
-            <input type="password" id="password" placeholder="Security Key">
-            <button onclick="login()">Login</button>
-            <p id="login-msg"></p>
-        </div>
+  <div id="login-section" class="active">
+    <div class="login-box">
+      <h2>Enter Security Key</h2>
+      <input type="password" id="password" placeholder="Security Key">
+      <button onclick="login()">Login</button>
+      <p id="login-msg"></p>
     </div>
-
-    <div id="app-section">
-        <header>
-            <h1>Sadhin Dashboard</h1>
-            <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
-        </header>
-        <div class="container">
-            <div class="card">
-                <h2><i class="fas fa-pen"></i> Notebook</h2>
-                <textarea id="noteArea" oninput="saveNotebook()" rows="6"></textarea>
-            </div>
-            <div class="card">
-                <h2><i class="fas fa-address-book"></i> Contact List</h2>
-                <input id="name" placeholder="Name">
-                <input id="phone" placeholder="Phone">
-                <button onclick="addContact()">Add</button>
-                <ul id="contactList"></ul>
-            </div>
-        </div>
+  </div>
+  <div id="app-section">
+    <header>
+      <h1>Sadhin Dashboard</h1>
+      <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </header>
+    <div class="container">
+      <div class="card">
+        <h2><i class="fas fa-pen"></i> Notebook</h2>
+        <textarea id="noteArea" oninput="saveNotebook()" rows="6"></textarea>
+      </div>
+      <div class="card">
+        <h2><i class="fas fa-address-book"></i> Contact List</h2>
+        <input id="name" placeholder="Name">
+        <input id="phone" placeholder="Phone">
+        <button onclick="addContact()">Add</button>
+        <ul id="contactList"></ul>
+      </div>
     </div>
+  </div>
+  <footer>
+    Crafted with love — Sadhin App Premium UI
+  </footer>
 
-    <footer>
-        Crafted with love — Sadhin App Premium UI
-    </footer>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBj793HyDwnviSLNQKpi_QgpHGJ6E7-m9M",
+      authDomain: "sadhin-57b7f.firebaseapp.com",
+      projectId: "sadhin-57b7f",
+      storageBucket: "sadhin-57b7f.appspot.com",
+      messagingSenderId: "515400453995",
+      appId: "1:515400453995:web:cea3a57d8cd0db9e72062e"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
 
-    <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyBj793HyDwnviSLNQKpi_QgpHGJ6E7-m9M",
-            authDomain: "sadhin-57b7f.firebaseapp.com",
-            projectId: "sadhin-57b7f",
-            storageBucket: "sadhin-57b7f.appspot.com",
-            messagingSenderId: "515400453995",
-            appId: "1:515400453995:web:cea3a57d8cd0db9e72062e"
-        };
+    let attempts = 0;
 
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
+    function login() {
+      const key = document.getElementById("password").value;
+      if (attempts >= 5) {
+        document.getElementById("login-msg").textContent = "Too many attempts. Try after 10 minutes.";
+        return;
+      }
+      if (key === "Samuthe10@Sadhin") {
+        document.getElementById("login-section").classList.remove("active");
+        document.getElementById("app-section").classList.add("active");
+        loadNotebook();
+        renderContacts();
+        attempts = 0;
+      } else {
+        attempts++;
+        document.getElementById("login-msg").textContent = `Wrong key. ${5 - attempts} tries left.`;
+      }
+    }
 
-        let attempts = 0;
+    function logout() {
+      document.getElementById("app-section").classList.remove("active");
+      document.getElementById("login-section").classList.add("active");
+      document.getElementById("password").value = "";
+    }
 
-        function login() {
-            const key = document.getElementById("password").value;
-            if (attempts >= 5) {
-                document.getElementById("login-msg").textContent = "Too many attempts. Try after 10 minutes.";
-                return;
-            }
-            if (key === "Samuthe10@Sadhin") {
-                document.getElementById("login-section").classList.remove("active");
-                document.getElementById("app-section").classList.add("active");
-                loadNotebook();
-                renderContacts();
-                sendSMS(); // SMS will be sent here
-                attempts = 0;
-            } else {
-                attempts++;
-                document.getElementById("login-msg").textContent = `Wrong key. ${5 - attempts} tries left.`;
-            }
+    function saveNotebook() {
+      const notes = document.getElementById("noteArea").value;
+      db.collection("users").doc("me").set({ notes });
+    }
+
+    function loadNotebook() {
+      db.collection("users").doc("me").get().then(doc => {
+        if (doc.exists) {
+          document.getElementById("noteArea").value = doc.data().notes;
         }
+      });
+    }
 
-        function logout() {
-            document.getElementById("app-section").classList.remove("active");
-            document.getElementById("login-section").classList.add("active");
-            document.getElementById("password").value = "";
-        }
+    function addContact() {
+      const name = document.getElementById("name").value;
+      const phone = document.getElementById("phone").value;
+      if (!name || !phone) return;
 
-        function saveNotebook() {
-            const notes = document.getElementById("noteArea").value;
-            db.collection("users").doc("me").set({ notes });
-        }
+      db.collection("users").doc("me").collection("contacts").add({ name, phone }).then(() => {
+        document.getElementById("name").value = "";
+        document.getElementById("phone").value = "";
+        renderContacts();
+      });
+    }
 
-        function loadNotebook() {
-            db.collection("users").doc("me").get().then(doc => {
-                if (doc.exists) {
-                    document.getElementById("noteArea").value = doc.data().notes;
-                }
-            });
-        }
+    function renderContacts() {
+      const list = document.getElementById("contactList");
+      list.innerHTML = "";
+      db.collection("users").doc("me").collection("contacts").get().then(snapshot => {
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          const li = document.createElement("li");
+          li.innerHTML = `
+            <span>${data.name} — ${data.phone}</span>
+            <button onclick="deleteContact('${doc.id}')"><i class='fas fa-trash'></i></button>
+          `;
+          list.appendChild(li);
+        });
+      });
+    }
 
-        function addContact() {
-            const name = document.getElementById("name").value;
-            const phone = document.getElementById("phone").value;
-            if (!name || !phone) return;
-
-            db.collection("users").doc("me").collection("contacts").add({ name, phone }).then(() => {
-                document.getElementById("name").value = "";
-                document.getElementById("phone").value = "";
-                renderContacts();
-            });
-        }
-
-        function renderContacts() {
-            const list = document.getElementById("contactList");
-            list.innerHTML = "";
-            db.collection("users").doc("me").collection("contacts").get().then(snapshot => {
-                snapshot.forEach(doc => {
-                    const data = doc.data();
-                    const li = document.createElement("li");
-                    li.innerHTML = `
-                        <span>${data.name} — ${data.phone}</span>
-                        <button onclick="deleteContact('${doc.id}')"><i class='fas fa-trash'></i></button>
-                    `;
-                    list.appendChild(li);
-                });
-            });
-        }
-
-        function deleteContact(id) {
-            db.collection("users").doc("me").collection("contacts").doc(id).delete().then(() => {
-                renderContacts();
-            });
-        }
-
-        function sendSMS() {
-            const phoneNumber = '01886901455'; // Target phone number
-            const message = 'আইটিসি স্বাধীন কুইজের ড্যাশবোর্ডে কেউ লগইন করেছে।'; // SMS Content
-
-            const url = 'https://e-amarseba.com/api/v1/http/services/bulk-sms/send-sms';
-            const headers = {
-                'Authorization': 'Bearer YOUR_APP_KEY', // Add your app key here
-                'Content-Type': 'application/json'
-            };
-            const body = JSON.stringify({
-                "sender": "Sadhin", // Sender ID
-                "to": phoneNumber,
-                "message": message
-            });
-
-            fetch(url, {
-                method: 'POST',
-                headers: headers,
-                body: body
-            }).then(response => response.json())
-                .then(data => {
-                    console.log('SMS sent:', data);
-                }).catch(error => {
-                    console.error('Error sending SMS:', error);
-                });
-        }
-    </script>
+    function deleteContact(id) {
+      db.collection("users").doc("me").collection("contacts").doc(id).delete().then(() => {
+        renderContacts();
+      });
+    }
+  </script>
 </body>
-
 </html>
