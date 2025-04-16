@@ -1,8 +1,12 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Secure Dashboard</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#6366f1">
+  <link rel="icon" href="icon.png">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
     * {
@@ -16,39 +20,43 @@
       transition: background 0.3s, color 0.3s;
     }
     :root {
-      --bg: #f8fafc;
-      --text: #1a202c;
+      --bg: #f9fafb;
+      --text: #1f2937;
       --card: #ffffff;
-      --accent: #4f46e5;
-      --hover: #4338ca;
+      --accent: #6366f1;
+      --hover: #4f46e5;
+      --border: #e5e7eb;
     }
     .dark-mode {
       --bg: #0f172a;
-      --text: #f1f5f9;
+      --text: #f8fafc;
       --card: #1e293b;
-      --accent: #6366f1;
-      --hover: #4f46e5;
+      --accent: #8b5cf6;
+      --hover: #7c3aed;
+      --border: #334155;
     }
     .container {
-      max-width: 800px;
-      margin: 40px auto;
+      max-width: 850px;
+      margin: 50px auto;
       padding: 40px;
       background: var(--card);
-      border-radius: 20px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+      border-radius: 16px;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.1);
+      transition: background 0.3s, box-shadow 0.3s ease;
     }
     h2, h3 {
       margin-top: 0;
     }
     input, textarea, button {
       width: 100%;
-      padding: 12px 15px;
+      padding: 14px 16px;
       margin: 10px 0;
-      border: 1px solid #ccc;
-      border-radius: 10px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
       font-size: 15px;
       background: var(--bg);
       color: var(--text);
+      transition: all 0.3s;
     }
     textarea {
       resize: vertical;
@@ -59,10 +67,12 @@
       font-weight: 600;
       border: none;
       cursor: pointer;
-      transition: background 0.3s;
+      transition: background 0.3s, transform 0.2s ease;
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
     }
     button:hover {
       background-color: var(--hover);
+      transform: scale(1.05);
     }
     .hidden {
       display: none;
@@ -72,43 +82,51 @@
       list-style: none;
     }
     li {
-      background: rgba(100,100,255,0.05);
-      padding: 8px 12px;
-      border-radius: 6px;
-      margin-bottom: 6px;
+      background: rgba(99,102,241,0.1);
+      padding: 10px 14px;
+      border-radius: 10px;
+      margin-bottom: 8px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      font-size: 15px;
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.1);
     }
     .topbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 20px;
+      margin-bottom: 24px;
     }
     .toggle-dark {
-      padding: 6px 16px;
-      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      padding: 8px 20px;
+      background: linear-gradient(to right, #6366f1, #8b5cf6);
       border: none;
       color: white;
       border-radius: 9999px;
       font-size: 14px;
       font-weight: bold;
       cursor: pointer;
-      transition: transform 0.2s ease;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 4px 10px rgba(99,102,241,0.3);
     }
     .toggle-dark:hover {
       transform: scale(1.05);
     }
     nav {
       display: flex;
-      gap: 10px;
+      gap: 12px;
       margin-bottom: 20px;
     }
     nav button {
       width: auto;
       flex: 1;
-      border-radius: 8px;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+    }
+    nav button:hover {
+      background-color: var(--hover);
+      transform: scale(1.02);
     }
     .section {
       display: none;
@@ -117,13 +135,17 @@
       display: block;
     }
     .delete-btn {
-      background: red;
+      background: #ef4444;
       border: none;
       padding: 6px 10px;
       color: white;
-      border-radius: 4px;
+      border-radius: 6px;
       cursor: pointer;
       font-size: 12px;
+      transition: background-color 0.3s ease;
+    }
+    .delete-btn:hover {
+      background: #d32f2f;
     }
   </style>
 </head>
@@ -132,40 +154,43 @@
     <div class="topbar">
       <h2 id="dashboard-title">Secure Dashboard</h2>
       <div>
-        <button class="toggle-dark" onclick="toggleDarkMode()">Toggle Dark Mode</button>
+        <button class="toggle-dark" onclick="toggleDarkMode()">Dark Mode</button>
         <button class="toggle-dark" onclick="logout()">Logout</button>
       </div>
-    </div><div id="login-section">
-  <input type="password" id="password" placeholder="Enter your password">
-  <button onclick="login()">Login</button>
-  <p id="error" style="color: red; font-size: 14px;"></p>
-</div>
+    </div>
 
-<div id="app-section" class="hidden">
-  <nav>
-    <button onclick="showSection('notes')">Notepad</button>
-    <button onclick="showSection('contacts')">Contacts</button>
-  </nav>
+    <div id="login-section">
+      <input type="password" id="password" placeholder="Enter your password">
+      <button onclick="login()">Login</button>
+      <p id="error" style="color: red; font-size: 14px;"></p>
+    </div>
 
-  <div id="notes" class="section active">
-    <h3>Notebook</h3>
-    <textarea id="notebook" rows="6" placeholder="Write your notes..." oninput="saveNotebook()"></textarea>
+    <div id="app-section" class="hidden">
+      <nav>
+        <button onclick="showSection('notes')">Notepad</button>
+        <button onclick="showSection('contacts')">Contacts</button>
+      </nav>
+
+      <div id="notes" class="section active">
+        <h3>Notebook</h3>
+        <textarea id="notebook" rows="6" placeholder="Write your notes..." oninput="saveNotebook()"></textarea>
+      </div>
+
+      <div id="contacts" class="section">
+        <h3>Add Contact</h3>
+        <input type="text" id="name" placeholder="Full Name">
+        <input type="text" id="mobile" placeholder="Mobile Number">
+        <button onclick="addContact()">Add Contact</button>
+
+        <input type="text" id="search" placeholder="Search contacts..." oninput="renderContacts()">
+
+        <h3>Contact List</h3>
+        <ul id="contactList"></ul>
+      </div>
+    </div>
   </div>
 
-  <div id="contacts" class="section">
-    <h3>Add Contact</h3>
-    <input type="text" id="name" placeholder="Full Name">
-    <input type="text" id="mobile" placeholder="Mobile Number">
-    <button onclick="addContact()">Add Contact</button>
-
-    <input type="text" id="search" placeholder="Search contacts..." oninput="renderContacts()">
-
-    <h3>Contact List</h3>
-    <ul id="contactList"></ul>
-  </div>
-</div>
-
-  </div>  <script>
+  <script>
     const correctPassword = "Samuthe10@Sadhin";
 
     function login() {
@@ -229,7 +254,7 @@
       contacts.forEach((c, i) => {
         if (c.name.toLowerCase().includes(search) || c.mobile.includes(search)) {
           const li = document.createElement("li");
-          li.innerHTML = `${c.name} - ${c.mobile} <button class='delete-btn' onclick='deleteContact(${i})'>X</button>`;
+          li.innerHTML = `${c.name} - ${c.mobile} <button class='delete-btn' onclick='deleteContact(${i})'>Delete</button>`;
           list.appendChild(li);
         }
       });
@@ -243,5 +268,6 @@
       document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
       document.getElementById(id).classList.add('active');
     }
-  </script></body>
+  </script>
+</body>
 </html>
