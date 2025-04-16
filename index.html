@@ -1,57 +1,91 @@
+বুঝতে পারছি, তুমি হয়তো ভালভাবে কাজ করা এবং প্রিমিয়াম UI চাচ্ছ। কোডের ফাংশনালিটি এবং UI উভয়ই উন্নত করা প্রয়োজন। চল, আমি কোডের UI এবং ফাংশনালিটি দুটোই আরো প্রিমিয়াম করে দিবো।
+
+UI উন্নত করতে আমরা যা করতে পারি:
+
+1. ফ্ল্যাট ডিজাইন: সোজা এবং আধুনিক ডিজাইন।
+
+
+2. টপ-নেভিগেশন বার: ক্লিয়ার এবং আকর্ষণীয় লেআউট।
+
+
+3. বাটন এবং ইনপুট ফিল্ডের ডিজাইন: সাইড রাউন্ডেড, সফট শ্যাডো দিয়ে।
+
+
+4. অ্যানিমেশন: সহজ অ্যানিমেশন যা ব্যবহারকারীদের অভিজ্ঞতাকে আরও উন্নত করবে।
+
+
+
+এখানে একটি উন্নত UI এবং ফাংশনালিটির সাথে আপডেটেড কোড দেওয়া হলো। Firebase সিস্টেম আগের মতো থাকবে, কিন্তু UI আরও প্রিমিয়াম করা হবে।
+
+কোড:
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Secure Dashboard</title>
+  
+  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.9.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.9.0/firebase-database.js"></script>
+
   <style>
+    /* General Styles */
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f7fa;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f0f4f7;
       color: #333;
       margin: 0;
       padding: 0;
       transition: background-color 0.3s ease;
     }
 
+    /* Dark Mode */
     .dark-mode {
       background-color: #121212;
       color: #f1f1f1;
     }
 
+    /* Main Container */
     .container {
-      width: 80%;
+      width: 90%;
+      max-width: 1200px;
       margin: 0 auto;
+      padding-top: 40px;
     }
 
+    /* Topbar */
     .topbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
       background-color: #333;
       color: white;
-      padding: 20px;
+      padding: 15px 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
 
     .topbar h2 {
       margin: 0;
     }
 
-    .toggle-dark {
-      padding: 10px 15px;
-      background-color: #666;
-      border: none;
+    .topbar button {
+      padding: 8px 15px;
+      background-color: #4CAF50;
       color: white;
-      cursor: pointer;
+      border: none;
       border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
     }
 
-    .toggle-dark:hover {
-      background-color: #555;
+    .topbar button:hover {
+      background-color: #45a049;
     }
 
+    /* Login Section */
     #login-section {
       display: flex;
       justify-content: center;
@@ -60,90 +94,124 @@
     }
 
     #login-section input {
-      padding: 10px;
-      margin: 5px;
-      font-size: 16px;
-      border-radius: 5px;
+      padding: 15px;
+      margin: 10px;
+      font-size: 18px;
+      border-radius: 10px;
       border: 1px solid #ccc;
+      width: 300px;
     }
 
     #login-section button {
-      padding: 10px 20px;
-      margin-left: 10px;
+      padding: 15px 30px;
       background-color: #4CAF50;
       color: white;
       border: none;
-      cursor: pointer;
       border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
     }
 
     #login-section button:hover {
       background-color: #45a049;
     }
 
+    /* App Section */
     #app-section {
       display: none;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
 
-    #app-section.hidden {
+    .section {
       display: none;
     }
 
-    #app-section .section {
-      display: none;
-    }
-
-    #app-section .section.active {
+    .section.active {
       display: block;
     }
 
-    .section input,
-    .section textarea {
-      padding: 10px;
-      margin: 10px 0;
-      width: 100%;
-      font-size: 16px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-    }
-
-    .section button {
+    /* Section Buttons */
+    nav button {
       padding: 10px 20px;
-      background-color: #4CAF50;
+      background-color: #007BFF;
       color: white;
       border: none;
       cursor: pointer;
       border-radius: 5px;
+      margin: 5px;
+      transition: background-color 0.3s ease;
+    }
+
+    nav button:hover {
+      background-color: #0056b3;
+    }
+
+    /* Input and Textarea */
+    .section input,
+    .section textarea {
+      padding: 12px;
+      margin: 10px 0;
+      width: 100%;
+      font-size: 16px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+
+    .section button {
+      padding: 12px 20px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
     }
 
     .section button:hover {
-      background-color: #45a049;
+      background-color: #218838;
     }
 
+    /* Contact List */
     .section ul {
       list-style-type: none;
       padding: 0;
     }
 
     .section li {
+      background-color: #f8f9fa;
       padding: 10px;
-      border: 1px solid #ccc;
-      margin: 5px 0;
+      margin: 10px 0;
+      border-radius: 10px;
       display: flex;
       justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
     .delete-btn {
-      background-color: #f44336;
+      background-color: #dc3545;
       color: white;
-      border: none;
-      cursor: pointer;
       padding: 5px 10px;
+      border: none;
       border-radius: 5px;
+      cursor: pointer;
     }
 
     .delete-btn:hover {
-      background-color: #d32f2f;
+      background-color: #c82333;
+    }
+
+    /* Search Bar */
+    .search-bar {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 10px;
+      border: 1px solid #ccc;
     }
   </style>
 </head>
@@ -185,7 +253,7 @@
         <input type="text" id="mobile" placeholder="Mobile Number">
         <button onclick="addContact()">Add Contact</button>
 
-        <input type="text" id="search" placeholder="Search contacts..." oninput="renderContacts()">
+        <input type="text" id="search" class="search-bar" placeholder="Search contacts..." oninput="renderContacts()">
 
         <h3>Contact List</h3>
         <ul id="contactList"></ul>
@@ -220,93 +288,5 @@
         document.getElementById("app-section").classList.remove("hidden");
         loadNotebook();
         renderContacts();
-      } else {
-        error.textContent = "Incorrect password. Please try again.";
-      }
-    }
 
-    function logout() {
-      document.getElementById("login-section").classList.remove("hidden");
-      document.getElementById("app-section").classList.add("hidden");
-      document.getElementById("password").value = "";
-    }
-
-    function saveNotebook() {
-      const notes = document.getElementById("notebook").value;
-      // Save the notebook data to Firebase Realtime Database
-      database.ref('notebook').set(notes);
-    }
-
-    function loadNotebook() {
-      // Load the notebook data from Firebase Realtime Database
-      const notebookRef = database.ref('notebook');
-      notebookRef.on('value', (snapshot) => {
-        const notes = snapshot.val();
-        if (notes) {
-          document.getElementById("notebook").value = notes;
-        }
-      });
-    }
-
-    function addContact() {
-      const name = document.getElementById("name").value.trim();
-      const mobile = document.getElementById("mobile").value.trim();
-
-      if (name && mobile) {
-        const newContactRef = database.ref('contacts').push();
-        newContactRef.set({
-          name: name,
-          mobile: mobile
-        })
-        .then(() => {
-          renderContacts();
-          document.getElementById("name").value = "";
-          document.getElementById("mobile").value = "";
-        })
-        .catch((error) => {
-          console.error("Error adding contact: ", error);
-        });
-      }
-    }
-
-    function deleteContact(contactId) {
-      // Delete the contact from Firebase Realtime Database
-      database.ref('contacts/' + contactId).remove()
-        .then(() => {
-          renderContacts();
-        })
-        .catch((error) => {
-          console.error("Error deleting contact: ", error);
-        });
-    }
-
-    function renderContacts() {
-      const list = document.getElementById("contactList");
-      const search = document.getElementById("search").value.toLowerCase();
-      list.innerHTML = "";
-
-      const contactsRef = database.ref('contacts');
-      contactsRef.on('value', (snapshot) => {
-        const contacts = snapshot.val();
-        for (const contactId in contacts) {
-          const c = contacts[contactId];
-          if (c.name.toLowerCase().includes(search) || c.mobile.includes(search)) {
-            const li = document.createElement("li");
-            li.innerHTML = `${c.name} - ${c.mobile} <button class='delete-btn' onclick='deleteContact("${contactId}")'>Delete</button>`;
-            list.appendChild(li);
-          }
-        }
-      });
-    }
-
-    function toggleDarkMode() {
-      document.body.classList.toggle("dark-mode");
-    }
-
-    function showSection(id) {
-      document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
-    }
-  </script>
-</body>
-</html>
+    
