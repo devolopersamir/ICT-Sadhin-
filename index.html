@@ -68,17 +68,17 @@
       display: none;
     }
     ul {
-      padding-left: 20px;
+      padding-left: 0;
+      list-style: none;
     }
     li {
       background: rgba(100,100,255,0.05);
       padding: 8px 12px;
       border-radius: 6px;
       margin-bottom: 6px;
-    }
-    #filePreview {
-      margin-top: 10px;
-      font-size: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
     .topbar {
       display: flex;
@@ -95,6 +95,30 @@
       cursor: pointer;
       font-size: 14px;
     }
+    nav {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    nav button {
+      width: auto;
+      flex: 1;
+    }
+    .section {
+      display: none;
+    }
+    .section.active {
+      display: block;
+    }
+    .delete-btn {
+      background: red;
+      border: none;
+      padding: 6px 10px;
+      color: white;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+    }
   </style>
 </head>
 <body>
@@ -109,26 +133,34 @@
 </div>
 
 <div id="app-section" class="hidden">
-  <div style="display: flex; gap: 20px; flex-wrap: wrap;">
-    <div style="flex: 1 1 45%;">
-      <h3>Upload File</h3>
-      <input type="file" id="fileInput" onchange="previewFile()">
-      <div id="filePreview"></div>
-    </div>
+  <nav>
+    <button onclick="showSection('file')">File</button>
+    <button onclick="showSection('notes')">Notepad</button>
+    <button onclick="showSection('contacts')">Contacts</button>
+  </nav>
 
-    <div style="flex: 1 1 45%;">
-      <h3>Notebook</h3>
-      <textarea id="notebook" rows="6" placeholder="Write your notes..." oninput="saveNotebook()"></textarea>
-    </div>
+  <div id="file" class="section active">
+    <h3>Upload File</h3>
+    <input type="file" id="fileInput" onchange="previewFile()">
+    <div id="filePreview"></div>
   </div>
 
-  <h3>Add Contact</h3>
-  <input type="text" id="name" placeholder="Full Name">
-  <input type="text" id="mobile" placeholder="Mobile Number">
-  <button onclick="addContact()">Add Contact</button>
+  <div id="notes" class="section">
+    <h3>Notebook</h3>
+    <textarea id="notebook" rows="6" placeholder="Write your notes..." oninput="saveNotebook()"></textarea>
+  </div>
 
-  <h3>Contact List</h3>
-  <ul id="contactList"></ul>
+  <div id="contacts" class="section">
+    <h3>Add Contact</h3>
+    <input type="text" id="name" placeholder="Full Name">
+    <input type="text" id="mobile" placeholder="Mobile Number">
+    <button onclick="addContact()">Add Contact</button>
+
+    <input type="text" id="search" placeholder="Search contacts..." oninput="renderContacts()">
+
+    <h3>Contact List</h3>
+    <ul id="contactList"></ul>
+  </div>
 </div>
 
   </div>  <script>
@@ -174,14 +206,24 @@
       }
     }
 
+    function deleteContact(index) {
+      const contacts = JSON.parse(localStorage.getItem("contacts") || "[]");
+      contacts.splice(index, 1);
+      localStorage.setItem("contacts", JSON.stringify(contacts));
+      renderContacts();
+    }
+
     function renderContacts() {
       const list = document.getElementById("contactList");
+      const search = document.getElementById("search").value.toLowerCase();
       list.innerHTML = "";
       const contacts = JSON.parse(localStorage.getItem("contacts") || "[]");
-      contacts.forEach(c => {
-        const li = document.createElement("li");
-        li.textContent = `${c.name} - ${c.mobile}`;
-        list.appendChild(li);
+      contacts.forEach((c, i) => {
+        if (c.name.toLowerCase().includes(search) || c.mobile.includes(search)) {
+          const li = document.createElement("li");
+          li.innerHTML = `${c.name} - ${c.mobile} <button class='delete-btn' onclick='deleteContact(${i})'>X</button>`;
+          list.appendChild(li);
+        }
       });
     }
 
@@ -197,6 +239,11 @@
 
     function toggleDarkMode() {
       document.body.classList.toggle("dark-mode");
+    }
+
+    function showSection(id) {
+      document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
     }
   </script></body>
 </html>
