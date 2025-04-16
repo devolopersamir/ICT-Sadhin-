@@ -114,7 +114,7 @@
       await addDoc(collection(db, "users", "me", "contacts"), { name, phone });
       document.getElementById("name").value = "";
       document.getElementById("phone").value = "";
-      renderContacts();
+      window.renderContacts();
     };
 
     window.renderContacts = async () => {
@@ -126,7 +126,7 @@
         const li = document.createElement("li");
         li.innerHTML = `
           ${name} — ${phone}
-          <button onclick="deleteContact('${docSnap.id}')">Delete</button>
+          <button onclick=\"deleteContact('${docSnap.id}')\">Delete</button>
         `;
         list.appendChild(li);
       });
@@ -134,16 +134,16 @@
 
     window.deleteContact = async (id) => {
       await deleteDoc(doc(db, "users", "me", "contacts", id));
-      renderContacts();
+      window.renderContacts();
     };
 
     window.addEventListener("DOMContentLoaded", () => {
-      loadNotebook();
-      renderContacts();
+      window.loadNotebook();
+      window.renderContacts();
     });
 
     let attempts = 0;
-    function login() {
+    window.login = function () {
       const key = document.getElementById("password").value;
       if (attempts >= 5) {
         document.getElementById("login-msg").textContent = "Too many attempts. Try after 10 mins.";
@@ -159,7 +159,7 @@
       }
     }
 
-    function logout() {
+    window.logout = function () {
       document.getElementById("app-section").classList.remove("active");
       document.getElementById("login-section").classList.add("active");
       document.getElementById("password").value = "";
