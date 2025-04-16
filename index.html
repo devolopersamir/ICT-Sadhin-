@@ -2,7 +2,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Secure Dashboard with Firestore</title>
+  <title>Secure Dashboard</title>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
   <style>
     body {
       margin: 0;
@@ -76,13 +78,7 @@
   <button onclick="logout()">Logout</button>
 </div>
 
-  </div>  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.9.0/firebase-app.js";
-    import {
-      getFirestore, doc, setDoc, getDoc, collection,
-      addDoc, getDocs, deleteDoc
-    } from "https://www.gstatic.com/firebasejs/9.9.0/firebase-firestore.js";
-
+  </div>  <script>
     const firebaseConfig = {
       apiKey: "AIzaSyBj793HyDwnviSLNQKpi_QgpHGJ6E7-m9M",
       authDomain: "sadhin-57b7f.firebaseapp.com",
@@ -92,58 +88,12 @@
       appId: "1:515400453995:web:cea3a57d8cd0db9e72062e"
     };
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    window.saveNotebook = async () => {
-      const notes = document.getElementById("noteArea").value;
-      await setDoc(doc(db, "users", "me"), { notes });
-    };
-
-    window.loadNotebook = async () => {
-      const snap = await getDoc(doc(db, "users", "me"));
-      if (snap.exists()) {
-        document.getElementById("noteArea").value = snap.data().notes;
-      }
-    };
-
-    window.addContact = async () => {
-      const name = document.getElementById("name").value;
-      const phone = document.getElementById("phone").value;
-      if (!name || !phone) return;
-      await addDoc(collection(db, "users", "me", "contacts"), { name, phone });
-      document.getElementById("name").value = "";
-      document.getElementById("phone").value = "";
-      window.renderContacts();
-    };
-
-    window.renderContacts = async () => {
-      const list = document.getElementById("contactList");
-      list.innerHTML = "";
-      const snapshot = await getDocs(collection(db, "users", "me", "contacts"));
-      snapshot.forEach(docSnap => {
-        const { name, phone } = docSnap.data();
-        const li = document.createElement("li");
-        li.innerHTML = `
-          ${name} — ${phone}
-          <button onclick=\"deleteContact('${docSnap.id}')\">Delete</button>
-        `;
-        list.appendChild(li);
-      });
-    };
-
-    window.deleteContact = async (id) => {
-      await deleteDoc(doc(db, "users", "me", "contacts", id));
-      window.renderContacts();
-    };
-
-    window.addEventListener("DOMContentLoaded", () => {
-      window.loadNotebook();
-      window.renderContacts();
-    });
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
 
     let attempts = 0;
-    window.login = function () {
+
+    function login() {
       const key = document.getElementById("password").value;
       if (attempts >= 5) {
         document.getElementById("login-msg").textContent = "Too many attempts. Try after 10 mins.";
@@ -152,6 +102,8 @@
       if (key === "Samuthe10@Sadhin") {
         document.getElementById("login-section").classList.remove("active");
         document.getElementById("app-section").classList.add("active");
+        loadNotebook();
+        renderContacts();
         attempts = 0;
       } else {
         attempts++;
@@ -159,10 +111,57 @@
       }
     }
 
-    window.logout = function () {
+    function logout() {
       document.getElementById("app-section").classList.remove("active");
       document.getElementById("login-section").classList.add("active");
       document.getElementById("password").value = "";
+    }
+
+    function saveNotebook() {
+      const notes = document.getElementById("noteArea").value;
+      db.collection("users").doc("me").set({ notes });
+    }
+
+    function loadNotebook() {
+      db.collection("users").doc("me").get().then(doc => {
+        if (doc.exists) {
+          document.getElementById("noteArea").value = doc.data().notes;
+        }
+      });
+    }
+
+    function addContact() {
+      const name = document.getElementById("name").value;
+      const phone = document.getElementById("phone").value;
+      if (!name || !phone) return;
+
+      db.collection("users").doc("me").collection("contacts").add({ name, phone }).then(() => {
+        document.getElementById("name").value = "";
+        document.getElementById("phone").value = "";
+        renderContacts();
+      });
+    }
+
+    function renderContacts() {
+      const list = document.getElementById("contactList");
+      list.innerHTML = "";
+      db.collection("users").doc("me").collection("contacts").get().then(snapshot => {
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          const li = document.createElement("li");
+          li.innerHTML = `
+            ${data.name} — ${data.phone}
+            <button onclick="deleteContact('${doc.id}')">Delete</button>
+          `;
+          list.appendChild(li);
+        });
+      });
+    }
+
+    function deleteContact(id) {
+      db.collection("users").doc("me").collection("contacts").doc(id).delete().then(() => {
+        renderContacts();
+      });
     }
   </script></body>
 </html>
