@@ -87,13 +87,18 @@
       margin-bottom: 20px;
     }
     .toggle-dark {
-      padding: 6px 12px;
-      background: none;
-      border: 1px solid var(--accent);
-      color: var(--accent);
-      border-radius: 6px;
-      cursor: pointer;
+      padding: 6px 16px;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      border: none;
+      color: white;
+      border-radius: 9999px;
       font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    .toggle-dark:hover {
+      transform: scale(1.05);
     }
     nav {
       display: flex;
@@ -103,6 +108,7 @@
     nav button {
       width: auto;
       flex: 1;
+      border-radius: 8px;
     }
     .section {
       display: none;
@@ -125,7 +131,10 @@
   <div class="container">
     <div class="topbar">
       <h2 id="dashboard-title">Secure Dashboard</h2>
-      <button class="toggle-dark" onclick="toggleDarkMode()">Toggle Dark Mode</button>
+      <div>
+        <button class="toggle-dark" onclick="toggleDarkMode()">Toggle Dark Mode</button>
+        <button class="toggle-dark" onclick="logout()">Logout</button>
+      </div>
     </div><div id="login-section">
   <input type="password" id="password" placeholder="Enter your password">
   <button onclick="login()">Login</button>
@@ -134,18 +143,11 @@
 
 <div id="app-section" class="hidden">
   <nav>
-    <button onclick="showSection('file')">File</button>
     <button onclick="showSection('notes')">Notepad</button>
     <button onclick="showSection('contacts')">Contacts</button>
   </nav>
 
-  <div id="file" class="section active">
-    <h3>Upload File</h3>
-    <input type="file" id="fileInput" onchange="previewFile()">
-    <div id="filePreview"></div>
-  </div>
-
-  <div id="notes" class="section">
+  <div id="notes" class="section active">
     <h3>Notebook</h3>
     <textarea id="notebook" rows="6" placeholder="Write your notes..." oninput="saveNotebook()"></textarea>
   </div>
@@ -178,6 +180,12 @@
       } else {
         error.textContent = "Incorrect password. Please try again.";
       }
+    }
+
+    function logout() {
+      document.getElementById("login-section").classList.remove("hidden");
+      document.getElementById("app-section").classList.add("hidden");
+      document.getElementById("password").value = "";
     }
 
     function saveNotebook() {
@@ -225,16 +233,6 @@
           list.appendChild(li);
         }
       });
-    }
-
-    function previewFile() {
-      const fileInput = document.getElementById("fileInput");
-      const preview = document.getElementById("filePreview");
-      if (fileInput.files.length > 0) {
-        preview.textContent = `Selected file: ${fileInput.files[0].name}`;
-      } else {
-        preview.textContent = "";
-      }
     }
 
     function toggleDarkMode() {
