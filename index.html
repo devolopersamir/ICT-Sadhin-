@@ -6,22 +6,24 @@
   <title>Sadhin Dashboard</title>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
     :root {
       --bg: #0e1012;
       --text: #f1f5f9;
       --card: #1c1f24;
-      --accent: #00d1ff;
-      --accent-hover: #00b1dd;
+      --accent: #00eaff;
+      --accent-hover: #00c0cc;
       --shadow: rgba(0,0,0,0.5);
     }
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
+
     body {
       background-color: var(--bg);
       color: var(--text);
@@ -30,6 +32,7 @@
       display: flex;
       flex-direction: column;
     }
+
     header {
       background-color: #14161a;
       padding: 1rem 2rem;
@@ -38,10 +41,12 @@
       align-items: center;
       box-shadow: 0 2px 10px var(--shadow);
     }
+
     header h1 {
       font-size: 1.5rem;
       color: var(--accent);
     }
+
     .logout-btn {
       background: transparent;
       border: 2px solid var(--accent);
@@ -51,16 +56,19 @@
       cursor: pointer;
       transition: all 0.3s ease;
     }
+
     .logout-btn:hover {
       background: var(--accent);
       color: #000;
     }
+
     .container {
       padding: 2rem;
       max-width: 1000px;
       margin: auto;
       flex: 1;
     }
+
     .card {
       background: var(--card);
       border-radius: 16px;
@@ -69,16 +77,19 @@
       box-shadow: 0 4px 12px var(--shadow);
       animation: fadeIn 0.5s ease-in-out;
     }
+
     @keyframes fadeIn {
       from {opacity: 0; transform: translateY(10px);}
       to {opacity: 1; transform: translateY(0);}
     }
+
     h2 {
       font-size: 1.25rem;
       margin-bottom: 1rem;
       border-left: 4px solid var(--accent);
       padding-left: 0.5rem;
     }
+
     input, textarea, button {
       width: 100%;
       margin-top: 10px;
@@ -87,65 +98,141 @@
       border-radius: 10px;
       font-size: 1rem;
     }
+
     input, textarea {
       background: #2a2d33;
       color: var(--text);
     }
+
     button {
       background: var(--accent);
       color: #000;
       font-weight: bold;
       transition: 0.3s;
     }
+
     button:hover {
       background: var(--accent-hover);
     }
+
+    ul {
+      list-style: none;
+      margin-top: 1rem;
+      padding: 0;
+    }
+
+    li {
+      background: #2a2d33;
+      padding: 0.75rem;
+      margin-top: 0.5rem;
+      border-radius: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
     footer {
       text-align: center;
       padding: 1rem;
       color: #777;
       background: #0a0c10;
     }
+
     #login-section, #app-section {
       display: none;
     }
+
     #login-section.active, #app-section.active {
       display: block;
     }
+
     .login-box {
       max-width: 400px;
-      margin: 100px auto;
-      padding: 2rem;
-      background: var(--card);
-      border-radius: 12px;
-      box-shadow: 0 0 10px var(--shadow);
+      margin: auto;
+      margin-top: 10vh;
+    }
+
+    /* Fancy Premium Login Design */
+    .fancy-login {
+      backdrop-filter: blur(20px);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+      border-radius: 20px;
+      padding: 2.5rem;
       text-align: center;
     }
-    ul#contactList li {
-      display: flex;
-      justify-content: space-between;
-      background: #2a2d33;
-      padding: 0.75rem;
-      border-radius: 8px;
-      margin-top: 10px;
+
+    .fancy-login h2 {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+      background: linear-gradient(to right, #00eaff, #00ff95);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 700;
     }
-    ul#contactList li button {
-      background: transparent;
+
+    .fancy-login .subtitle {
+      font-size: 0.95rem;
+      color: #ccc;
+      margin-bottom: 20px;
+    }
+
+    .fancy-input {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      padding: 0.75rem;
+      color: #fff;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      outline: none;
+      transition: 0.3s ease;
+    }
+
+    .fancy-input:focus {
+      border-color: #00eaff;
+      box-shadow: 0 0 0 2px rgba(0, 234, 255, 0.3);
+    }
+
+    .fancy-btn {
+      width: 100%;
+      padding: 0.75rem;
+      background: linear-gradient(to right, #00eaff, #00ff95);
       border: none;
-      color: red;
-      font-size: 1.2rem;
+      border-radius: 12px;
+      color: #000;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s ease-in-out;
+    }
+
+    .fancy-btn:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 15px rgba(0, 255, 200, 0.3);
+    }
+
+    .error-msg {
+      color: #ff8080;
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
+
+  <!-- Login Section -->
   <div id="login-section" class="active">
-    <div class="login-box">
-      <h2>Enter Security Key</h2>
-      <input type="password" id="password" placeholder="Security Key">
-      <button onclick="login()">Login</button>
-      <p id="login-msg"></p>
+    <div class="login-box fancy-login">
+      <h2>Welcome to Sadhin Dashboard</h2>
+      <p class="subtitle">Enter your security key to access the system</p>
+      <input type="password" id="password" placeholder="Enter Security Key" class="fancy-input">
+      <button onclick="login()" class="fancy-btn">Login</button>
+      <p id="login-msg" class="error-msg"></p>
     </div>
   </div>
+
+  <!-- App Section -->
   <div id="app-section">
     <header>
       <h1>Sadhin Dashboard</h1>
@@ -165,10 +252,12 @@
       </div>
     </div>
   </div>
+
   <footer>
     Crafted with love — Sadhin App Premium UI
   </footer>
 
+  <!-- Firebase & JS -->
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyBj793HyDwnviSLNQKpi_QgpHGJ6E7-m9M",
@@ -178,6 +267,7 @@
       messagingSenderId: "515400453995",
       appId: "1:515400453995:web:cea3a57d8cd0db9e72062e"
     };
+
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
