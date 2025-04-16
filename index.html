@@ -5,80 +5,126 @@
   <title>Secure Dashboard</title>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --bg-color: #121212;
+      --card-bg: #1e1e1e;
+      --text-color: #f5f5f5;
+      --accent: #00c6ff;
+    }
     body {
       margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #0f0f0f;
-      color: #f5f5f5;
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
     }
     .container {
+      flex: 1;
       padding: 2rem;
       max-width: 800px;
       margin: auto;
     }
-    #login-section, #app-section {
-      display: none;
-      text-align: center;
-      padding-top: 10vh;
+    .card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 0 20px rgba(0, 198, 255, 0.1);
     }
-    #login-section.active, #app-section.active {
-      display: block;
+    h2 {
+      border-bottom: 1px solid #333;
+      padding-bottom: 0.5rem;
+      margin-bottom: 1rem;
     }
     input, textarea, button {
-      padding: 10px;
-      margin: 10px 0;
       width: 100%;
+      padding: 10px;
       border: none;
       border-radius: 8px;
       font-size: 1rem;
-    }
-    textarea {
-      height: 150px;
-      resize: vertical;
+      margin-top: 10px;
     }
     button {
-      background-color: #1f1f1f;
-      color: #fff;
-      cursor: pointer;
+      background-color: var(--accent);
+      color: #000;
+      font-weight: bold;
       transition: background 0.3s;
+      cursor: pointer;
     }
     button:hover {
-      background-color: #333;
+      background-color: #00a6d6;
+    }
+    textarea {
+      resize: vertical;
     }
     ul {
       list-style: none;
       padding: 0;
     }
     li {
-      background: #1c1c1c;
+      background: #2a2a2a;
       padding: 10px;
-      margin: 5px 0;
+      margin-top: 10px;
       border-radius: 8px;
       display: flex;
       justify-content: space-between;
+      align-items: center;
+    }
+    #login-section, #app-section {
+      display: none;
+      padding-top: 10vh;
+      text-align: center;
+    }
+    #login-section.active, #app-section.active {
+      display: block;
+    }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      color: #777;
+      background: #0a0a0a;
+    }
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
     }
   </style>
 </head>
 <body>
   <div id="login-section" class="active">
-    <h1>Enter Security Key</h1>
-    <input type="password" id="password" placeholder="Security Key">
-    <button onclick="login()">Login</button>
-    <p id="login-msg"></p>
+    <div class="container card">
+      <h1>Enter Security Key</h1>
+      <input type="password" id="password" placeholder="Security Key">
+      <button onclick="login()">Login</button>
+      <p id="login-msg"></p>
+    </div>
   </div>  <div id="app-section">
     <div class="container">
-      <h2>Notebook</h2>
-      <textarea id="noteArea" oninput="saveNotebook()"></textarea><h2>Contacts</h2>
-  <input id="name" placeholder="Name">
-  <input id="phone" placeholder="Phone">
-  <button onclick="addContact()">Add</button>
-  <ul id="contactList"></ul>
-
-  <button onclick="logout()">Logout</button>
-</div>
-
-  </div>  <script>
+      <div class="top-bar">
+        <h2>Dashboard</h2>
+        <button onclick="logout()">Logout</button>
+      </div>
+      <div class="card">
+        <h2>Notebook</h2>
+        <textarea id="noteArea" oninput="saveNotebook()"></textarea>
+      </div>
+      <div class="card">
+        <h2>Contacts</h2>
+        <input id="name" placeholder="Name">
+        <input id="phone" placeholder="Phone">
+        <button onclick="addContact()">Add</button>
+        <ul id="contactList"></ul>
+      </div>
+    </div>
+  </div>  <footer>
+    Sadhin App — Secure & Stylish
+  </footer>  <script>
     const firebaseConfig = {
       apiKey: "AIzaSyBj793HyDwnviSLNQKpi_QgpHGJ6E7-m9M",
       authDomain: "sadhin-57b7f.firebaseapp.com",
@@ -96,7 +142,7 @@
     function login() {
       const key = document.getElementById("password").value;
       if (attempts >= 5) {
-        document.getElementById("login-msg").textContent = "Too many attempts. Try after 10 mins.";
+        document.getElementById("login-msg").textContent = "Too many attempts. Try again later.";
         return;
       }
       if (key === "Samuthe10@Sadhin") {
@@ -139,6 +185,8 @@
         document.getElementById("name").value = "";
         document.getElementById("phone").value = "";
         renderContacts();
+      }).catch(error => {
+        console.error("Error adding contact:", error);
       });
     }
 
@@ -150,7 +198,7 @@
           const data = doc.data();
           const li = document.createElement("li");
           li.innerHTML = `
-            ${data.name} — ${data.phone}
+            <span>${data.name} — ${data.phone}</span>
             <button onclick="deleteContact('${doc.id}')">Delete</button>
           `;
           list.appendChild(li);
