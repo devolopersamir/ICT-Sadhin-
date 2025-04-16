@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Secure Dashboard</title>
-  
+
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.9.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.9.0/firebase-database.js"></script>
@@ -13,10 +13,10 @@
     /* General Styles */
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f0f4f7;
-      color: #333;
       margin: 0;
       padding: 0;
+      background: #f0f4f7;
+      color: #333;
       transition: background-color 0.3s ease;
     }
 
@@ -26,42 +26,42 @@
       color: #f1f1f1;
     }
 
-    /* Main Container */
-    .container {
-      width: 90%;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding-top: 40px;
-    }
-
     /* Topbar */
     .topbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background-color: #333;
-      color: white;
-      padding: 15px 30px;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      background: #4CAF50;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
 
     .topbar h2 {
       margin: 0;
+      color: white;
     }
 
     .topbar button {
-      padding: 8px 15px;
-      background-color: #4CAF50;
-      color: white;
+      padding: 10px 20px;
+      background: #fff;
       border: none;
-      border-radius: 5px;
+      color: #4CAF50;
+      font-size: 16px;
+      border-radius: 6px;
       cursor: pointer;
-      transition: background-color 0.3s ease;
+      transition: background 0.3s ease;
     }
 
     .topbar button:hover {
-      background-color: #45a049;
+      background: #ddd;
+    }
+
+    /* Main Container */
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 20px auto;
     }
 
     /* Login Section */
@@ -70,23 +70,24 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
+      flex-direction: column;
     }
 
     #login-section input {
       padding: 15px;
       margin: 10px;
       font-size: 18px;
-      border-radius: 10px;
+      border-radius: 8px;
       border: 1px solid #ccc;
       width: 300px;
     }
 
     #login-section button {
-      padding: 15px 30px;
+      padding: 12px 30px;
       background-color: #4CAF50;
       color: white;
       border: none;
-      border-radius: 5px;
+      border-radius: 6px;
       cursor: pointer;
       transition: background-color 0.3s ease;
     }
@@ -101,7 +102,7 @@
       background-color: #fff;
       padding: 20px;
       border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 
     .section {
@@ -112,15 +113,20 @@
       display: block;
     }
 
-    /* Section Buttons */
+    nav {
+      display: flex;
+      justify-content: space-evenly;
+      margin: 20px 0;
+    }
+
     nav button {
-      padding: 10px 20px;
+      padding: 12px 20px;
       background-color: #007BFF;
       color: white;
       border: none;
+      font-size: 16px;
+      border-radius: 6px;
       cursor: pointer;
-      border-radius: 5px;
-      margin: 5px;
       transition: background-color 0.3s ease;
     }
 
@@ -128,14 +134,13 @@
       background-color: #0056b3;
     }
 
-    /* Input and Textarea */
     .section input,
     .section textarea {
       padding: 12px;
       margin: 10px 0;
       width: 100%;
       font-size: 16px;
-      border-radius: 10px;
+      border-radius: 8px;
       border: 1px solid #ccc;
       box-sizing: border-box;
     }
@@ -145,7 +150,7 @@
       background-color: #28a745;
       color: white;
       border: none;
-      border-radius: 5px;
+      border-radius: 6px;
       cursor: pointer;
       transition: background-color 0.3s ease;
     }
@@ -164,17 +169,17 @@
       background-color: #f8f9fa;
       padding: 10px;
       margin: 10px 0;
-      border-radius: 10px;
+      border-radius: 8px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
 
     .delete-btn {
       background-color: #dc3545;
       color: white;
-      padding: 5px 10px;
+      padding: 6px 12px;
       border: none;
       border-radius: 5px;
       cursor: pointer;
@@ -184,13 +189,13 @@
       background-color: #c82333;
     }
 
-    /* Search Bar */
     .search-bar {
-      width: 100%;
       padding: 12px;
       margin: 10px 0;
-      border-radius: 10px;
+      border-radius: 8px;
       border: 1px solid #ccc;
+      width: 100%;
+      box-sizing: border-box;
     }
   </style>
 </head>
@@ -213,7 +218,7 @@
     </div>
 
     <!-- App Section -->
-    <div id="app-section" class="hidden">
+    <div id="app-section">
       <nav>
         <button onclick="showSection('notes')">Notepad</button>
         <button onclick="showSection('contacts')">Contacts</button>
@@ -221,7 +226,7 @@
 
       <!-- Notebook Section -->
       <div id="notes" class="section active">
-        <h3>Notebook</h3>
+        <h3>Notepad</h3>
         <textarea id="notebook" rows="6" placeholder="Write your notes..." oninput="saveNotebook()"></textarea>
       </div>
 
@@ -267,3 +272,94 @@
         document.getElementById("app-section").classList.remove("hidden");
         loadNotebook();
         renderContacts();
+      } else {
+        error.textContent = "Incorrect password. Please try again.";
+      }
+    }
+
+    function logout() {
+      document.getElementById("login-section").classList.remove("hidden");
+      document.getElementById("app-section").classList.add("hidden");
+      document.getElementById("password").value = "";
+    }
+
+    // Save notebook content to Firebase
+    function saveNotebook() {
+      const notes = document.getElementById("notebook").value;
+      // Save to Firebase
+      database.ref('notebook').set(notes);
+    }
+
+    // Load notebook content
+    function loadNotebook() {
+      const notebookRef = database.ref('notebook');
+      notebookRef.on('value', (snapshot) => {
+        const notes = snapshot.val();
+        document.getElementById("notebook").value = notes || '';
+      });
+    }
+
+    // Add a new contact
+    function addContact() {
+      const name = document.getElementById("name").value;
+      const mobile = document.getElementById("mobile").value;
+
+      if (name && mobile) {
+        const contactRef = database.ref('contacts').push();
+        contactRef.set({ name, mobile });
+
+        document.getElementById("name").value = '';
+        document.getElementById("mobile").value = '';
+        renderContacts();
+      }
+    }
+
+    // Render contact list
+    function renderContacts() {
+      const searchQuery = document.getElementById("search").value.toLowerCase();
+      const contactList = document.getElementById("contactList");
+      contactList.innerHTML = '';
+
+      const contactsRef = database.ref('contacts');
+      contactsRef.on('value', (snapshot) => {
+        const contacts = snapshot.val();
+        for (let id in contacts) {
+          const contact = contacts[id];
+          if (
+            contact.name.toLowerCase().includes(searchQuery) ||
+            contact.mobile.includes(searchQuery)
+          ) {
+            const li = document.createElement("li");
+            li.innerHTML = `${contact.name} - ${contact.mobile}
+              <button class="delete-btn" onclick="deleteContact('${id}')">Delete</button>`;
+            contactList.appendChild(li);
+          }
+        }
+      });
+    }
+
+    // Delete contact
+    function deleteContact(contactId) {
+      const contactRef = database.ref('contacts').child(contactId);
+      contactRef.remove();
+      renderContacts();
+    }
+
+    // Show the specific section (notes or contacts)
+    function showSection(sectionId) {
+      const sections = document.querySelectorAll(".section");
+      sections.forEach((section) => {
+        section.classList.remove("active");
+      });
+
+      const sectionToShow = document.getElementById(sectionId);
+      sectionToShow.classList.add("active");
+    }
+
+    // Toggle dark mode
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+    }
+  </script>
+</body>
+</html>
