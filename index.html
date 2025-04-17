@@ -1,133 +1,106 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>প্রিমিয়াম ব্যাংকিং ম্যানেজমেন্ট</title>
+    <title>Login & Account Management</title>
     <style>
+        /* Basic Styling */
         body {
-            font-family: 'SolaimanLipi', sans-serif;
-            background-color: #f4f4f4;
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-        }
-
-        header {
-            background-color: #007bff;
-            padding: 20px;
-            color: white;
-        }
-
-        .navbar h1 {
-            display: inline-block;
-            margin: 0;
-            font-size: 24px;
-        }
-
-        nav ul {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            display: inline-block;
-        }
-
-        nav ul li {
-            display: inline;
-            margin-right: 15px;
-        }
-
-        nav ul li a {
-            color: white;
-            text-decoration: none;
-            font-size: 18px;
-        }
-
-        main {
-            padding: 20px;
-        }
-
-        .dashboard {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .dashboard h2 {
-            font-size: 28px;
-            margin-bottom: 20px;
-        }
-
-        .summary {
+            height: 100vh;
+            background-color: #0f0f0f;
             display: flex;
-            justify-content: space-between;
-        }
-
-        .account-info,
-        .recent-transactions {
-            width: 48%;
-        }
-
-        .account-info h3,
-        .recent-transactions h3 {
-            font-size: 20px;
-            margin-bottom: 10px;
-        }
-
-        footer {
-            text-align: center;
-            padding: 10px;
-            background-color: #333;
+            justify-content: center;
+            align-items: center;
             color: white;
-            position: fixed;
-            width: 100%;
-            bottom: 0;
         }
+
+        .container {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(255, 0, 150, 0.8), rgba(0, 204, 255, 0.8));
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+
+        input[type="password"] {
+            padding: 10px;
+            font-size: 16px;
+            width: 250px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            outline: none;
+        }
+
+        button {
+            padding: 12px 24px;
+            font-size: 18px;
+            background-color: #ff6b81;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background-color: #ff2d55;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .dashboard-container {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
     </style>
 </head>
 <body>
-    <header>
-        <div class="navbar">
-            <h1>প্রিমিয়াম ব্যাংকিং</h1>
-            <nav>
-                <ul>
-                    <li><a href="#">হোম</a></li>
-                    <li><a href="#">অ্যাকাউন্ট</a></li>
-                    <li><a href="#">লেনদেন</a></li>
-                    <li><a href="#">সেটিংস</a></li>
-                </ul>
-            </nav>
+
+    <!-- Login Page -->
+    <div id="loginPage" class="container">
+        <h2>Login to Your Account</h2>
+        <input type="password" id="password" placeholder="Enter your password">
+        <br>
+        <button onclick="login()">Login</button>
+    </div>
+
+    <!-- Account Management Page -->
+    <div id="dashboardPage" class="container hidden">
+        <div class="dashboard-container">
+            <h1>Welcome to Your Account Management</h1>
+            <p>Manage your account settings here.</p>
+            <button onclick="logout()">Logout</button>
         </div>
-    </header>
-
-    <main>
-        <section class="dashboard">
-            <h2>ড্যাশবোর্ড</h2>
-            <div class="summary">
-                <div class="account-info">
-                    <h3>অ্যাকাউন্ট ব্যালেন্স</h3>
-                    <p>৳ ৫,০০,০০০</p>
-                </div>
-                <div class="recent-transactions">
-                    <h3>সাম্প্রতিক লেনদেন</h3>
-                    <ul>
-                        <li>৳ ১০,০০০ - টাকা উত্তোলন</li>
-                        <li>৳ ৫০,০০০ - টাকা জমা</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <p>© 2025 প্রিমিয়াম ব্যাংকিং</p>
-    </footer>
+    </div>
 
     <script>
-        // এই সিম্পল স্ক্রিপ্টটি ভবিষ্যতে ডায়নামিক ফিচার যোগ করার জন্য তৈরি করা হয়েছে
-        document.addEventListener("DOMContentLoaded", function() {
-            console.log("প্রিমিয়াম ব্যাংকিং ড্যাশবোর্ড লোড হয়েছে!");
-        });
+        // Password checking logic
+        function login() {
+            const password = document.getElementById('password').value;
+            if (password === 'Samuthe10@Sadhin') {
+                document.getElementById('loginPage').classList.add('hidden');
+                document.getElementById('dashboardPage').classList.remove('hidden');
+            } else {
+                alert('Incorrect password!');
+            }
+        }
+
+        // Logout function
+        function logout() {
+            document.getElementById('dashboardPage').classList.add('hidden');
+            document.getElementById('loginPage').classList.remove('hidden');
+        }
     </script>
+
 </body>
 </html>
