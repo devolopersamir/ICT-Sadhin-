@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration</title>
+    <title>Premium Registration</title>
     <style>
-        /* Styling */
+        /* Body Styling */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            color: #333;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #6d52e0, #9b5de5);
+            color: #fff;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -17,51 +17,63 @@
             margin: 0;
         }
 
+        /* Form Container */
         .form-container {
-            background: white;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
             padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
             width: 400px;
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
         }
 
         h2 {
             text-align: center;
+            font-size: 28px;
+            margin-bottom: 20px;
         }
 
-        input {
+        input, button {
             width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 2px solid #ddd;
-            border-radius: 5px;
+            padding: 14px;
+            margin: 12px 0;
+            border-radius: 8px;
+            border: none;
+            outline: none;
             font-size: 16px;
         }
 
+        input {
+            background-color: #f2f2f2;
+            color: #333;
+        }
+
         button {
-            width: 100%;
-            padding: 10px;
-            background-color: #4CAF50;
+            background-color: #ff8c00;
             color: white;
-            font-size: 18px;
-            border: none;
-            border-radius: 5px;
+            font-weight: bold;
             cursor: pointer;
+            transition: background-color 0.3s ease;
         }
 
         button:hover {
-            background-color: #45a049;
+            background-color: #ff6600;
         }
 
         .participant-list {
-            margin-top: 30px;
+            width: 80%;
+            margin-top: 40px;
         }
 
         .participant-item {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 15px;
             margin: 10px 0;
-            padding: 10px;
-            background-color: #f1f1f1;
-            border-radius: 5px;
+        }
+
+        .participant-item strong {
+            color: #ff8c00;
         }
     </style>
 </head>
@@ -69,29 +81,30 @@
 
     <!-- Registration Form -->
     <div class="form-container">
-        <h2>Registration</h2>
+        <h2>Register Now</h2>
         <form id="registrationForm">
-            <input type="text" id="name" placeholder="Name" required>
+            <input type="text" id="name" placeholder="Full Name" required>
             <input type="email" id="email" placeholder="Email" required>
             <input type="text" id="mobile" placeholder="Mobile Number" required>
             <input type="password" id="password" placeholder="Password" required>
-            <input type="text" id="institution" placeholder="Institution" required>
+            <input type="text" id="institution" placeholder="Institution Name" required>
             <input type="text" id="class" placeholder="Class" required>
             <button type="submit">Submit</button>
         </form>
     </div>
 
-    <!-- Participant List -->
+    <!-- Participants List -->
     <div class="participant-list" id="participantList">
-        <h3>Participants</h3>
-        <!-- Participants will appear here -->
+        <h3>Registered Participants</h3>
+        <!-- List of participants will be shown here -->
     </div>
 
-    <!-- Firebase Config -->
+    <!-- Firebase JS SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.9.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.9.0/firebase-firestore.js"></script>
+
     <script>
-        // Firebase configuration (Replace with your own Firebase config)
+        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyBj793HyDwnviSLNQKpi_QgpHGJ6E7-m9M",
             authDomain: "sadhin-57b7f.firebaseapp.com",
@@ -105,7 +118,7 @@
         const app = firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // Registration Form Submission
+        // Registration Form Submit
         document.getElementById('registrationForm').addEventListener('submit', function(event) {
             event.preventDefault();
 
@@ -117,7 +130,7 @@
             const institution = document.getElementById('institution').value;
             const className = document.getElementById('class').value;
 
-            // Add user data to Firestore
+            // Save data to Firestore
             db.collection("participants").add({
                 name: name,
                 email: email,
@@ -158,8 +171,9 @@
             });
         }
 
-        // Call the display function to show participants on page load
+        // Initial Call to Display Participants
         displayParticipants();
     </script>
+
 </body>
 </html>
