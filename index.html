@@ -3,155 +3,163 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login & Account Management</title>
+    <title>Registration</title>
     <style>
-        /* Basic Styling */
+        /* Styling */
         body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            background-color: #101010;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
             display: flex;
             justify-content: center;
             align-items: center;
-            color: white;
-            transition: all 0.3s;
+            height: 100vh;
+            margin: 0;
         }
 
-        .container {
-            text-align: center;
+        .form-container {
+            background: white;
             padding: 30px;
-            background: linear-gradient(45deg, rgba(255, 0, 150, 0.8), rgba(0, 204, 255, 0.8));
-            border-radius: 15px;
-            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
-            width: 350px;
-        }
-
-        input[type="password"] {
-            padding: 12px;
-            font-size: 18px;
-            width: 80%;
-            margin: 15px 0;
-            border: none;
             border-radius: 10px;
-            outline: none;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-            transition: 0.3s;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            width: 400px;
         }
 
-        input[type="password"]:focus {
-            box-shadow: 0 2px 15px rgba(0, 204, 255, 0.8);
+        h2 {
+            text-align: center;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
         }
 
         button {
-            padding: 15px 25px;
-            font-size: 18px;
-            background-color: #ff6b81;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: 0.3s;
             width: 100%;
-            margin-top: 10px;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
         }
 
         button:hover {
-            background-color: #ff2d55;
+            background-color: #45a049;
         }
 
-        .hidden {
-            display: none;
+        .participant-list {
+            margin-top: 30px;
         }
 
-        .dashboard-container {
-            background: rgba(0, 0, 0, 0.7);
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+        .participant-item {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #f1f1f1;
+            border-radius: 5px;
         }
-
-        .error-message {
-            color: red;
-            font-size: 14px;
-            margin-top: 10px;
-        }
-
     </style>
 </head>
 <body>
 
-    <!-- Login Page -->
-    <div id="loginPage" class="container">
-        <h2>Login to Your Account</h2>
-        <input type="password" id="password" placeholder="Enter your password">
-        <br>
-        <button onclick="login()">Login</button>
-        <p id="error" class="error-message"></p>
+    <!-- Registration Form -->
+    <div class="form-container">
+        <h2>Registration</h2>
+        <form id="registrationForm">
+            <input type="text" id="name" placeholder="Name" required>
+            <input type="email" id="email" placeholder="Email" required>
+            <input type="text" id="mobile" placeholder="Mobile Number" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <input type="text" id="institution" placeholder="Institution" required>
+            <input type="text" id="class" placeholder="Class" required>
+            <button type="submit">Submit</button>
+        </form>
     </div>
 
-    <!-- Account Management Page -->
-    <div id="dashboardPage" class="container hidden">
-        <div class="dashboard-container">
-            <h1>Welcome to Your Account Management</h1>
-            <p>Manage your account settings here.</p>
-            <button onclick="logout()">Logout</button>
-        </div>
+    <!-- Participant List -->
+    <div class="participant-list" id="participantList">
+        <h3>Participants</h3>
+        <!-- Participants will appear here -->
     </div>
 
+    <!-- Firebase Config -->
+    <script src="https://www.gstatic.com/firebasejs/9.9.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.9.0/firebase-firestore.js"></script>
     <script>
-        // Variables for tracking attempts and block times
-        let failedAttempts = 0;
-        let blockTime = null;
-        let maxFailedAttempts = 3;
-        let initialBlockDuration = 30 * 60 * 1000; // 30 minutes in milliseconds
-        let secondBlockDuration = 28 * 60 * 60 * 1000; // 28 hours in milliseconds
+        // Firebase configuration (Replace with your own Firebase config)
+        const firebaseConfig = {
+            apiKey: "AIzaSyBj793HyDwnviSLNQKpi_QgpHGJ6E7-m9M",
+            authDomain: "sadhin-57b7f.firebaseapp.com",
+            projectId: "sadhin-57b7f",
+            storageBucket: "sadhin-57b7f.appspot.com",
+            messagingSenderId: "515400453995",
+            appId: "1:515400453995:web:cea3a57d8cd0db9e72062e"
+        };
 
-        const correctPassword = 'Samuthe10@Sadhin';
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
 
-        // Function to handle login
-        function login() {
+        // Registration Form Submission
+        document.getElementById('registrationForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Get input values
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const mobile = document.getElementById('mobile').value;
             const password = document.getElementById('password').value;
-            const currentTime = new Date().getTime();
+            const institution = document.getElementById('institution').value;
+            const className = document.getElementById('class').value;
 
-            // If user is blocked
-            if (blockTime && currentTime < blockTime) {
-                const remainingTime = (blockTime - currentTime) / 1000;
-                const minutes = Math.floor(remainingTime / 60);
-                const seconds = Math.floor(remainingTime % 60);
-                document.getElementById('error').textContent = `You are blocked for another ${minutes} minutes and ${seconds} seconds.`;
-                return;
-            }
+            // Add user data to Firestore
+            db.collection("participants").add({
+                name: name,
+                email: email,
+                mobile: mobile,
+                password: password,
+                institution: institution,
+                class: className
+            })
+            .then(() => {
+                alert("Registration Successful!");
+                displayParticipants();
+            })
+            .catch((error) => {
+                console.error("Error adding document: ", error);
+            });
 
-            // If password is correct
-            if (password === correctPassword) {
-                document.getElementById('loginPage').classList.add('hidden');
-                document.getElementById('dashboardPage').classList.remove('hidden');
-                failedAttempts = 0; // Reset failed attempts after successful login
-            } else {
-                failedAttempts++;
-                if (failedAttempts >= maxFailedAttempts) {
-                    if (failedAttempts === maxFailedAttempts) {
-                        blockTime = currentTime + initialBlockDuration;
-                        document.getElementById('error').textContent = "3 wrong attempts! You are blocked for 30 minutes.";
-                    } else if (failedAttempts === maxFailedAttempts + 2) {
-                        blockTime = currentTime + secondBlockDuration;
-                        document.getElementById('error').textContent = "5 wrong attempts! You are blocked for 28 hours.";
-                    }
-                } else {
-                    document.getElementById('error').textContent = 'Incorrect password! Try again.';
-                }
-            }
+            // Clear form
+            document.getElementById('registrationForm').reset();
+        });
+
+        // Display Participants
+        function displayParticipants() {
+            db.collection("participants").get().then((querySnapshot) => {
+                let participantsHTML = '';
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    participantsHTML += `
+                        <div class="participant-item">
+                            <strong>${data.name}</strong><br>
+                            Email: ${data.email}<br>
+                            Mobile: ${data.mobile}<br>
+                            Institution: ${data.institution}<br>
+                            Class: ${data.class}<br>
+                        </div>
+                    `;
+                });
+                document.getElementById('participantList').innerHTML = participantsHTML;
+            });
         }
 
-        // Function to handle logout
-        function logout() {
-            document.getElementById('dashboardPage').classList.add('hidden');
-            document.getElementById('loginPage').classList.remove('hidden');
-            document.getElementById('error').textContent = ''; // Clear error message
-        }
+        // Call the display function to show participants on page load
+        displayParticipants();
     </script>
-
 </body>
 </html>
