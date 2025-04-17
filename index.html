@@ -6,11 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>শিক্ষার্থীর ড্যাশবোর্ড</title>
     <style>
+        /* Basic styling */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            background: linear-gradient(135deg, rgba(34, 193, 195, 1) 0%, rgba(253, 187, 45, 1) 100%);
+            color: #fff;
         }
 
         h1,
@@ -18,33 +20,73 @@
             text-align: center;
         }
 
-        .admin-dashboard,
-        .student-dashboard {
-            margin-top: 50px;
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .form-container,
+        .dashboard-container {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.5);
+            margin-bottom: 40px;
+        }
+
+        h2 {
+            margin-bottom: 30px;
+        }
+
+        label {
+            font-size: 18px;
+            margin-top: 10px;
+            display: block;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 2px solid #ccc;
+            background-color: #222;
+            color: white;
         }
 
         button {
             padding: 10px 20px;
-            margin-top: 20px;
             font-size: 16px;
             cursor: pointer;
             border: none;
-            background-color: #007bff;
+            background-color: #ff6347;
             color: white;
-            border-radius: 5px;
+            border-radius: 8px;
+            margin-top: 20px;
         }
 
         button:hover {
-            background-color: #0056b3;
+            background-color: #e5533f;
         }
 
-        #student-info {
+        .link-container {
             margin-top: 20px;
-            background-color: #fff;
-            padding: 20px;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
             border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
+
+        .link-container a {
+            color: #00f4ff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .link-container a:hover {
+            text-decoration: underline;
+        }
+
     </style>
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-app.js"></script>
@@ -54,15 +96,32 @@
 
 <body>
 
-    <div class="admin-dashboard">
-        <h1>এডমিন ড্যাশবোর্ড</h1>
-        <button id="logout-btn">লগ আউট</button>
-    </div>
+    <div class="container">
 
-    <div class="student-dashboard" style="display:none;">
-        <h2>শিক্ষার্থীর ড্যাশবোর্ড</h2>
-        <div id="student-info"></div>
-        <button id="edit-btn">তথ্য সম্পাদনা</button>
+        <!-- Admin dashboard to add student information -->
+        <div class="form-container">
+            <h2>শিক্ষার্থী তথ্য যোগ করুন</h2>
+            <form id="addStudentForm">
+                <label for="name">নাম</label>
+                <input type="text" id="name" required>
+                <label for="class">ক্লাস</label>
+                <input type="text" id="class" required>
+                <label for="institution">প্রতিষ্ঠান</label>
+                <input type="text" id="institution" required>
+                <label for="phone">ফোন নম্বর</label>
+                <input type="text" id="phone" required>
+                <button type="submit">তথ্য যোগ করুন</button>
+            </form>
+        </div>
+
+        <!-- Student Dashboard to view generated link -->
+        <div class="dashboard-container" style="display: none;">
+            <h2>শিক্ষার্থীর লিঙ্ক</h2>
+            <div class="link-container" id="studentLinkContainer">
+                <!-- Dynamic link will appear here -->
+            </div>
+        </div>
+
     </div>
 
     <script>
@@ -80,63 +139,43 @@
         const app = firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // DOM elements
-        const adminDashboard = document.querySelector('.admin-dashboard');
-        const studentDashboard = document.querySelector('.student-dashboard');
-        const logoutBtn = document.getElementById('logout-btn');
-        const editBtn = document.getElementById('edit-btn');
-        const studentInfo = document.getElementById('student-info');
+        const addStudentForm = document.getElementById('addStudentForm');
+        const studentLinkContainer = document.getElementById('studentLinkContainer');
+        const formContainer = document.querySelector('.form-container');
+        const dashboardContainer = document.querySelector('.dashboard-container');
 
-        // Dummy user for testing
-        const currentUser = {
-            uid: "user123", // Example user ID
-            name: "শিক্ষার্থী নাম",
-            email: "student@example.com",
-            rollNo: "12345",
-        };
+        // Function to handle form submission
+        addStudentForm.addEventListener('submit', function (event) {
+            event.preventDefault();
 
-        // Check for student details from Firebase
-        function getStudentInfo() {
-            db.collection("students").doc(currentUser.uid).get().then((doc) => {
-                if (doc.exists) {
-                    const data = doc.data();
-                    studentInfo.innerHTML = `
-                        <p><strong>নাম:</strong> ${data.name}</p>
-                        <p><strong>ইমেইল:</strong> ${data.email}</p>
-                        <p><strong>রোল নম্বর:</strong> ${data.rollNo}</p>
-                    `;
-                } else {
-                    studentInfo.innerHTML = "<p>তথ্য পাওয়া যায়নি</p>";
-                }
-            });
-        }
+            const name = document.getElementById('name').value;
+            const studentClass = document.getElementById('class').value;
+            const institution = document.getElementById('institution').value;
+            const phone = document.getElementById('phone').value;
 
-        // Show student dashboard
-        function showStudentDashboard() {
-            adminDashboard.style.display = 'none';
-            studentDashboard.style.display = 'block';
-            getStudentInfo();
-        }
+            // Store student information in Firestore
+            db.collection("students").add({
+                name: name,
+                class: studentClass,
+                institution: institution,
+                phone: phone
+            }).then((docRef) => {
+                // Generate the unique link
+                const studentLink = `https://example.com/student/${docRef.id}`;
 
-        // Logout function
-        logoutBtn.addEventListener('click', () => {
-            firebase.auth().signOut().then(() => {
-                adminDashboard.style.display = 'block';
-                studentDashboard.style.display = 'none';
+                // Show the generated link in the dashboard
+                studentLinkContainer.innerHTML = `
+                    <p><strong>শিক্ষার্থী লিঙ্ক:</strong></p>
+                    <a href="${studentLink}" target="_blank">${studentLink}</a>
+                `;
+                // Show the dashboard and hide the form
+                formContainer.style.display = 'none';
+                dashboardContainer.style.display = 'block';
+
             }).catch((error) => {
-                console.error("Error logging out:", error);
+                console.error("Error adding document: ", error);
             });
         });
-
-        // Edit information (This could be an update form in the future)
-        editBtn.addEventListener('click', () => {
-            alert("তথ্য সম্পাদন করতে একটি ফর্ম তৈরি করা হবে");
-        });
-
-        // Trigger student dashboard (Example logic for showing student dashboard)
-        window.onload = function () {
-            showStudentDashboard();
-        };
     </script>
 
 </body>
