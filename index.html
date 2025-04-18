@@ -5,80 +5,111 @@
   <title>ICT SADHIN QUIZ</title>
   <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri&display=swap" rel="stylesheet">
   <style>
-    body {
-      margin: 0;
-      font-family: 'Hind Siliguri', sans-serif;
-      background: linear-gradient(135deg, #c8e6c9, #e0f7fa);
-      color: #2e2e2e;
-    }
-    header {
-      background: linear-gradient(90deg, #388e3c, #1b5e20);
-      color: white;
-      padding: 30px 20px;
-      text-align: center;
-      font-size: 2.5rem;
-      font-weight: bold;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-    }
-    .container {
-      max-width: 600px;
-      margin: 50px auto;
-      padding: 30px;
-      background: white;
-      border-radius: 16px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-      transition: transform 0.3s ease;
-    }
-    .container:hover {
-      transform: scale(1.01);
-    }
-    h2 {
-      text-align: center;
-      color: #1b5e20;
-      margin-bottom: 20px;
-    }
-    label {
-      display: block;
-      margin-bottom: 6px;
-      margin-top: 20px;
-      font-weight: 600;
-    }
-    input, select {
-      width: 100%;
-      padding: 12px;
-      margin-top: 4px;
-      border: 1px solid #bbb;
-      border-radius: 10px;
-      font-size: 1rem;
-      background-color: #f9f9f9;
-    }
-    input:focus, select:focus {
-      outline: none;
-      border-color: #66bb6a;
-      box-shadow: 0 0 0 2px rgba(102, 187, 106, 0.2);
-    }
-    button {
-      width: 100%;
-      padding: 14px;
-      background: linear-gradient(90deg, #43a047, #2e7d32);
-      color: white;
-      border: none;
-      border-radius: 12px;
-      font-size: 1.1rem;
-      margin-top: 30px;
-      cursor: pointer;
-      transition: background 0.3s ease, transform 0.2s;
-    }
-    button:hover {
-      background: linear-gradient(90deg, #388e3c, #1b5e20);
-      transform: scale(1.02);
-    }
-    @media (max-width: 600px) {
-      .container {
-        margin: 20px;
-        padding: 20px;
-      }
-    }
+    :root {
+      --primary-color: #2e7d32;
+      --primary-gradient: linear-gradient(90deg, #43a047, #2e7d32);
+      --secondary-gradient: linear-gradient(135deg, #c8e6c9, #e0f7fa);
+      --shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    }body {
+  margin: 0;
+  font-family: 'Hind Siliguri', sans-serif;
+  background: var(--secondary-gradient);
+  color: #2e2e2e;
+  animation: fadeIn 1s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+header {
+  background: var(--primary-gradient);
+  color: white;
+  padding: 40px 20px 30px;
+  text-align: center;
+  font-size: 2.8rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  border-bottom: 4px solid #1b5e20;
+  box-shadow: var(--shadow);
+}
+
+.container {
+  max-width: 640px;
+  margin: 60px auto;
+  padding: 35px;
+  background: #ffffffee;
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  transition: transform 0.3s ease;
+}
+
+.container:hover {
+  transform: scale(1.01);
+}
+
+h2 {
+  text-align: center;
+  color: var(--primary-color);
+  margin-bottom: 24px;
+  font-size: 1.8rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 6px;
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+input, select {
+  width: 100%;
+  padding: 14px;
+  margin-top: 6px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  font-size: 1rem;
+  background-color: #f4f4f4;
+  transition: all 0.3s ease;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: #66bb6a;
+  box-shadow: 0 0 0 3px rgba(102, 187, 106, 0.2);
+}
+
+button {
+  width: 100%;
+  padding: 16px;
+  background: var(--primary-gradient);
+  color: white;
+  border: none;
+  border-radius: 14px;
+  font-size: 1.2rem;
+  margin-top: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background: linear-gradient(90deg, #388e3c, #1b5e20);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+@media (max-width: 600px) {
+  header {
+    font-size: 2rem;
+    padding: 30px 10px;
+  }
+  .container {
+    margin: 20px;
+    padding: 20px;
+  }
+}
+
   </style>
 </head>
 <body>
