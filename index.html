@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="bn">
+<!DOCTYPE html><html lang="bn">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,157 +13,155 @@
       --glass-bg: rgba(255, 255, 255, 0.7);
       --border-color: #66bb6a;
       --input-hover-bg: rgba(255, 255, 255, 0.9);
-      --text-color: #fff;
-    }
+    }body {
+  margin: 0;
+  font-family: 'Hind Siliguri', sans-serif;
+  background: var(--secondary-gradient);
+  color: #2e2e2e;
+  animation: fadeIn 1s ease-in-out;
+  backdrop-filter: blur(6px);
+}
 
-    body {
-      margin: 0;
-      font-family: 'Hind Siliguri', sans-serif;
-      background: #ffffff;
-      color: #333;
-      animation: fadeIn 1s ease-in-out;
-    }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+header {
+  background: var(--primary-gradient);
+  color: white;
+  padding: 50px 20px 40px;
+  text-align: center;
+  font-size: 3rem;
+  font-weight: bold;
+  letter-spacing: 2px;
+  box-shadow: var(--shadow);
+  border-bottom: 4px solid #1b5e20;
+}
 
-    header {
-      background: #fff;
-      color: #333;
-      padding: 50px 20px 40px;
-      text-align: center;
-      font-size: 2.8rem;
-      font-weight: bold;
-      letter-spacing: 2px;
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
-      border-bottom: 2px solid #333;
-    }
+.brand-title {
+  font-size: 2.5rem;
+  color: white;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
 
-    .brand-title {
-      font-size: 2.5rem;
-      color: #333;
-      text-transform: uppercase;
-      margin-bottom: 8px;
-    }
+.event-tagline {
+  font-size: 1.6rem;
+  color: #1b5e20;
+  font-weight: 600;
+  margin-top: -10px;
+}
 
-    .event-tagline {
-      font-size: 1.8rem;
-      color: #2e7d32;
-      font-weight: 600;
-      margin-top: -10px;
-    }
+.container {
+  max-width: 700px;
+  margin: 60px auto;
+  padding: 40px;
+  background: var(--glass-bg);
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border-color);
+  backdrop-filter: blur(12px);
+  transition: transform 0.3s ease, box-shadow 0.3s;
+}
 
-    .container {
-      max-width: 700px;
-      margin: 60px auto;
-      padding: 40px;
-      background: var(--glass-bg);
-      border-radius: 20px;
-      box-shadow: var(--shadow);
-      border: 1px solid var(--border-color);
-      backdrop-filter: blur(12px);
-      transition: transform 0.3s ease, box-shadow 0.3s;
-    }
+.container:hover {
+  transform: scale(1.02);
+  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.2);
+}
 
-    .container:hover {
-      transform: scale(1.02);
-      box-shadow: 0 16px 45px rgba(0, 0, 0, 0.2);
-    }
+h2 {
+  text-align: center;
+  color: var(--primary-color);
+  margin-bottom: 30px;
+  font-size: 2rem;
+}
 
-    h2 {
-      text-align: center;
-      color: var(--primary-color);
-      margin-bottom: 30px;
-      font-size: 2rem;
-    }
+label {
+  display: block;
+  margin-bottom: 8px;
+  margin-top: 18px;
+  font-weight: 600;
+  color: #333;
+}
 
-    label {
-      display: block;
-      margin-bottom: 8px;
-      margin-top: 18px;
-      font-weight: 600;
-      color: #333;
-    }
+input, select {
+  width: 100%;
+  padding: 16px;
+  margin-top: 8px;
+  border: 2px solid #ccc;
+  border-radius: 14px;
+  font-size: 1rem;
+  background-color: rgba(255, 255, 255, 0.85);
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
 
-    input, select {
-      width: 100%;
-      padding: 16px;
-      margin-top: 8px;
-      border: 2px solid #ccc;
-      border-radius: 14px;
-      font-size: 1rem;
-      background-color: rgba(255, 255, 255, 0.85);
-      transition: all 0.3s ease;
-      box-sizing: border-box;
-    }
+input:focus, select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 5px 2px rgba(102, 187, 106, 0.3);
+  background-color: var(--input-hover-bg);
+}
 
-    input:focus, select:focus {
-      outline: none;
-      border-color: var(--primary-color);
-      box-shadow: 0 0 5px 2px rgba(102, 187, 106, 0.3);
-      background-color: var(--input-hover-bg);
-    }
+button {
+  width: 100%;
+  padding: 18px;
+  background: var(--primary-gradient);
+  color: white;
+  border: none;
+  border-radius: 14px;
+  font-size: 1.3rem;
+  margin-top: 35px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
 
-    button {
-      width: 100%;
-      padding: 18px;
-      background: var(--primary-gradient);
-      color: white;
-      border: none;
-      border-radius: 14px;
-      font-size: 1.3rem;
-      margin-top: 35px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-    }
+button:hover {
+  background: linear-gradient(90deg, #388e3c, #1b5e20);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
 
-    button:hover {
-      background: linear-gradient(90deg, #388e3c, #1b5e20);
-      transform: translateY(-2px);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-    }
+@media (max-width: 600px) {
+  header {
+    font-size: 2rem;
+    padding: 30px 10px;
+  }
+  .container {
+    margin: 20px;
+    padding: 24px;
+  }
+}
 
-    @media (max-width: 600px) {
-      header {
-        font-size: 2rem;
-        padding: 30px 10px;
-      }
-      .container {
-        margin: 20px;
-        padding: 24px;
-      }
-    }
   </style>
 </head>
 <body>
   <header>
-    <div class="brand-title">ICT SADHIN QUIZ</div>
-    <div class="event-tagline">Campus Hero ২০২৫</div>
+    <div class="brand-title">আইসিটি স্বাধীন কুইজ প্রতিযোগিতা</div>
+    <div class="event-tagline">ক্যাম্পাস হিরো-২০২৫</div>
   </header>
   <div class="container">
     <h2>রেজিস্ট্রেশন ফর্ম</h2>
     <form>
       <label for="name">পূর্ণ নাম</label>
-      <input type="text" id="name" name="name" placeholder="আপনার নাম লিখুন" required>
+      <input type="text" id="name" name="name" placeholder="আপনার নাম লিখুন" required><label for="email">ইমেইল</label>
+  <input type="email" id="email" name="email" placeholder="example@mail.com" required>
 
-      <label for="email">ইমেইল</label>
-      <input type="email" id="email" name="email" placeholder="example@mail.com" required>
+  <label for="mobile">মোবাইল নম্বর</label>
+  <input type="tel" id="mobile" name="mobile" placeholder="01XXXXXXXXX" required>
 
-      <label for="mobile">মোবাইল নম্বর</label>
-      <input type="tel" id="mobile" name="mobile" placeholder="01XXXXXXXXX" required>
+  <label for="quiz">পছন্দের কুইজ</label>
+  <select id="quiz" name="quiz">
+    <option value="ict">আইসিটি বেসিক কুইজ</option>
+    <option value="advance">এডভান্সড ICT কুইজ</option>
+    <option value="programming">প্রোগ্রামিং কুইজ</option>
+  </select>
 
-      <label for="quiz">পছন্দের কুইজ</label>
-      <select id="quiz" name="quiz">
-        <option value="ict">আইসিটি বেসিক কুইজ</option>
-        <option value="advance">এডভান্সড ICT কুইজ</option>
-        <option value="programming">প্রোগ্রামিং কুইজ</option>
-      </select>
+  <button type="submit">রেজিস্টার করুন</button>
+</form>
 
-      <button type="submit">রেজিস্টার করুন</button>
-    </form>
   </div>
 </body>
 </html>
