@@ -136,6 +136,34 @@ button:hover {
 }
 
   </style>
+  <script>
+    const districtsByDivision = {
+      ঢাকা: ["ঢাকা", "গাজীপুর", "নারায়ণগঞ্জ", "টাঙ্গাইল"],
+      চট্টগ্রাম: ["চট্টগ্রাম", "কক্সবাজার", "ব্রাহ্মণবাড়িয়া"],
+      রাজশাহী: ["রাজশাহী", "নাটোর", "পাবনা"],
+      খুলনা: ["খুলনা", "যশোর", "সাতক্ষীরা"],
+      বরিশাল: ["বরিশাল", "পটুয়াখালী", "ভোলা"],
+      সিলেট: ["সিলেট", "মৌলভীবাজার", "সুনামগঞ্জ"],
+      রংপুর: ["রংপুর", "দিনাজপুর", "নীলফামারী"],
+      ময়মনসিংহ: ["ময়মনসিংহ", "জামালপুর", "শেরপুর"]
+    };function updateDistricts() {
+  const divisionSelect = document.getElementById('division');
+  const districtSelect = document.getElementById('district');
+  const selectedDivision = divisionSelect.value;
+
+  // Clear old options
+  districtSelect.innerHTML = '';
+  const districts = districtsByDivision[selectedDivision] || [];
+
+  districts.forEach(district => {
+    const option = document.createElement('option');
+    option.value = district;
+    option.textContent = district;
+    districtSelect.appendChild(option);
+  });
+}
+
+  </script>
 </head>
 <body>
   <header>
@@ -146,18 +174,49 @@ button:hover {
     <h2>রেজিস্ট্রেশন ফর্ম</h2>
     <form>
       <label for="name">পূর্ণ নাম</label>
-      <input type="text" id="name" name="name" placeholder="আপনার নাম লিখুন" required><label for="email">ইমেইল</label>
-  <input type="email" id="email" name="email" placeholder="example@mail.com" required>
+      <input type="text" id="name" name="name" required><label for="mobile">মোবাইল নম্বর</label>
+  <input type="tel" id="mobile" name="mobile" required>
 
-  <label for="mobile">মোবাইল নম্বর</label>
-  <input type="tel" id="mobile" name="mobile" placeholder="01XXXXXXXXX" required>
+  <label for="email">ইমেইল নম্বর</label>
+  <input type="email" id="email" name="email" required>
 
-  <label for="quiz">পছন্দের কুইজ</label>
-  <select id="quiz" name="quiz">
-    <option value="ict">আইসিটি বেসিক কুইজ</option>
-    <option value="advance">এডভান্সড ICT কুইজ</option>
-    <option value="programming">প্রোগ্রামিং কুইজ</option>
+  <label for="division">বিভাগ</label>
+  <select id="division" name="division" onchange="updateDistricts()">
+    <option value="ঢাকা">ঢাকা</option>
+    <option value="চট্টগ্রাম">চট্টগ্রাম</option>
+    <option value="রাজশাহী">রাজশাহী</option>
+    <option value="খুলনা">খুলনা</option>
+    <option value="বরিশাল">বরিশাল</option>
+    <option value="সিলেট">সিলেট</option>
+    <option value="রংপুর">রংপুর</option>
+    <option value="ময়মনসিংহ">ময়মনসিংহ</option>
   </select>
+
+  <label for="district">জেলা</label>
+  <select id="district" name="district"></select>
+
+  <label for="school">স্কুলের নাম</label>
+  <input type="text" id="school" name="school" required>
+
+  <label for="category">ক্যাটাগরি</label>
+  <select id="category" name="category">
+    <option value="Minor">Minor (৬ষ্ঠ - ১০ম)</option>
+    <option value="Senior">Senior (কলেজ পর্যায়)</option>
+  </select>
+
+  <label for="class">ক্লাস</label>
+  <select id="class" name="class">
+    <option value="৬ষ্ঠ">৬ষ্ঠ</option>
+    <option value="৭ম">৭ম</option>
+    <option value="৮ম">৮ম</option>
+    <option value="৯ম">৯ম</option>
+    <option value="১০ম">১০ম</option>
+    <option value="একাদশ">একাদশ</option>
+    <option value="দ্বাদশ">দ্বাদশ</option>
+  </select>
+
+  <label for="whatsapp">হোয়াটসঅ্যাপ নম্বর</label>
+  <input type="tel" id="whatsapp" name="whatsapp" required>
 
   <button type="submit">রেজিস্টার করুন</button>
 </form>
