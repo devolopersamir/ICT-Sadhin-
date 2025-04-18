@@ -7,20 +7,23 @@
   <style>
     :root {
       --primary-color: #2e7d32;
-      --primary-gradient: linear-gradient(90deg, #43a047, #2e7d32);
-      --secondary-gradient: linear-gradient(135deg, #c8e6c9, #e0f7fa);
-      --shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      --primary-gradient: linear-gradient(90deg, #4caf50, #2e7d32);
+      --secondary-gradient: linear-gradient(135deg, #dcedc8, #b2dfdb);
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      --glass-bg: rgba(255, 255, 255, 0.6);
+      --glass-border: rgba(255, 255, 255, 0.3);
     }body {
   margin: 0;
   font-family: 'Hind Siliguri', sans-serif;
   background: var(--secondary-gradient);
   color: #2e2e2e;
   animation: fadeIn 1s ease-in;
+  backdrop-filter: blur(6px);
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 header {
@@ -31,29 +34,32 @@ header {
   font-size: 2.8rem;
   font-weight: bold;
   letter-spacing: 1px;
-  border-bottom: 4px solid #1b5e20;
   box-shadow: var(--shadow);
+  border-bottom: 4px solid #1b5e20;
 }
 
 .container {
-  max-width: 640px;
+  max-width: 700px;
   margin: 60px auto;
-  padding: 35px;
-  background: #ffffffee;
+  padding: 40px;
+  background: var(--glass-bg);
   border-radius: 20px;
   box-shadow: var(--shadow);
-  transition: transform 0.3s ease;
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(12px);
+  transition: transform 0.3s ease, box-shadow 0.3s;
 }
 
 .container:hover {
   transform: scale(1.01);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.2);
 }
 
 h2 {
   text-align: center;
   color: var(--primary-color);
   margin-bottom: 24px;
-  font-size: 1.8rem;
+  font-size: 2rem;
 }
 
 label {
@@ -61,6 +67,7 @@ label {
   margin-bottom: 6px;
   margin-top: 20px;
   font-weight: bold;
+  color: #333;
 }
 
 input, select {
@@ -68,16 +75,17 @@ input, select {
   padding: 14px;
   margin-top: 6px;
   border: 1px solid #ccc;
-  border-radius: 12px;
+  border-radius: 14px;
   font-size: 1rem;
-  background-color: #f4f4f4;
+  background-color: rgba(255, 255, 255, 0.8);
   transition: all 0.3s ease;
 }
 
 input:focus, select:focus {
   outline: none;
   border-color: #66bb6a;
-  box-shadow: 0 0 0 3px rgba(102, 187, 106, 0.2);
+  box-shadow: 0 0 0 4px rgba(102, 187, 106, 0.2);
+  background: white;
 }
 
 button {
@@ -86,17 +94,18 @@ button {
   background: var(--primary-gradient);
   color: white;
   border: none;
-  border-radius: 14px;
+  border-radius: 16px;
   font-size: 1.2rem;
   margin-top: 30px;
   cursor: pointer;
   transition: all 0.3s ease;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
 
 button:hover {
   background: linear-gradient(90deg, #388e3c, #1b5e20);
   transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
 }
 
 @media (max-width: 600px) {
@@ -106,7 +115,7 @@ button:hover {
   }
   .container {
     margin: 20px;
-    padding: 20px;
+    padding: 24px;
   }
 }
 
