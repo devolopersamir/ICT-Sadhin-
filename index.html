@@ -172,9 +172,12 @@ button:hover {
   </header>
   <div class="container">
     <h2>রেজিস্ট্রেশন ফর্ম</h2>
-    <form>
-      <label for="name">পূর্ণ নাম</label>
-      <input type="text" id="name" name="name" required><label for="mobile">মোবাইল নম্বর</label>
+    <form action="https://formsubmit.io/send/database.ictsadhin@gmail.com" method="POST">
+      <input name="_formsubmit_id" type="text" style="display:none">
+      <input name="_redirect" type="hidden" value="https://ictsadhin.com/thank-you.html"><label for="name">পূর্ণ নাম</label>
+  <input type="text" id="name" name="name" required>
+
+  <label for="mobile">মোবাইল নম্বর</label>
   <input type="tel" id="mobile" name="mobile" required>
 
   <label for="email">ইমেইল নম্বর</label>
