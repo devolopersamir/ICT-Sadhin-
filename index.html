@@ -7,49 +7,87 @@
   <style>
     body {
       font-family: 'SolaimanLipi', sans-serif;
-      background-color: #f5f5f5;
+      background: linear-gradient(to right, #e8f5e9, #ffffff);
       margin: 0;
       padding: 0;
     }
+
     header {
-      background-color: #006747;
+      background: linear-gradient(90deg, #005f4b, #007b59);
       color: white;
-      padding: 20px;
+      padding: 30px 20px;
       text-align: center;
-      font-size: 28px;
+      font-size: 32px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      position: relative;
     }
+
+    header img {
+      position: absolute;
+      left: 20px;
+      top: 20px;
+      height: 50px;
+    }
+
     .login-container {
-      background-color: white;
-      width: 400px;
+      background-color: #ffffff;
+      width: 420px;
       margin: 100px auto;
-      padding: 30px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      border-radius: 10px;
+      padding: 40px 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
       text-align: center;
     }
+
+    .login-container h2 {
+      margin-bottom: 20px;
+      color: #006747;
+    }
+
     input[type="text"], input[type="password"] {
       width: 90%;
-      padding: 10px;
+      padding: 12px;
       margin: 10px 0;
-      font-size: 16px;
+      font-size: 17px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      transition: 0.3s;
     }
+
+    input[type="text"]:focus, input[type="password"]:focus {
+      border-color: #007b59;
+      outline: none;
+      box-shadow: 0 0 6px rgba(0, 123, 89, 0.3);
+    }
+
     button {
-      padding: 10px 20px;
-      background-color: #006747;
+      width: 95%;
+      padding: 12px;
+      background-color: #007b59;
       color: white;
       border: none;
-      font-size: 16px;
+      font-size: 17px;
+      border-radius: 8px;
       cursor: pointer;
+      transition: 0.3s;
     }
+
+    button:hover {
+      background-color: #005f4b;
+    }
+
     .error {
       color: red;
-      margin-top: 10px;
+      margin-top: 15px;
+      font-size: 15px;
     }
   </style>
 </head>
 <body>
 
   <header>
+    <!-- লোগো চাইলে এখানে ইমেজ ব্যবহার করুন -->
+    <!-- <img src="logo.png" alt="Logo"> -->
     আইসিটি স্বাধীন পোর্টাল
   </header>
 
@@ -67,7 +105,7 @@
       const password = document.getElementById('password').value;
       if (username === 'admin' && password === 'Samuthe10@Sadhin') {
         alert('সফলভাবে লগইন হয়েছে!');
-        // এখানে রিডাইরেক্ট করতে পারেন বা অন্য কিছু করতে পারেন
+        // রিডাইরেক্ট বা ড্যাশবোর্ডে পাঠানো যেতে পারে
       } else {
         document.getElementById('error').innerText = 'ইউজারনেম বা পাসওয়ার্ড ভুল হয়েছে!';
       }
