@@ -1,332 +1,219 @@
-<!DOCTYPE html>
-<html lang="bn">
+<!DOCTYPE html><html lang="bn">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ICT স্বাধীন পোর্টাল</title>
+  <title>আইসিটি স্বাধীন পোর্টাল</title>
   <link href="https://fonts.maateen.me/solaiman-lipi/font.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     body {
       font-family: 'SolaimanLipi', sans-serif;
+      background-color: #f0f2f5;
       margin: 0;
       padding: 0;
-      background: linear-gradient(to right, #e8f5e9, #ffffff);
-      transition: all 0.5s ease;
-    }
-    header {
-      background: linear-gradient(90deg, #005f4b, #007b59);
-      color: white;
-      padding: 30px 20px;
-      text-align: center;
-      font-size: 32px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-      transition: all 0.3s ease;
     }
     .container {
-      max-width: 420px;
-      margin: 80px auto;
+      max-width: 400px;
+      margin: 50px auto;
       background: white;
-      padding: 40px 30px 20px 30px;
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
       text-align: center;
-      transition: all 0.3s ease;
     }
-    input[type="text"], input[type="password"] {
+    input {
       width: 90%;
-      padding: 12px;
-      margin: 10px 0;
-      font-size: 17px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      transition: all 0.3s ease;
-    }
-    button {
-      width: 95%;
-      padding: 12px;
-      background-color: #007b59;
-      color: white;
-      border: none;
-      font-size: 17px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-family: 'SolaimanLipi', sans-serif;
-      transition: all 0.3s ease;
-    }
-    .error { color: red; margin-top: 15px; }
-    .success { color: green; margin-top: 15px; }
-    .footer { margin-top: 30px; font-size: 14px; color: #666; }
-    .dashboard, .admin-panel, .admin-button-section {
-      display: none;
-      text-align: center;
-      margin-top: 60px;
-      transition: all 0.5s ease;
-    }
-    .dashboard button, .admin-button-section button {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      width: 320px;
-      margin: 20px auto;
-      padding: 15px;
-      font-size: 18px;
-      border: none;
-      border-radius: 12px;
-      background-color: #007b59;
-      color: white;
-      cursor: pointer;
-      transition: 0.3s ease;
-      font-family: 'SolaimanLipi', sans-serif;
-    }
-    .dashboard i, .admin-button-section i {
-      font-size: 22px;
-    }
-    .tooltip {
-      font-size: 14px;
-      color: #333;
-      margin-top: -10px;
-      margin-bottom: 20px;
-    }
-    .admin-auth {
-      display: none;
-      margin-top: 30px;
-    }
-    .admin-panel input {
-      width: 300px;
       padding: 10px;
       margin: 10px 0;
+      border-radius: 8px;
       border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 16px;
-      font-family: 'SolaimanLipi', sans-serif;
     }
-    .admin-panel button {
+    button {
       padding: 10px 20px;
-      background-color: #007b59;
-      color: white;
+      margin: 10px;
       border: none;
       border-radius: 8px;
-      font-size: 16px;
-      cursor: pointer;
-      font-family: 'SolaimanLipi', sans-serif;
-    }
-    .admin-button-section button {
-      padding: 12px 20px;
-      background-color: #007b59;
+      background-color: #4CAF50;
       color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 17px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
       cursor: pointer;
-      margin: 10px auto;
-      font-family: 'SolaimanLipi', sans-serif;
     }
-    .important-btn {
-      background-color: #ffc107 !important;
-      color: black !important;
-      font-weight: bold;
+    button:hover {
+      background-color: #45a049;
     }
-
-    /* Responsiveness */
-    @media (max-width: 768px) {
-      .container {
-        padding: 20px;
-      }
-      header {
-        font-size: 24px;
-      }
-      .dashboard button, .admin-button-section button {
-        width: 80%;
-      }
-      .admin-panel input {
-        width: 80%;
-      }
+    .footer {
+      text-align: center;
+      font-size: 14px;
+      margin-top: 30px;
+      color: gray;
     }
-
-    /* Popup styles */
-    .popup {
+    .hidden {
       display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-      justify-content: center;
-      align-items: center;
     }
-    .popup-content {
-      background: #fff;
+    .popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
       padding: 20px;
-      border-radius: 8px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      z-index: 999;
       width: 300px;
       text-align: center;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     }
-    .popup button {
-      background-color: #007b59;
-      color: white;
-      border: none;
-      font-size: 16px;
-      padding: 10px 20px;
-      border-radius: 8px;
-      cursor: pointer;
-      width: 100%;
+    .popup.show {
+      animation: fadeInUp 0.5s ease forwards;
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body>
-  <header>আইসিটি স্বাধীন পোর্টাল</header>
-
-  <div class="container" id="loginPanel">
-    <h2>লগইন করুন</h2>
-    <input type="text" id="username" placeholder="ইউজারনেম"><br>
-    <input type="password" id="password" placeholder="পাসওয়ার্ড"><br>
+  <div id="loginPanel" class="container">
+    <h2>আইসিটি স্বাধীন পোর্টাল</h2>
+    <input type="text" id="username" placeholder="ইউজারনেম">
+    <input type="password" id="password" placeholder="পাসওয়ার্ড">
     <button onclick="login()">লগইন</button>
-    <div class="error" id="error"></div>
+    <p id="loginError" style="color:red;"></p>
     <div class="footer">© সামির তালুকদার - আইসিটি স্বাধীন হতে সংরক্ষিত</div>
-  </div>
-
-  <div class="dashboard" id="dashboardPanel">
-    <button onclick="showAdminAuth()">
-      <i class="fas fa-user-shield"></i> প্রশাসনিক লগইন
-    </button>
-    <div class="tooltip">* এটা শুধুমাত্র কুইজ পরিচালনার জন্য</div>
-    <button onclick="alert('এডভাইসর / টিম লগইন ক্লিক হয়েছে')">
-      <i class="fas fa-users"></i> এডভাইসর/টিম লগইন
-    </button>
-    <div class="admin-auth" id="adminAuth">
-      <p>প্রশাসনিক পাসওয়ার্ড দিন:</p>
-      <input type="password" id="adminPassword" placeholder="শুধু প্রশাসকদের জন্য">
-      <button onclick="verifyAdmin()">যাচাই করুন</button>
-      <div class="error" id="adminError"></div>
+  </div>  <div id="dashboard" class="container hidden">
+    <h3>ড্যাশবোর্ড</h3>
+    <button onclick="openAdmin()">প্রশাসনিক লগইন</button>
+    <button onclick="navigateToAdvisor()">এডভাইসর/টিম লগইন</button>
+    <button onclick="logout()">লগআউট করুন</button>
+  </div>  <div id="adminLoginPanel" class="container hidden">
+    <h3>প্রশাসনিক লগইন</h3>
+    <input type="text" id="adminUser" placeholder="ইউজারনেম">
+    <input type="password" id="adminPass" placeholder="পাসওয়ার্ড">
+    <button onclick="verifyAdmin()">লগইন</button>
+    <p id="adminError" style="color:red;"></p>
+  </div>  <div id="adminPanel" class="container hidden">
+    <h3>প্রশাসনিক প্যানেল</h3>
+    <button onclick="openPage('adminUserList')">টিম ম্যানেজমেন্ট</button>
+    <button>অংশগ্রহণকারী তালিকা</button>
+    <button>প্রশ্ন ডেটাবেইজ</button>
+    <button>বিশেষ নোটিশ</button>
+    <button>কোড নম্বর এবং ট্র্যাকিং</button>
+    <button onclick="backToDashboard()">পেছনে যান</button>
+    <button onclick="logout()">লগআউট করুন</button>
+  </div>  <div id="teamManagementPopup" class="popup hidden">
+    <h3>টিম ম্যানেজমেন্টে স্বাগতম</h3>
+    <button onclick="showTeamForm()">নতুন টিম মেম্বার এড করুন</button>
+    <div id="teamForm" class="hidden">
+      <input type="text" id="teamUser" placeholder="ইউজার">
+      <input type="password" id="teamPass" placeholder="পাসওয়ার্ড">
+      <input type="email" id="teamMail" placeholder="মেইল">
+      <button onclick="addTeamMember()">সংরক্ষণ করুন</button>
+      <div id="teamSaveMsg" style="color:green;"></div>
     </div>
-  </div>
-
-  <div class="admin-button-section" id="adminButtonSection">
-    <button onclick="showPasswordChange()">
-      <i class="fas fa-key"></i> পাসওয়ার্ড পরিবর্তন করুন
-    </button>
-    <button><i class="fas fa-users-cog"></i> টিম ম্যানেজমেন্ট</button>
-    <button><i class="fas fa-list-ol"></i> অংশগ্রহণকারী তালিকা</button>
-    <button><i class="fas fa-database"></i> প্রশ্ন ডেটাবেইজ</button>
-    <button><i class="fas fa-bullhorn"></i> বিশেষ নোটিশ</button>
-    <button><i class="fas fa-qrcode"></i> কোড নম্বর এবং ট্র্যাকিং</button>
-    <button class="important-btn">
-      <i class="fas fa-exclamation-circle"></i> ইম্পর্ট্যান্ট নোট
-    </button>
-    <button onclick="logout()">
-      <i class="fas fa-sign-out-alt"></i> লগআউট
-    </button>
-  </div>
-
-  <div class="admin-panel" id="adminPanel">
-    <h2>প্রশাসনিক পাসওয়ার্ড পরিবর্তন</h2>
-    <input type="password" id="oldPass" placeholder="বর্তমান পাসওয়ার্ড"><br>
-    <input type="password" id="newPass" placeholder="নতুন পাসওয়ার্ড"><br>
-    <button onclick="changeAdminPassword()">পাসওয়ার্ড পরিবর্তন করুন</button>
-    <div class="success" id="passChangeSuccess"></div>
-    <div class="error" id="passChangeError"></div>
-    <button onclick="backToDashboard()">
-      <i class="fas fa-arrow-left"></i> আগের পেইজে ফিরে যান
-    </button>
-  </div>
-
-  <!-- Popup message for logout -->
-  <div class="popup" id="logoutPopup">
-    <div class="popup-content">
-      <p>আপনি সফলভাবে লগআউট করেছেন।</p>
-      <button onclick="closePopup()">বন্ধ করুন</button>
-    </div>
-  </div>
-
-  <script>
-    if (!localStorage.getItem("adminPassword")) {
-      localStorage.setItem("adminPassword", "abc");
-    }
-
+    <button onclick="closeTeamPopup()" style="background:#f44336">বন্ধ করুন</button>
+  </div>  <div id="teamLoginPanel" class="container hidden">
+    <h3>এডভাইসর / টিম লগইন</h3>
+    <input type="text" id="teamLoginUser" placeholder="ইউজার">
+    <input type="password" id="teamLoginPass" placeholder="পাসওয়ার্ড">
+    <button onclick="verifyTeamLogin()">লগইন</button>
+    <div id="teamLoginError" style="color:red;"></div>
+  </div>  <div id="teamDashboard" class="container hidden">
+    <h2 id="welcomeTeamText"></h2>
+    <button onclick="backToLogin()">লগআউট</button>
+  </div>  <script>
     function login() {
-      const username = document.getElementById('username').value.trim();
-      const password = document.getElementById('password').value.trim();
-      const error = document.getElementById('error');
-      if (username === 'admin' && password === 'abc') {
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      if (username === 'Samuthe10@Sadhin' && password === 'abc') {
         document.getElementById('loginPanel').style.display = 'none';
-        document.getElementById('dashboardPanel').style.display = 'block';
-        document.getElementById('dashboardPanel').classList.add('fadeIn');
+        document.getElementById('dashboard').style.display = 'block';
       } else {
-        error.innerText = 'ইউজারনেম বা পাসওয়ার্ড ভুল হয়েছে!';
+        document.getElementById('loginError').innerText = 'ভুল ইউজারনেম বা পাসওয়ার্ড';
       }
     }
 
-    function showAdminAuth() {
-      document.getElementById('adminAuth').style.display = 'block';
-      document.getElementById('adminAuth').classList.add('fadeIn');
+    function openAdmin() {
+      document.getElementById('dashboard').style.display = 'none';
+      document.getElementById('adminLoginPanel').style.display = 'block';
     }
 
     function verifyAdmin() {
-      const pass = document.getElementById('adminPassword').value.trim();
-      const err = document.getElementById('adminError');
-      const savedPass = localStorage.getItem("adminPassword");
-
-      if (pass === savedPass) {
-        document.getElementById('dashboardPanel').style.display = 'none';
-        document.getElementById('adminButtonSection').style.display = 'block';
-        document.getElementById('adminButtonSection').classList.add('fadeIn');
+      const user = document.getElementById('adminUser').value;
+      const pass = document.getElementById('adminPass').value;
+      if (user === 'Sadhin@Admin.Samir' && pass === 'abc') {
+        document.getElementById('adminLoginPanel').style.display = 'none';
+        document.getElementById('adminPanel').style.display = 'block';
       } else {
-        err.innerText = 'ভুল প্রশাসনিক পাসওয়ার্ড!';
+        document.getElementById('adminError').innerText = 'ভুল ইউজারনেম বা পাসওয়ার্ড';
       }
     }
 
-    function showPasswordChange() {
-      document.getElementById('adminButtonSection').style.display = 'none';
-      document.getElementById('adminPanel').style.display = 'block';
+    function openPage(pageName) {
+      if (pageName === 'adminUserList') {
+        const popup = document.getElementById('teamManagementPopup');
+        popup.classList.remove('hidden');
+        popup.classList.add('show');
+      }
     }
 
-    function changeAdminPassword() {
-      const oldPass = document.getElementById('oldPass').value.trim();
-      const newPass = document.getElementById('newPass').value.trim();
-      const savedPass = localStorage.getItem("adminPassword");
-      const success = document.getElementById('passChangeSuccess');
-      const error = document.getElementById('passChangeError');
+    function showTeamForm() {
+      document.getElementById('teamForm').classList.remove('hidden');
+    }
 
-      success.innerText = '';
-      error.innerText = '';
+    function closeTeamPopup() {
+      document.getElementById('teamManagementPopup').classList.add('hidden');
+      document.getElementById('teamForm').classList.add('hidden');
+      document.getElementById('teamSaveMsg').innerText = '';
+    }
 
-      if (oldPass !== savedPass) {
-        error.innerText = 'বর্তমান পাসওয়ার্ড সঠিক নয়!';
-        return;
+    function addTeamMember() {
+      const user = document.getElementById('teamUser').value;
+      const pass = document.getElementById('teamPass').value;
+      const mail = document.getElementById('teamMail').value;
+      if (user && pass && mail) {
+        const teamMembers = JSON.parse(localStorage.getItem('teamMembers') || '[]');
+        teamMembers.push({ user, pass, mail });
+        localStorage.setItem('teamMembers', JSON.stringify(teamMembers));
+        document.getElementById('teamSaveMsg').innerText = 'সফলভাবে সংরক্ষণ হয়েছে!';
+        document.getElementById('teamUser').value = '';
+        document.getElementById('teamPass').value = '';
+        document.getElementById('teamMail').value = '';
+      } else {
+        document.getElementById('teamSaveMsg').innerText = 'সব তথ্য পূরণ করুন!';
       }
-      if (newPass.length < 3) {
-        error.innerText = 'নতুন পাসওয়ার্ড কমপক্ষে ৩ অক্ষরের হতে হবে!';
-        return;
-      }
+    }
 
-      localStorage.setItem("adminPassword", newPass);
-      success.innerText = 'পাসওয়ার্ড সফলভাবে পরিবর্তন হয়েছে!';
+    function navigateToAdvisor() {
+      document.getElementById('dashboard').style.display = 'none';
+      document.getElementById('teamLoginPanel').style.display = 'block';
+    }
+
+    function verifyTeamLogin() {
+      const user = document.getElementById('teamLoginUser').value;
+      const pass = document.getElementById('teamLoginPass').value;
+      const teamLoginError = document.getElementById('teamLoginError');
+      const teamMembers = JSON.parse(localStorage.getItem('teamMembers') || '[]');
+      const match = teamMembers.find(member => member.user === user && member.pass === pass);
+      if (match) {
+        document.getElementById('teamLoginPanel').style.display = 'none';
+        document.getElementById('teamDashboard').style.display = 'block';
+        document.getElementById('welcomeTeamText').innerText = `স্বাগতম, ${match.user}!`;
+      } else {
+        teamLoginError.innerText = 'ইউজারনেম বা পাসওয়ার্ড ভুল!';
+      }
+    }
+
+    function backToLogin() {
+      document.getElementById('teamDashboard').style.display = 'none';
+      document.getElementById('loginPanel').style.display = 'block';
+    }
+
+    function logout() {
+      alert('আপনি সফলভাবে লগআউট করেছেন।');
+      window.location.reload();
     }
 
     function backToDashboard() {
       document.getElementById('adminPanel').style.display = 'none';
-      document.getElementById('adminButtonSection').style.display = 'block';
+      document.getElementById('dashboard').style.display = 'block';
     }
-
-    function logout() {
-      localStorage.removeItem("adminPassword");
-      document.getElementById('adminButtonSection').style.display = 'none';
-      document.getElementById('loginPanel').style.display = 'block';
-      document.getElementById('logoutPopup').style.display = 'flex';
-      setTimeout(closePopup, 5000);
-    }
-
-    function closePopup() {
-      document.getElementById('logoutPopup').style.display = 'none';
-    }
-  </script>
-</body>
+  </script></body>
 </html>
