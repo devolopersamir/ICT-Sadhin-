@@ -52,18 +52,12 @@
       cursor: pointer;
     }
 
-    .error {
-      color: red;
-      margin-top: 15px;
-    }
+    .error { color: red; margin-top: 15px; }
+    .success { color: green; margin-top: 15px; }
 
-    .footer {
-      margin-top: 30px;
-      font-size: 14px;
-      color: #666;
-    }
+    .footer { margin-top: 30px; font-size: 14px; color: #666; }
 
-    .dashboard {
+    .dashboard, .admin-panel {
       display: none;
       text-align: center;
       margin-top: 60px;
@@ -86,13 +80,7 @@
       transition: 0.3s;
     }
 
-    .dashboard button:hover {
-      background-color: #005f4b;
-    }
-
-    .dashboard i {
-      font-size: 22px;
-    }
+    .dashboard i { font-size: 22px; }
 
     .tooltip {
       font-size: 14px;
@@ -106,22 +94,23 @@
       margin-top: 30px;
     }
 
-    .admin-auth input {
+    .admin-panel input {
       width: 300px;
       padding: 10px;
-      border-radius: 8px;
+      margin: 10px 0;
       border: 1px solid #ccc;
+      border-radius: 8px;
       font-size: 16px;
     }
 
-    .admin-auth button {
-      margin-top: 10px;
-      background-color: #006649;
-    }
-
-    .success {
-      color: green;
-      margin-top: 15px;
+    .admin-panel button {
+      padding: 10px 20px;
+      background-color: #007b59;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -150,17 +139,27 @@
       <i class="fas fa-users"></i> এডভাইসর/টিম লগইন
     </button>
 
-    <!-- Admin Second Auth -->
     <div class="admin-auth" id="adminAuth">
       <p>প্রশাসনিক পাসওয়ার্ড দিন:</p>
       <input type="password" id="adminPassword" placeholder="শুধু প্রশাসকদের জন্য">
       <button onclick="verifyAdmin()">যাচাই করুন</button>
       <div class="error" id="adminError"></div>
-      <div class="success" id="adminSuccess"></div>
     </div>
   </div>
 
+  <!-- Admin Panel -->
+  <div class="admin-panel" id="adminPanel">
+    <h2>প্রশাসনিক পাসওয়ার্ড পরিবর্তন</h2>
+    <input type="password" id="oldPass" placeholder="বর্তমান পাসওয়ার্ড"><br>
+    <input type="password" id="newPass" placeholder="নতুন পাসওয়ার্ড"><br>
+    <button onclick="changeAdminPassword()">পাসওয়ার্ড পরিবর্তন করুন</button>
+    <div class="success" id="passChangeSuccess"></div>
+    <div class="error" id="passChangeError"></div>
+  </div>
+
   <script>
+    let currentAdminPass = "Sadhin@Admin.Samir";
+
     function login() {
       const username = document.getElementById('username').value.trim();
       const password = document.getElementById('password').value.trim();
@@ -176,22 +175,41 @@
 
     function showAdminAuth() {
       document.getElementById('adminAuth').style.display = 'block';
-      document.getElementById('adminError').innerText = '';
-      document.getElementById('adminSuccess').innerText = '';
     }
 
     function verifyAdmin() {
       const pass = document.getElementById('adminPassword').value.trim();
       const err = document.getElementById('adminError');
-      const ok = document.getElementById('adminSuccess');
 
-      if (pass === 'Sadhin@Admin.Samir') {
-        err.innerText = '';
-        ok.innerText = 'অভিনন্দন! প্রশাসনিক অ্যাক্সেস অনুমোদিত।';
+      if (pass === currentAdminPass) {
+        document.getElementById('dashboardPanel').style.display = 'none';
+        document.getElementById('adminPanel').style.display = 'block';
       } else {
-        ok.innerText = '';
         err.innerText = 'ভুল প্রশাসনিক পাসওয়ার্ড!';
       }
+    }
+
+    function changeAdminPassword() {
+      const oldPass = document.getElementById('oldPass').value.trim();
+      const newPass = document.getElementById('newPass').value.trim();
+      const success = document.getElementById('passChangeSuccess');
+      const error = document.getElementById('passChangeError');
+
+      success.innerText = '';
+      error.innerText = '';
+
+      if (oldPass !== currentAdminPass) {
+        error.innerText = 'বর্তমান পাসওয়ার্ড সঠিক নয়!';
+        return;
+      }
+
+      if (newPass.length < 8) {
+        error.innerText = 'নতুন পাসওয়ার্ড কমপক্ষে ৮ অক্ষরের হতে হবে!';
+        return;
+      }
+
+      currentAdminPass = newPass;
+      success.innerText = 'পাসওয়ার্ড সফলভাবে পরিবর্তন হয়েছে!';
     }
   </script>
 
