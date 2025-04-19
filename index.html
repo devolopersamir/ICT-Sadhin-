@@ -33,7 +33,7 @@
       background-color: #ffffff;
       width: 420px;
       margin: 100px auto;
-      padding: 40px 30px;
+      padding: 40px 30px 20px 30px;
       border-radius: 16px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
       text-align: center;
@@ -81,12 +81,17 @@
       margin-top: 15px;
       font-size: 15px;
     }
+
+    .footer {
+      margin-top: 30px;
+      font-size: 14px;
+      color: #666;
+    }
   </style>
 </head>
 <body>
 
   <header>
-    <!-- লোগো চাইলে এখানে ইমেজ ব্যবহার করুন -->
     <!-- <img src="logo.png" alt="Logo"> -->
     আইসিটি স্বাধীন পোর্টাল
   </header>
@@ -97,6 +102,10 @@
     <input type="password" id="password" placeholder="পাসওয়ার্ড"><br>
     <button onclick="login()">লগইন</button>
     <div class="error" id="error"></div>
+
+    <div class="footer">
+      © সামির তালুকদার - আইসিটি স্বাধীন হতে সংরক্ষিত
+    </div>
   </div>
 
   <script>
@@ -105,7 +114,6 @@
       const password = document.getElementById('password').value;
       if (username === 'admin' && password === 'Samuthe10@Sadhin') {
         alert('সফলভাবে লগইন হয়েছে!');
-        // রিডাইরেক্ট বা ড্যাশবোর্ডে পাঠানো যেতে পারে
       } else {
         document.getElementById('error').innerText = 'ইউজারনেম বা পাসওয়ার্ড ভুল হয়েছে!';
       }
