@@ -100,6 +100,29 @@
       margin-top: -10px;
       margin-bottom: 20px;
     }
+
+    .admin-auth {
+      display: none;
+      margin-top: 30px;
+    }
+
+    .admin-auth input {
+      width: 300px;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+
+    .admin-auth button {
+      margin-top: 10px;
+      background-color: #006649;
+    }
+
+    .success {
+      color: green;
+      margin-top: 15px;
+    }
   </style>
 </head>
 <body>
@@ -118,7 +141,7 @@
 
   <!-- Dashboard Panel -->
   <div class="dashboard" id="dashboardPanel">
-    <button onclick="alert('প্রশাসনিক লগইন ক্লিক হয়েছে')">
+    <button onclick="showAdminAuth()">
       <i class="fas fa-user-shield"></i> প্রশাসনিক লগইন
     </button>
     <div class="tooltip">* এটা শুধুমাত্র কুইজ পরিচালনার জন্য</div>
@@ -126,6 +149,15 @@
     <button onclick="alert('এডভাইসর / টিম লগইন ক্লিক হয়েছে')">
       <i class="fas fa-users"></i> এডভাইসর/টিম লগইন
     </button>
+
+    <!-- Admin Second Auth -->
+    <div class="admin-auth" id="adminAuth">
+      <p>প্রশাসনিক পাসওয়ার্ড দিন:</p>
+      <input type="password" id="adminPassword" placeholder="শুধু প্রশাসকদের জন্য">
+      <button onclick="verifyAdmin()">যাচাই করুন</button>
+      <div class="error" id="adminError"></div>
+      <div class="success" id="adminSuccess"></div>
+    </div>
   </div>
 
   <script>
@@ -133,12 +165,32 @@
       const username = document.getElementById('username').value.trim();
       const password = document.getElementById('password').value.trim();
       const error = document.getElementById('error');
-      
+
       if (username === 'admin' && password === 'Samuthe10@Sadhin') {
         document.getElementById('loginPanel').style.display = 'none';
         document.getElementById('dashboardPanel').style.display = 'block';
       } else {
         error.innerText = 'ইউজারনেম বা পাসওয়ার্ড ভুল হয়েছে!';
+      }
+    }
+
+    function showAdminAuth() {
+      document.getElementById('adminAuth').style.display = 'block';
+      document.getElementById('adminError').innerText = '';
+      document.getElementById('adminSuccess').innerText = '';
+    }
+
+    function verifyAdmin() {
+      const pass = document.getElementById('adminPassword').value.trim();
+      const err = document.getElementById('adminError');
+      const ok = document.getElementById('adminSuccess');
+
+      if (pass === 'Sadhin@Admin.Samir') {
+        err.innerText = '';
+        ok.innerText = 'অভিনন্দন! প্রশাসনিক অ্যাক্সেস অনুমোদিত।';
+      } else {
+        ok.innerText = '';
+        err.innerText = 'ভুল প্রশাসনিক পাসওয়ার্ড!';
       }
     }
   </script>
