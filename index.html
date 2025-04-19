@@ -12,7 +12,6 @@
       padding: 0;
       background: linear-gradient(to right, #e8f5e9, #ffffff);
     }
-
     header {
       background: linear-gradient(90deg, #005f4b, #007b59);
       color: white;
@@ -21,7 +20,6 @@
       font-size: 32px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
-
     .container {
       max-width: 420px;
       margin: 80px auto;
@@ -31,7 +29,6 @@
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
       text-align: center;
     }
-
     input[type="text"], input[type="password"] {
       width: 90%;
       padding: 12px;
@@ -40,7 +37,6 @@
       border: 1px solid #ccc;
       border-radius: 8px;
     }
-
     button {
       width: 95%;
       padding: 12px;
@@ -52,18 +48,14 @@
       cursor: pointer;
       font-family: 'SolaimanLipi', sans-serif;
     }
-
     .error { color: red; margin-top: 15px; }
     .success { color: green; margin-top: 15px; }
-
     .footer { margin-top: 30px; font-size: 14px; color: #666; }
-
     .dashboard, .admin-panel, .admin-button-section {
       display: none;
       text-align: center;
       margin-top: 60px;
     }
-
     .dashboard button {
       display: flex;
       align-items: center;
@@ -81,23 +73,19 @@
       transition: 0.3s;
       font-family: 'SolaimanLipi', sans-serif;
     }
-
     .dashboard i, .admin-button-section i {
       font-size: 22px;
     }
-
     .tooltip {
       font-size: 14px;
       color: #333;
       margin-top: -10px;
       margin-bottom: 20px;
     }
-
     .admin-auth {
       display: none;
       margin-top: 30px;
     }
-
     .admin-panel input {
       width: 300px;
       padding: 10px;
@@ -107,7 +95,6 @@
       font-size: 16px;
       font-family: 'SolaimanLipi', sans-serif;
     }
-
     .admin-panel button {
       padding: 10px 20px;
       background-color: #007b59;
@@ -118,7 +105,6 @@
       cursor: pointer;
       font-family: 'SolaimanLipi', sans-serif;
     }
-
     .admin-button-section button {
       padding: 12px 20px;
       background-color: #007b59;
@@ -131,8 +117,13 @@
       justify-content: center;
       gap: 10px;
       cursor: pointer;
-      margin: auto;
+      margin: 10px auto;
       font-family: 'SolaimanLipi', sans-serif;
+    }
+    .important-btn {
+      background-color: #ffc107 !important;
+      color: black !important;
+      font-weight: bold;
     }
   </style>
 </head>
@@ -156,11 +147,9 @@
       <i class="fas fa-user-shield"></i> প্রশাসনিক লগইন
     </button>
     <div class="tooltip">* এটা শুধুমাত্র কুইজ পরিচালনার জন্য</div>
-
     <button onclick="alert('এডভাইসর / টিম লগইন ক্লিক হয়েছে')">
       <i class="fas fa-users"></i> এডভাইসর/টিম লগইন
     </button>
-
     <div class="admin-auth" id="adminAuth">
       <p>প্রশাসনিক পাসওয়ার্ড দিন:</p>
       <input type="password" id="adminPassword" placeholder="শুধু প্রশাসকদের জন্য">
@@ -173,6 +162,9 @@
   <div class="admin-button-section" id="adminButtonSection">
     <button onclick="showPasswordChange()">
       <i class="fas fa-key"></i> পাসওয়ার্ড পরিবর্তন করুন
+    </button>
+    <button class="important-btn">
+      <i class="fas fa-exclamation-circle"></i> ইম্পর্ট্যান্ট নোট
     </button>
   </div>
 
@@ -187,13 +179,15 @@
   </div>
 
   <script>
-    let currentAdminPass = "abc";
+    // লোকাল স্টোরেজে পাসওয়ার্ড না থাকলে ডিফল্ট abc সেট
+    if (!localStorage.getItem("adminPassword")) {
+      localStorage.setItem("adminPassword", "abc");
+    }
 
     function login() {
       const username = document.getElementById('username').value.trim();
       const password = document.getElementById('password').value.trim();
       const error = document.getElementById('error');
-
       if (username === 'admin' && password === 'abc') {
         document.getElementById('loginPanel').style.display = 'none';
         document.getElementById('dashboardPanel').style.display = 'block';
@@ -209,8 +203,9 @@
     function verifyAdmin() {
       const pass = document.getElementById('adminPassword').value.trim();
       const err = document.getElementById('adminError');
+      const savedPass = localStorage.getItem("adminPassword");
 
-      if (pass === currentAdminPass) {
+      if (pass === savedPass) {
         document.getElementById('dashboardPanel').style.display = 'none';
         document.getElementById('adminButtonSection').style.display = 'block';
       } else {
@@ -226,26 +221,26 @@
     function changeAdminPassword() {
       const oldPass = document.getElementById('oldPass').value.trim();
       const newPass = document.getElementById('newPass').value.trim();
+      const savedPass = localStorage.getItem("adminPassword");
       const success = document.getElementById('passChangeSuccess');
       const error = document.getElementById('passChangeError');
 
       success.innerText = '';
       error.innerText = '';
 
-      if (oldPass !== currentAdminPass) {
+      if (oldPass !== savedPass) {
         error.innerText = 'বর্তমান পাসওয়ার্ড সঠিক নয়!';
         return;
       }
-
       if (newPass.length < 3) {
         error.innerText = 'নতুন পাসওয়ার্ড কমপক্ষে ৩ অক্ষরের হতে হবে!';
         return;
       }
 
-      currentAdminPass = newPass;
+      localStorage.setItem("adminPassword", newPass);
       success.innerText = 'পাসওয়ার্ড সফলভাবে পরিবর্তন হয়েছে!';
     }
   </script>
 
 </body>
-  </html>
+</html>
