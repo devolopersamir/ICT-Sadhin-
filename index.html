@@ -1,229 +1,78 @@
-<!DOCTYPE html><html lang="bn">
+<!DOCTYPE html>
+<html lang="bn">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ICT SADHIN QUIZ | Campus Leader ২০২৫</title>
-  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri&display=swap" rel="stylesheet">
+  <title>আইসিটি স্বাধীন পোর্টাল</title>
+  <link href="https://fonts.maateen.me/solaiman-lipi/font.css" rel="stylesheet">
   <style>
-    :root {
-      --primary-color: #2e7d32;
-      --primary-gradient: linear-gradient(90deg, #66bb6a, #2e7d32);
-      --secondary-gradient: linear-gradient(135deg, #c8e6c9, #b2dfdb);
-      --shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
-      --glass-bg: rgba(255, 255, 255, 0.7);
-      --border-color: #66bb6a;
-      --input-hover-bg: rgba(255, 255, 255, 0.9);
-    }body {
-  margin: 0;
-  font-family: 'Hind Siliguri', sans-serif;
-  background: var(--secondary-gradient);
-  color: #2e2e2e;
-  animation: fadeIn 1s ease-in-out;
-  backdrop-filter: blur(6px);
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-header {
-  background: var(--primary-gradient);
-  color: white;
-  padding: 50px 20px 40px;
-  text-align: center;
-  font-size: 3rem;
-  font-weight: bold;
-  letter-spacing: 2px;
-  box-shadow: var(--shadow);
-  border-bottom: 4px solid #1b5e20;
-}
-
-.brand-title {
-  font-size: 2.5rem;
-  color: white;
-  text-transform: uppercase;
-  margin-bottom: 8px;
-}
-
-.event-tagline {
-  font-size: 1.6rem;
-  color: white;
-  font-weight: 600;
-  margin-top: -10px;
-}
-
-.container {
-  max-width: 700px;
-  margin: 60px auto;
-  padding: 40px;
-  background: var(--glass-bg);
-  border-radius: 20px;
-  box-shadow: var(--shadow);
-  border: 1px solid var(--border-color);
-  backdrop-filter: blur(12px);
-  transition: transform 0.3s ease, box-shadow 0.3s;
-}
-
-.container:hover {
-  transform: scale(1.02);
-  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.2);
-}
-
-h2 {
-  text-align: center;
-  color: var(--primary-color);
-  margin-bottom: 30px;
-  font-size: 2rem;
-}
-
-label {
-  display: block;
-  margin-bottom: 8px;
-  margin-top: 18px;
-  font-weight: 600;
-  color: #333;
-}
-
-input, select {
-  width: 100%;
-  padding: 16px;
-  margin-top: 8px;
-  border: 2px solid #ccc;
-  border-radius: 14px;
-  font-size: 1rem;
-  background-color: rgba(255, 255, 255, 0.85);
-  transition: all 0.3s ease;
-  box-sizing: border-box;
-}
-
-input:focus, select:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 5px 2px rgba(102, 187, 106, 0.3);
-  background-color: var(--input-hover-bg);
-}
-
-button {
-  width: 100%;
-  padding: 18px;
-  background: var(--primary-gradient);
-  color: white;
-  border: none;
-  border-radius: 14px;
-  font-size: 1.3rem;
-  margin-top: 35px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-}
-
-button:hover {
-  background: linear-gradient(90deg, #388e3c, #1b5e20);
-  transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-}
-
-@media (max-width: 600px) {
-  header {
-    font-size: 2rem;
-    padding: 30px 10px;
-  }
-  .container {
-    margin: 20px;
-    padding: 24px;
-  }
-}
-
+    body {
+      font-family: 'SolaimanLipi', sans-serif;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #006747;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-size: 28px;
+    }
+    .login-container {
+      background-color: white;
+      width: 400px;
+      margin: 100px auto;
+      padding: 30px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      text-align: center;
+    }
+    input[type="text"], input[type="password"] {
+      width: 90%;
+      padding: 10px;
+      margin: 10px 0;
+      font-size: 16px;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #006747;
+      color: white;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .error {
+      color: red;
+      margin-top: 10px;
+    }
   </style>
-  <script>
-    const districtsByDivision = {
-      ঢাকা: ["ঢাকা", "গাজীপুর", "নারায়ণগঞ্জ", "টাঙ্গাইল"],
-      চট্টগ্রাম: ["চট্টগ্রাম", "কক্সবাজার", "ব্রাহ্মণবাড়িয়া"],
-      রাজশাহী: ["রাজশাহী", "নাটোর", "পাবনা"],
-      খুলনা: ["খুলনা", "যশোর", "সাতক্ষীরা"],
-      বরিশাল: ["বরিশাল", "পটুয়াখালী", "ভোলা"],
-      সিলেট: ["সিলেট", "মৌলভীবাজার", "সুনামগঞ্জ"],
-      রংপুর: ["রংপুর", "দিনাজপুর", "নীলফামারী"],
-      ময়মনসিংহ: ["ময়মনসিংহ", "জামালপুর", "শেরপুর"]
-    };function updateDistricts() {
-  const divisionSelect = document.getElementById('division');
-  const districtSelect = document.getElementById('district');
-  const selectedDivision = divisionSelect.value;
-
-  // Clear old options
-  districtSelect.innerHTML = '';
-  const districts = districtsByDivision[selectedDivision] || [];
-
-  districts.forEach(district => {
-    const option = document.createElement('option');
-    option.value = district;
-    option.textContent = district;
-    districtSelect.appendChild(option);
-  });
-}
-
-  </script>
 </head>
 <body>
+
   <header>
-    <div class="brand-title">ICT SADHIN QUIZ</div>
-    <div class="event-tagline">ক্যাম্পাস লিডার ২০২৫</div>
+    আইসিটি স্বাধীন পোর্টাল
   </header>
-  <div class="container">
-    <h2>রেজিস্ট্রেশন ফর্ম</h2>
-    <form action="https://formsubmit.io/send/database.ictsadhin@gmail.com" method="POST">
-      <input name="_formsubmit_id" type="text" style="display:none">
-      <input name="_redirect" type="hidden" value="https://ictsadhin.com/thank-you.html"><label for="name">পূর্ণ নাম</label>
-  <input type="text" id="name" name="name" required>
 
-  <label for="mobile">মোবাইল নম্বর</label>
-  <input type="tel" id="mobile" name="mobile" required>
-
-  <label for="email">ইমেইল নম্বর</label>
-  <input type="email" id="email" name="email" required>
-
-  <label for="division">বিভাগ</label>
-  <select id="division" name="division" onchange="updateDistricts()">
-    <option value="ঢাকা">ঢাকা</option>
-    <option value="চট্টগ্রাম">চট্টগ্রাম</option>
-    <option value="রাজশাহী">রাজশাহী</option>
-    <option value="খুলনা">খুলনা</option>
-    <option value="বরিশাল">বরিশাল</option>
-    <option value="সিলেট">সিলেট</option>
-    <option value="রংপুর">রংপুর</option>
-    <option value="ময়মনসিংহ">ময়মনসিংহ</option>
-  </select>
-
-  <label for="district">জেলা</label>
-  <select id="district" name="district"></select>
-
-  <label for="school">স্কুলের নাম</label>
-  <input type="text" id="school" name="school" required>
-
-  <label for="category">ক্যাটাগরি</label>
-  <select id="category" name="category">
-    <option value="Minor">Minor (৬ষ্ঠ - ১০ম)</option>
-    <option value="Senior">Senior (কলেজ পর্যায়)</option>
-  </select>
-
-  <label for="class">ক্লাস</label>
-  <select id="class" name="class">
-    <option value="৬ষ্ঠ">৬ষ্ঠ</option>
-    <option value="৭ম">৭ম</option>
-    <option value="৮ম">৮ম</option>
-    <option value="৯ম">৯ম</option>
-    <option value="১০ম">১০ম</option>
-    <option value="একাদশ">একাদশ</option>
-    <option value="দ্বাদশ">দ্বাদশ</option>
-  </select>
-
-  <label for="whatsapp">হোয়াটসঅ্যাপ নম্বর</label>
-  <input type="tel" id="whatsapp" name="whatsapp" required>
-
-  <button type="submit">রেজিস্টার করুন</button>
-</form>
-
+  <div class="login-container">
+    <h2>লগইন করুন</h2>
+    <input type="text" id="username" placeholder="ইউজারনেম"><br>
+    <input type="password" id="password" placeholder="পাসওয়ার্ড"><br>
+    <button onclick="login()">লগইন</button>
+    <div class="error" id="error"></div>
   </div>
+
+  <script>
+    function login() {
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      if (username === 'admin' && password === 'Samuthe10@Sadhin') {
+        alert('সফলভাবে লগইন হয়েছে!');
+        // এখানে রিডাইরেক্ট করতে পারেন বা অন্য কিছু করতে পারেন
+      } else {
+        document.getElementById('error').innerText = 'ইউজারনেম বা পাসওয়ার্ড ভুল হয়েছে!';
+      }
+    }
+  </script>
+
 </body>
 </html>
