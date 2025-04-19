@@ -1,6 +1,8 @@
-<!DOCTYPE html><html lang="bn">
+<!DOCTYPE html>
+<html lang="bn">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ICT স্বাধীন পোর্টাল</title>
   <link href="https://fonts.maateen.me/solaiman-lipi/font.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -55,7 +57,7 @@
       text-align: center;
       margin-top: 60px;
     }
-    .dashboard button {
+    .dashboard button, .admin-button-section button {
       display: flex;
       align-items: center;
       justify-content: center;
@@ -124,17 +126,37 @@
       color: black !important;
       font-weight: bold;
     }
+
+    /* Responsiveness */
+    @media (max-width: 768px) {
+      .container {
+        padding: 20px;
+      }
+      header {
+        font-size: 24px;
+      }
+      .dashboard button, .admin-button-section button {
+        width: 80%;
+      }
+      .admin-panel input {
+        width: 80%;
+      }
+    }
   </style>
 </head>
 <body>
-  <header>আইসিটি স্বাধীন পোর্টাল</header>  <div class="container" id="loginPanel">
+  <header>আইসিটি স্বাধীন পোর্টাল</header>
+
+  <div class="container" id="loginPanel">
     <h2>লগইন করুন</h2>
     <input type="text" id="username" placeholder="ইউজারনেম"><br>
     <input type="password" id="password" placeholder="পাসওয়ার্ড"><br>
     <button onclick="login()">লগইন</button>
     <div class="error" id="error"></div>
     <div class="footer">© সামির তালুকদার - আইসিটি স্বাধীন হতে সংরক্ষিত</div>
-  </div>  <div class="dashboard" id="dashboardPanel">
+  </div>
+
+  <div class="dashboard" id="dashboardPanel">
     <button onclick="showAdminAuth()">
       <i class="fas fa-user-shield"></i> প্রশাসনিক লগইন
     </button>
@@ -148,7 +170,9 @@
       <button onclick="verifyAdmin()">যাচাই করুন</button>
       <div class="error" id="adminError"></div>
     </div>
-  </div>  <div class="admin-button-section" id="adminButtonSection">
+  </div>
+
+  <div class="admin-button-section" id="adminButtonSection">
     <button onclick="showPasswordChange()">
       <i class="fas fa-key"></i> পাসওয়ার্ড পরিবর্তন করুন
     </button>
@@ -160,14 +184,24 @@
     <button class="important-btn">
       <i class="fas fa-exclamation-circle"></i> ইম্পর্ট্যান্ট নোট
     </button>
-  </div>  <div class="admin-panel" id="adminPanel">
+    <button onclick="logout()">
+      <i class="fas fa-sign-out-alt"></i> লগআউট
+    </button>
+  </div>
+
+  <div class="admin-panel" id="adminPanel">
     <h2>প্রশাসনিক পাসওয়ার্ড পরিবর্তন</h2>
     <input type="password" id="oldPass" placeholder="বর্তমান পাসওয়ার্ড"><br>
     <input type="password" id="newPass" placeholder="নতুন পাসওয়ার্ড"><br>
     <button onclick="changeAdminPassword()">পাসওয়ার্ড পরিবর্তন করুন</button>
     <div class="success" id="passChangeSuccess"></div>
     <div class="error" id="passChangeError"></div>
-  </div>  <script>
+    <button onclick="backToDashboard()">
+      <i class="fas fa-arrow-left"></i> আগের পেইজে ফিরে যান
+    </button>
+  </div>
+
+  <script>
     if (!localStorage.getItem("adminPassword")) {
       localStorage.setItem("adminPassword", "abc");
     }
@@ -228,5 +262,17 @@
       localStorage.setItem("adminPassword", newPass);
       success.innerText = 'পাসওয়ার্ড সফলভাবে পরিবর্তন হয়েছে!';
     }
-  </script></body>
+
+    function backToDashboard() {
+      document.getElementById('adminPanel').style.display = 'none';
+      document.getElementById('adminButtonSection').style.display = 'block';
+    }
+
+    function logout() {
+      localStorage.removeItem("adminPassword");
+      document.getElementById('adminButtonSection').style.display = 'none';
+      document.getElementById('loginPanel').style.display = 'block';
+    }
+  </script>
+</body>
 </html>
