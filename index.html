@@ -50,6 +50,7 @@
       font-size: 17px;
       border-radius: 8px;
       cursor: pointer;
+      font-family: 'SolaimanLipi', sans-serif;
     }
 
     .error { color: red; margin-top: 15px; }
@@ -57,7 +58,7 @@
 
     .footer { margin-top: 30px; font-size: 14px; color: #666; }
 
-    .dashboard, .admin-panel {
+    .dashboard, .admin-panel, .admin-button-section {
       display: none;
       text-align: center;
       margin-top: 60px;
@@ -78,9 +79,12 @@
       color: white;
       cursor: pointer;
       transition: 0.3s;
+      font-family: 'SolaimanLipi', sans-serif;
     }
 
-    .dashboard i { font-size: 22px; }
+    .dashboard i, .admin-button-section i {
+      font-size: 22px;
+    }
 
     .tooltip {
       font-size: 14px;
@@ -101,6 +105,7 @@
       border: 1px solid #ccc;
       border-radius: 8px;
       font-size: 16px;
+      font-family: 'SolaimanLipi', sans-serif;
     }
 
     .admin-panel button {
@@ -111,6 +116,23 @@
       border-radius: 8px;
       font-size: 16px;
       cursor: pointer;
+      font-family: 'SolaimanLipi', sans-serif;
+    }
+
+    .admin-button-section button {
+      padding: 12px 20px;
+      background-color: #007b59;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 17px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      cursor: pointer;
+      margin: auto;
+      font-family: 'SolaimanLipi', sans-serif;
     }
   </style>
 </head>
@@ -147,6 +169,13 @@
     </div>
   </div>
 
+  <!-- Admin Button Section -->
+  <div class="admin-button-section" id="adminButtonSection">
+    <button onclick="showPasswordChange()">
+      <i class="fas fa-key"></i> পাসওয়ার্ড পরিবর্তন করুন
+    </button>
+  </div>
+
   <!-- Admin Panel -->
   <div class="admin-panel" id="adminPanel">
     <h2>প্রশাসনিক পাসওয়ার্ড পরিবর্তন</h2>
@@ -158,14 +187,14 @@
   </div>
 
   <script>
-    let currentAdminPass = "Sadhin@Admin.Samir";
+    let currentAdminPass = "abc";
 
     function login() {
       const username = document.getElementById('username').value.trim();
       const password = document.getElementById('password').value.trim();
       const error = document.getElementById('error');
 
-      if (username === 'admin' && password === 'Samuthe10@Sadhin') {
+      if (username === 'admin' && password === 'abc') {
         document.getElementById('loginPanel').style.display = 'none';
         document.getElementById('dashboardPanel').style.display = 'block';
       } else {
@@ -183,10 +212,15 @@
 
       if (pass === currentAdminPass) {
         document.getElementById('dashboardPanel').style.display = 'none';
-        document.getElementById('adminPanel').style.display = 'block';
+        document.getElementById('adminButtonSection').style.display = 'block';
       } else {
         err.innerText = 'ভুল প্রশাসনিক পাসওয়ার্ড!';
       }
+    }
+
+    function showPasswordChange() {
+      document.getElementById('adminButtonSection').style.display = 'none';
+      document.getElementById('adminPanel').style.display = 'block';
     }
 
     function changeAdminPassword() {
@@ -203,8 +237,8 @@
         return;
       }
 
-      if (newPass.length < 8) {
-        error.innerText = 'নতুন পাসওয়ার্ড কমপক্ষে ৮ অক্ষরের হতে হবে!';
+      if (newPass.length < 3) {
+        error.innerText = 'নতুন পাসওয়ার্ড কমপক্ষে ৩ অক্ষরের হতে হবে!';
         return;
       }
 
@@ -214,4 +248,4 @@
   </script>
 
 </body>
-</html>
+  </html>
