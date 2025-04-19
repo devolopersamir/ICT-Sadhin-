@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="bn">
+<!DOCTYPE html><html lang="bn">
 <head>
   <meta charset="UTF-8">
   <title>ICT স্বাধীন পোর্টাল</title>
@@ -128,21 +127,14 @@
   </style>
 </head>
 <body>
-
-  <header>আইসিটি স্বাধীন পোর্টাল</header>
-
-  <!-- Login Panel -->
-  <div class="container" id="loginPanel">
+  <header>আইসিটি স্বাধীন পোর্টাল</header>  <div class="container" id="loginPanel">
     <h2>লগইন করুন</h2>
     <input type="text" id="username" placeholder="ইউজারনেম"><br>
     <input type="password" id="password" placeholder="পাসওয়ার্ড"><br>
     <button onclick="login()">লগইন</button>
     <div class="error" id="error"></div>
     <div class="footer">© সামির তালুকদার - আইসিটি স্বাধীন হতে সংরক্ষিত</div>
-  </div>
-
-  <!-- Dashboard Panel -->
-  <div class="dashboard" id="dashboardPanel">
+  </div>  <div class="dashboard" id="dashboardPanel">
     <button onclick="showAdminAuth()">
       <i class="fas fa-user-shield"></i> প্রশাসনিক লগইন
     </button>
@@ -156,30 +148,26 @@
       <button onclick="verifyAdmin()">যাচাই করুন</button>
       <div class="error" id="adminError"></div>
     </div>
-  </div>
-
-  <!-- Admin Button Section -->
-  <div class="admin-button-section" id="adminButtonSection">
+  </div>  <div class="admin-button-section" id="adminButtonSection">
     <button onclick="showPasswordChange()">
       <i class="fas fa-key"></i> পাসওয়ার্ড পরিবর্তন করুন
     </button>
+    <button><i class="fas fa-users-cog"></i> টিম ম্যানেজমেন্ট</button>
+    <button><i class="fas fa-list-ol"></i> অংশগ্রহণকারী তালিকা</button>
+    <button><i class="fas fa-database"></i> প্রশ্ন ডেটাবেইজ</button>
+    <button><i class="fas fa-bullhorn"></i> বিশেষ নোটিশ</button>
+    <button><i class="fas fa-qrcode"></i> কোড নম্বর এবং ট্র্যাকিং</button>
     <button class="important-btn">
       <i class="fas fa-exclamation-circle"></i> ইম্পর্ট্যান্ট নোট
     </button>
-  </div>
-
-  <!-- Admin Panel -->
-  <div class="admin-panel" id="adminPanel">
+  </div>  <div class="admin-panel" id="adminPanel">
     <h2>প্রশাসনিক পাসওয়ার্ড পরিবর্তন</h2>
     <input type="password" id="oldPass" placeholder="বর্তমান পাসওয়ার্ড"><br>
     <input type="password" id="newPass" placeholder="নতুন পাসওয়ার্ড"><br>
     <button onclick="changeAdminPassword()">পাসওয়ার্ড পরিবর্তন করুন</button>
     <div class="success" id="passChangeSuccess"></div>
     <div class="error" id="passChangeError"></div>
-  </div>
-
-  <script>
-    // লোকাল স্টোরেজে পাসওয়ার্ড না থাকলে ডিফল্ট abc সেট
+  </div>  <script>
     if (!localStorage.getItem("adminPassword")) {
       localStorage.setItem("adminPassword", "abc");
     }
@@ -240,7 +228,5 @@
       localStorage.setItem("adminPassword", newPass);
       success.innerText = 'পাসওয়ার্ড সফলভাবে পরিবর্তন হয়েছে!';
     }
-  </script>
-
-</body>
+  </script></body>
 </html>
