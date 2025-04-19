@@ -2,51 +2,74 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>আইসিটি স্বাধীন পোর্টাল</title>
+  <title>ICT স্বাধীন পোর্টাল</title>
   <link href="https://fonts.maateen.me/solaiman-lipi/font.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
-    body {
-      font-family: 'SolaimanLipi', sans-serif;
-      background-color: #f0f2f5;
+    * {
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
+      font-family: 'SolaimanLipi', sans-serif;
     }
-    .container {
+    body {
+      background: linear-gradient(to right, #dbeafe, #f0f4ff);
+      padding: 20px;
+    }
+    .main-box {
       max-width: 400px;
-      margin: 50px auto;
+      margin: auto;
       background: white;
       padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      border-radius: 20px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
       text-align: center;
+      margin-top: 50px;
     }
     input {
       width: 90%;
       padding: 10px;
-      margin: 10px 0;
-      border-radius: 8px;
+      margin: 10px auto;
+      display: block;
       border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 16px;
     }
     button {
-      padding: 10px 20px;
-      margin: 10px;
-      border: none;
-      border-radius: 8px;
-      background-color: #4CAF50;
+      padding: 10px 25px;
+      background-color: #0f766e;
       color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      margin-top: 10px;
       cursor: pointer;
+      transition: background 0.3s ease;
     }
     button:hover {
-      background-color: #45a049;
+      background-color: #115e59;
     }
     .footer {
+      margin-top: 30px;
       text-align: center;
       font-size: 14px;
-      margin-top: 30px;
-      color: gray;
+      color: #6b7280;
     }
     .hidden {
       display: none;
+    }
+    .dashboard-btn, .admin-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .dashboard-btn button, .admin-actions button {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      justify-content: center;
     }
     .popup {
       position: fixed;
@@ -55,165 +78,121 @@
       transform: translate(-50%, -50%);
       background: white;
       padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-      z-index: 999;
-      width: 300px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
       text-align: center;
-    }
-    .popup.show {
-      animation: fadeInUp 0.5s ease forwards;
-    }
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
+      z-index: 999;
     }
   </style>
 </head>
-<body>
-  <div id="loginPanel" class="container">
-    <h2>আইসিটি স্বাধীন পোর্টাল</h2>
+<body><div class="main-box">
+  <h2>ICT স্বাধীন পোর্টাল</h2>
+  <div id="loginPanel">
     <input type="text" id="username" placeholder="ইউজারনেম">
     <input type="password" id="password" placeholder="পাসওয়ার্ড">
-    <button onclick="login()">লগইন</button>
-    <p id="loginError" style="color:red;"></p>
-    <div class="footer">© সামির তালুকদার - আইসিটি স্বাধীন হতে সংরক্ষিত</div>
-  </div>  <div id="dashboard" class="container hidden">
+    <button onclick="login()">লগইন করুন</button>
+  </div>  <div id="dashboard" class="hidden">
     <h3>ড্যাশবোর্ড</h3>
-    <button onclick="openAdmin()">প্রশাসনিক লগইন</button>
-    <button onclick="navigateToAdvisor()">এডভাইসর/টিম লগইন</button>
-    <button onclick="logout()">লগআউট করুন</button>
-  </div>  <div id="adminLoginPanel" class="container hidden">
-    <h3>প্রশাসনিক লগইন</h3>
-    <input type="text" id="adminUser" placeholder="ইউজারনেম">
-    <input type="password" id="adminPass" placeholder="পাসওয়ার্ড">
-    <button onclick="verifyAdmin()">লগইন</button>
-    <p id="adminError" style="color:red;"></p>
-  </div>  <div id="adminPanel" class="container hidden">
-    <h3>প্রশাসনিক প্যানেল</h3>
-    <button onclick="openPage('adminUserList')">টিম ম্যানেজমেন্ট</button>
-    <button>অংশগ্রহণকারী তালিকা</button>
-    <button>প্রশ্ন ডেটাবেইজ</button>
-    <button>বিশেষ নোটিশ</button>
-    <button>কোড নম্বর এবং ট্র্যাকিং</button>
-    <button onclick="backToDashboard()">পেছনে যান</button>
-    <button onclick="logout()">লগআউট করুন</button>
-  </div>  <div id="teamManagementPopup" class="popup hidden">
-    <h3>টিম ম্যানেজমেন্টে স্বাগতম</h3>
-    <button onclick="showTeamForm()">নতুন টিম মেম্বার এড করুন</button>
-    <div id="teamForm" class="hidden">
-      <input type="text" id="teamUser" placeholder="ইউজার">
-      <input type="password" id="teamPass" placeholder="পাসওয়ার্ড">
-      <input type="email" id="teamMail" placeholder="মেইল">
-      <button onclick="addTeamMember()">সংরক্ষণ করুন</button>
-      <div id="teamSaveMsg" style="color:green;"></div>
+    <div class="dashboard-btn">
+      <button onclick="adminLoginPrompt()"><i class="fas fa-user-shield"></i> প্রশাসনিক লগইন</button>
+      <button onclick="teamLogin()"><i class="fas fa-users"></i> এডভাইসর/টিম লগইন</button>
     </div>
-    <button onclick="closeTeamPopup()" style="background:#f44336">বন্ধ করুন</button>
-  </div>  <div id="teamLoginPanel" class="container hidden">
-    <h3>এডভাইসর / টিম লগইন</h3>
-    <input type="text" id="teamLoginUser" placeholder="ইউজার">
-    <input type="password" id="teamLoginPass" placeholder="পাসওয়ার্ড">
-    <button onclick="verifyTeamLogin()">লগইন</button>
-    <div id="teamLoginError" style="color:red;"></div>
-  </div>  <div id="teamDashboard" class="container hidden">
-    <h2 id="welcomeTeamText"></h2>
-    <button onclick="backToLogin()">লগআউট</button>
-  </div>  <script>
-    function login() {
-      const username = document.getElementById('username').value;
-      const password = document.getElementById('password').value;
-      if (username === 'Samuthe10@Sadhin' && password === 'abc') {
-        document.getElementById('loginPanel').style.display = 'none';
-        document.getElementById('dashboard').style.display = 'block';
-      } else {
-        document.getElementById('loginError').innerText = 'ভুল ইউজারনেম বা পাসওয়ার্ড';
-      }
-    }
+    <button onclick="logout()">লগআউট করুন</button>
+  </div>  <div id="adminPanel" class="hidden">
+    <h3>প্রশাসনিক কার্যাবলি</h3>
+    <div class="admin-actions">
+      <button onclick="showTeamManagement()"><i class="fas fa-users-cog"></i> টিম ম্যানেজমেন্ট</button>
+      <button><i class="fas fa-list"></i> অংশগ্রহণকারী তালিকা</button>
+      <button><i class="fas fa-database"></i> প্রশ্ন ডেটাবেইজ</button>
+      <button><i class="fas fa-bullhorn"></i> বিশেষ নোটিশ</button>
+      <button><i class="fas fa-barcode"></i> কোড নম্বর এবং ট্র্যাকিং</button>
+    </div>
+    <button onclick="goBackToDashboard()">← পূর্বে ফিরে যান</button>
+  </div>  <div class="footer">
+    © সামির তালুকদার - আইসিটি স্বাধীন হতে সংরক্ষিত
+  </div>
+</div><div id="popup" class="popup hidden">
+  <p id="popupMsg">আপনি সফলভাবে লগআউট করেছেন।</p>
+  <button onclick="closePopup()">বন্ধ করুন</button>
+</div><div id="teamPopup" class="popup hidden">
+  <p>টিম ম্যানেজমেন্টে স্বাগতম।</p>
+  <input type="text" id="newUser" placeholder="নতুন ইউজারনেম">
+  <input type="password" id="newPass" placeholder="পাসওয়ার্ড">
+  <input type="email" id="newEmail" placeholder="ইমেইল">
+  <button onclick="createTeamUser()">ক্রিয়েট করুন</button>
+  <button onclick="closeTeamPopup()">বন্ধ করুন</button>
+</div><script>
+  const loginData = {
+    username: "Samuthe10@Sadhin",
+    password: "abc"
+  };
 
-    function openAdmin() {
-      document.getElementById('dashboard').style.display = 'none';
-      document.getElementById('adminLoginPanel').style.display = 'block';
-    }
+  const adminData = {
+    username: "Sadhin@Admin.Samir",
+    password: "abc"
+  };
 
-    function verifyAdmin() {
-      const user = document.getElementById('adminUser').value;
-      const pass = document.getElementById('adminPass').value;
-      if (user === 'Sadhin@Admin.Samir' && pass === 'abc') {
-        document.getElementById('adminLoginPanel').style.display = 'none';
-        document.getElementById('adminPanel').style.display = 'block';
-      } else {
-        document.getElementById('adminError').innerText = 'ভুল ইউজারনেম বা পাসওয়ার্ড';
-      }
+  function login() {
+    const u = document.getElementById("username").value;
+    const p = document.getElementById("password").value;
+    if (u === loginData.username && p === loginData.password) {
+      document.getElementById("loginPanel").classList.add("hidden");
+      document.getElementById("dashboard").classList.remove("hidden");
+    } else {
+      alert("ভুল ইউজারনেম অথবা পাসওয়ার্ড");
     }
+  }
 
-    function openPage(pageName) {
-      if (pageName === 'adminUserList') {
-        const popup = document.getElementById('teamManagementPopup');
-        popup.classList.remove('hidden');
-        popup.classList.add('show');
-      }
-    }
+  function logout() {
+    document.getElementById("popupMsg").innerText = "আপনি সফলভাবে লগআউট করেছেন।";
+    document.getElementById("popup").classList.remove("hidden");
+    setTimeout(closePopup, 5000);
+  }
 
-    function showTeamForm() {
-      document.getElementById('teamForm').classList.remove('hidden');
-    }
+  function closePopup() {
+    document.getElementById("popup").classList.add("hidden");
+    location.reload();
+  }
 
-    function closeTeamPopup() {
-      document.getElementById('teamManagementPopup').classList.add('hidden');
-      document.getElementById('teamForm').classList.add('hidden');
-      document.getElementById('teamSaveMsg').innerText = '';
+  function adminLoginPrompt() {
+    const user = prompt("প্রশাসনিক ইউজারনেম লিখুন");
+    const pass = prompt("পাসওয়ার্ড লিখুন");
+    if (user === adminData.username && pass === adminData.password) {
+      document.getElementById("dashboard").classList.add("hidden");
+      document.getElementById("adminPanel").classList.remove("hidden");
+    } else {
+      alert("ভুল প্রশাসনিক তথ্য");
     }
+  }
 
-    function addTeamMember() {
-      const user = document.getElementById('teamUser').value;
-      const pass = document.getElementById('teamPass').value;
-      const mail = document.getElementById('teamMail').value;
-      if (user && pass && mail) {
-        const teamMembers = JSON.parse(localStorage.getItem('teamMembers') || '[]');
-        teamMembers.push({ user, pass, mail });
-        localStorage.setItem('teamMembers', JSON.stringify(teamMembers));
-        document.getElementById('teamSaveMsg').innerText = 'সফলভাবে সংরক্ষণ হয়েছে!';
-        document.getElementById('teamUser').value = '';
-        document.getElementById('teamPass').value = '';
-        document.getElementById('teamMail').value = '';
-      } else {
-        document.getElementById('teamSaveMsg').innerText = 'সব তথ্য পূরণ করুন!';
-      }
-    }
+  function teamLogin() {
+    alert("এডভাইসর/টিম লগইন ফাংশন আসবে পরে");
+  }
 
-    function navigateToAdvisor() {
-      document.getElementById('dashboard').style.display = 'none';
-      document.getElementById('teamLoginPanel').style.display = 'block';
-    }
+  function goBackToDashboard() {
+    document.getElementById("adminPanel").classList.add("hidden");
+    document.getElementById("dashboard").classList.remove("hidden");
+  }
 
-    function verifyTeamLogin() {
-      const user = document.getElementById('teamLoginUser').value;
-      const pass = document.getElementById('teamLoginPass').value;
-      const teamLoginError = document.getElementById('teamLoginError');
-      const teamMembers = JSON.parse(localStorage.getItem('teamMembers') || '[]');
-      const match = teamMembers.find(member => member.user === user && member.pass === pass);
-      if (match) {
-        document.getElementById('teamLoginPanel').style.display = 'none';
-        document.getElementById('teamDashboard').style.display = 'block';
-        document.getElementById('welcomeTeamText').innerText = `স্বাগতম, ${match.user}!`;
-      } else {
-        teamLoginError.innerText = 'ইউজারনেম বা পাসওয়ার্ড ভুল!';
-      }
-    }
+  function showTeamManagement() {
+    document.getElementById("teamPopup").classList.remove("hidden");
+  }
 
-    function backToLogin() {
-      document.getElementById('teamDashboard').style.display = 'none';
-      document.getElementById('loginPanel').style.display = 'block';
-    }
+  function closeTeamPopup() {
+    document.getElementById("teamPopup").classList.add("hidden");
+  }
 
-    function logout() {
-      alert('আপনি সফলভাবে লগআউট করেছেন।');
-      window.location.reload();
+  function createTeamUser() {
+    const user = document.getElementById("newUser").value;
+    const pass = document.getElementById("newPass").value;
+    const email = document.getElementById("newEmail").value;
+    if (user && pass && email) {
+      localStorage.setItem(user, JSON.stringify({ password: pass, email: email }));
+      alert("টিম মেম্বার তৈরি হয়েছে");
+      closeTeamPopup();
+    } else {
+      alert("সব ফিল্ড পূরণ করুন");
     }
-
-    function backToDashboard() {
-      document.getElementById('adminPanel').style.display = 'none';
-      document.getElementById('dashboard').style.display = 'block';
-    }
-  </script></body>
+  }
+</script></body>
 </html>
