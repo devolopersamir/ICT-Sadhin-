@@ -66,14 +66,14 @@
 </head>
 <body>
   <div class="container">
+    <!-- পাসওয়ার্ড ইনপুট সিস্টেম -->
     <h2>স্বাগতম অ্যাডমিন!</h2>
-    
-    <!-- পাসওয়ার্ড ইনপুট -->
     <input type="password" id="password" class="password-input" placeholder="পাসওয়ার্ড দিন">
     <button onclick="checkPassword()" class="logout-btn">লগইন</button>
     <div class="error" id="error">ভুল পাসওয়ার্ড!</div>
-
-    <table id="data-table">
+    
+    <!-- ডেটাবেস টেবিল -->
+    <table id="data-table" style="display: none;">
       <thead>
         <tr>
           <th>নাম</th>
@@ -84,16 +84,19 @@
           <th>স্কুল/কলেজ</th>
           <th>জেলা</th>
           <th>বিভাগ</th>
+          <th>হোয়াটসঅ্যাপ নম্বর</th>
         </tr>
       </thead>
       <tbody id="table-body">
       </tbody>
     </table>
-  </div>  
+
+    <button class="logout-btn" id="logout-btn" style="display:none;" onclick="logout()">লগআউট</button>
+  </div>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+    import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
     const firebaseConfig = {
@@ -111,6 +114,33 @@
     const db = getDatabase(app);
     const auth = getAuth(app);
 
+    // পাসওয়ার্ড যাচাই ফাংশন
+    function checkPassword() {
+      const pass = document.getElementById("password").value;
+      if (pass === "Samuthe10@Sadhin") {
+        sessionStorage.setItem("authenticated", "true");
+        loadAdminPanel();
+      } else {
+        document.getElementById("error").style.display = "block";
+      }
+    }
+
+    // অ্যাডমিন প্যানেল লোড করুন
+    function loadAdminPanel() {
+      if (sessionStorage.getItem("authenticated") === "true") {
+        // ডেটাবেস থেকে তথ্য আনার ফাংশন
+        const dataRef = ref(db, 'registrations');
+        onValue(dataRef, snapshot => {
+          const data = snapshot.val();
+          const dataArray = data ? Object.values(data) : [];
+          renderTable(dataArray);
+        });
+        document.getElementById("data-table").style.display = "table";
+        document.getElementById("logout-btn").style.display = "block";
+      }
+    }
+
+    // ডেটাবেস টেবিল রেন্ডার করা
     function renderTable(data) {
       const tbody = document.getElementById("table-body");
       tbody.innerHTML = "";
@@ -125,40 +155,20 @@
           <td>${item.institution}</td>
           <td>${item.district}</td>
           <td>${item.division}</td>
+          <td>${item.whatsapp}</td>
         `;
         tbody.appendChild(row);
       });
     }
 
-    function checkPassword() {
-      const pass = document.getElementById("password").value;
-      if (pass === "Samuthe10@Sadhin") {
-        sessionStorage.setItem("authenticated", "true");
-        loadAdminPanel();
-      } else {
-        document.getElementById("error").style.display = "block";
-      }
-    }
-
-    function loadAdminPanel() {
-      if (sessionStorage.getItem("authenticated") === "true") {
-        const dataRef = ref(db, 'registrations');
-        onValue(dataRef, snapshot => {
-          const data = snapshot.val();
-          const dataArray = data ? Object.values(data) : [];
-          renderTable(dataArray);
+    // লগআউট ফাংশন
+    window.logout = function() {
+      sessionStorage.removeItem("authenticated");
+      signOut(auth).then(() => {
+        alert("আপনি সফলভাবে লগআউট করেছেন।");
+        window.location.reload();
       });
     }
-  }
-
-  window.logout = function() {
-    sessionStorage.removeItem("authenticated");
-    signOut(auth).then(() => {
-      alert("আপনি সফলভাবে লগআউট করেছেন।");
-      window.location.reload();
-    });
-  }
-
   </script>
 </body>
 </html>
