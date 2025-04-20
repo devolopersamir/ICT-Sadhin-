@@ -26,7 +26,7 @@
       border-radius: 20px;
       box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
       padding: 30px;
-      max-width: 450px;
+      max-width: 500px;
       width: 100%;
       animation: fadeIn 0.5s ease;
     }
@@ -47,16 +47,15 @@
       margin-bottom: 25px;
       line-height: 1.5;
     }
-    input {
+    input, select {
       width: 100%;
-      padding: 14px;
+      padding: 12px;
       margin-bottom: 15px;
       border: 1px solid #ccc;
       border-radius: 12px;
       font-size: 16px;
-      transition: all 0.3s ease;
     }
-    input:focus {
+    input:focus, select:focus {
       border-color: #3b82f6;
       box-shadow: 0 0 8px rgba(59, 130, 246, 0.3);
       outline: none;
@@ -86,27 +85,52 @@
 <body>
   <div class="form-container">
     <h2>আইসিটি স্বাধীন কুইজ প্রতিযোগিতা<br>ক্যাম্পাস লিডার রেজিস্ট্রেশন - ২০২৫</h2>
-    <input type="text" id="pName" placeholder="আপনার নাম" />
-    <input type="text" id="pClass" placeholder="শ্রেণি" />
-    <input type="text" id="pSchool" placeholder="শিক্ষাপ্রতিষ্ঠানের নাম" />
-    <input type="text" id="pMobile" placeholder="মোবাইল নম্বর" />
-    <input type="email" id="pEmail" placeholder="ইমেইল" />
-    <button onclick="submitForm()">জমা দিন</button>
-  </div>
+    
+    <input type="text" placeholder="পূর্ণ নাম">
+    <input type="number" placeholder="বয়স">
+    <input type="text" placeholder="মোবাইল নম্বর">
+    
+    <select>
+      <option disabled selected>শ্রেণি নির্বাচন করুন</option>
+      <option>৬ষ্ঠ</option>
+      <option>৭ম</option>
+      <option>৮ম</option>
+      <option>৯ম</option>
+      <option>১০ম</option>
+      <option>কলেজ</option>
+    </select>
 
-  <script>
-    function submitForm() {
-      const name = document.getElementById("pName").value;
-      const cls = document.getElementById("pClass").value;
-      const school = document.getElementById("pSchool").value;
-      const mobile = document.getElementById("pMobile").value;
-      const email = document.getElementById("pEmail").value;
-      if (name && cls && school && mobile && email) {
-        alert("অংশগ্রহণকারী তথ্য সফলভাবে গ্রহণ করা হয়েছে!");
-      } else {
-        alert("অনুগ্রহ করে সকল তথ্য পূরণ করুন।");
-      }
-    }
-  </script>
+    <input type="text" placeholder="স্কুল/কলেজের নাম">
+
+    <select>
+      <option disabled selected>বিভাগ নির্বাচন করুন</option>
+      <option>ঢাকা</option>
+      <option>চট্টগ্রাম</option>
+      <option>রাজশাহী</option>
+      <option>খুলনা</option>
+      <option>বরিশাল</option>
+      <option>সিলেট</option>
+      <option>রংপুর</option>
+      <option>ময়মনসিংহ</option>
+    </select>
+
+    <select>
+      <option disabled selected>জেলা নির্বাচন করুন</option>
+      <option>ঢাকা</option>
+      <option>চট্টগ্রাম</option>
+      <option>রাজশাহী</option>
+      <option>খুলনা</option>
+      <option>সিলেট</option>
+      <option>বরিশাল</option>
+      <option>রংপুর</option>
+      <option>ময়মনসিংহ</option>
+      <!-- এখানে চাইলে ৬৪ জেলার লিস্ট যোগ করে দিতে পারি -->
+    </select>
+
+    <input type="email" placeholder="ইমেইল">
+    <input type="text" placeholder="হোয়াটসঅ্যাপ নম্বর">
+
+    <button onclick="alert('তথ্য গ্রহণ করা হয়েছে')">জমা দিন</button>
+  </div>
 </body>
 </html>
