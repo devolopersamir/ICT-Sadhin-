@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>ক্যাম্পাস লিডার রেজিস্ট্রেশন</title>
   <link href="https://fonts.maateen.me/solaiman-lipi/font.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
   <style>
     * {
       font-family: 'SolaimanLipi', sans-serif;
@@ -19,8 +20,8 @@
       padding: 20px;
     }
     .form-container {
-      background: rgba(255, 255, 255, 0.6);
-      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(8px);
       border-radius: 20px;
       box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
       padding: 30px;
@@ -34,14 +35,12 @@
       margin-bottom: 25px;
       line-height: 1.5;
     }
-
     @media (max-width: 480px) {
       .form-container h2 {
         font-size: 18px;
         line-height: 1.4;
       }
     }
-
     input, select {
       width: 100%;
       padding: 12px;
@@ -66,14 +65,16 @@
   </style>
 </head>
 <body>
-  <div class="form-container">
-    <h2>আইসিটি স্বাধীন কুইজ প্রতিযোগিতা<br>ক্যাম্পাস লিডার রেজিস্ট্রেশন - ২০২৫</h2>
 
-    <input type="text" placeholder="পূর্ণ নাম">
-    <input type="number" placeholder="বয়স">
-    <input type="text" placeholder="মোবাইল নম্বর">
+<div class="form-container">
+  <h2>আইসিটি স্বাধীন কুইজ প্রতিযোগিতা<br>ক্যাম্পাস লিডার রেজিস্ট্রেশন - ২০২৫</h2>
 
-    <select>
+  <form id="regForm" onsubmit="sendEmail(event)">
+    <input type="text" name="full_name" placeholder="পূর্ণ নাম" required>
+    <input type="number" name="age" placeholder="বয়স" required>
+    <input type="text" name="mobile" placeholder="মোবাইল নম্বর" required>
+
+    <select name="class" required>
       <option disabled selected>শ্রেণি নির্বাচন করুন</option>
       <option>৬ষ্ঠ</option>
       <option>৭ম</option>
@@ -83,9 +84,9 @@
       <option>কলেজ</option>
     </select>
 
-    <input type="text" placeholder="স্কুল/কলেজের নাম">
+    <input type="text" name="institution" placeholder="স্কুল/কলেজের নাম" required>
 
-    <select id="division" onchange="loadDistricts()">
+    <select name="division" id="division" onchange="loadDistricts()" required>
       <option value="" disabled selected>বিভাগ নির্বাচন করুন</option>
       <option value="dhaka">ঢাকা</option>
       <option value="chattogram">চট্টগ্রাম</option>
@@ -97,46 +98,66 @@
       <option value="mymensingh">ময়মনসিংহ</option>
     </select>
 
-    <select id="district" disabled>
-      <option disabled selected>প্রথমে বিভাগ নির্বাচন করুন</option>
+    <select name="district" id="district" disabled required>
+      <option disabled selected>জেলা নির্বাচন করুন</option>
     </select>
 
-    <input type="email" placeholder="ইমেইল">
-    <input type="text" placeholder="হোয়াটসঅ্যাপ নম্বর">
+    <input type="email" name="email" placeholder="ইমেইল" required>
+    <input type="text" name="whatsapp" placeholder="হোয়াটসঅ্যাপ নম্বর">
 
-    <button onclick="alert('তথ্য গ্রহণ করা হয়েছে')">জমা দিন</button>
-  </div>
+    <button type="submit">জমা দিন</button>
+  </form>
+</div>
 
-  <script>
-    const districts = {
-      dhaka: ["ঢাকা", "গাজীপুর", "নারায়ণগঞ্জ", "টাঙ্গাইল", "মুন্সীগঞ্জ", "মানিকগঞ্জ", "রাজবাড়ী", "ফরিদপুর", "মাদারীপুর", "গোপালগঞ্জ", "কিশোরগঞ্জ", "নরসিংদী"],
-      chattogram: ["চট্টগ্রাম", "কক্সবাজার", "খাগড়াছড়ি", "রাঙামাটি", "বান্দরবান", "ব্রাহ্মণবাড়িয়া", "কুমিল্লা", "নোয়াখালী", "লক্ষ্মীপুর", "ফেনী", "চাঁদপুর"],
-      rajshahi: ["রাজশাহী", "নওগাঁ", "নাটোর", "চাঁপাইনবাবগঞ্জ", "বগুড়া", "জয়পুরহাট", "পাবনা", "সিরাজগঞ্জ"],
-      khulna: ["খুলনা", "যশোর", "নড়াইল", "বাগেরহাট", "চুয়াডাঙ্গা", "মাগুরা", "মেহেরপুর", "সাতক্ষীরা", "কুষ্টিয়া", "ঝিনাইদহ"],
-      barisal: ["বরিশাল", "পটুয়াখালী", "ভোলা", "বরগুনা", "পিরোজপুর", "ঝালকাঠি"],
-      sylhet: ["সিলেট", "মৌলভীবাজার", "হবিগঞ্জ", "সুনামগঞ্জ"],
-      rangpur: ["রংপুর", "দিনাজপুর", "ঠাকুরগাঁও", "নীলফামারী", "পঞ্চগড়", "কুড়িগ্রাম", "লালমনিরহাট", "গাইবান্ধা"],
-      mymensingh: ["ময়মনসিংহ", "জামালপুর", "নেত্রকোনা", "শেরপুর"]
-    };
+<script>
+  // EmailJS Init
+  (function() {
+    emailjs.init("zcUdlLGlE-VYIZj9E");
+  })();
 
-    function loadDistricts() {
-      const division = document.getElementById("division").value;
-      const districtSelect = document.getElementById("district");
+  // Districts Object
+  const districts = {
+    dhaka: ["ঢাকা", "গাজীপুর", "নারায়ণগঞ্জ", "টাঙ্গাইল", "মুন্সীগঞ্জ", "মানিকগঞ্জ", "রাজবাড়ী", "ফরিদপুর", "মাদারীপুর", "গোপালগঞ্জ", "কিশোরগঞ্জ", "নরসিংদী"],
+    chattogram: ["চট্টগ্রাম", "কক্সবাজার", "খাগড়াছড়ি", "রাঙামাটি", "বান্দরবান", "ব্রাহ্মণবাড়িয়া", "কুমিল্লা", "নোয়াখালী", "লক্ষ্মীপুর", "ফেনী", "চাঁদপুর"],
+    rajshahi: ["রাজশাহী", "নওগাঁ", "নাটোর", "চাঁপাইনবাবগঞ্জ", "বগুড়া", "জয়পুরহাট", "পাবনা", "সিরাজগঞ্জ"],
+    khulna: ["খুলনা", "যশোর", "নড়াইল", "বাগেরহাট", "চুয়াডাঙ্গা", "মাগুরা", "মেহেরপুর", "সাতক্ষীরা", "কুষ্টিয়া", "ঝিনাইদহ"],
+    barisal: ["বরিশাল", "পটুয়াখালী", "ভোলা", "বরগুনা", "পিরোজপুর", "ঝালকাঠি"],
+    sylhet: ["সিলেট", "মৌলভীবাজার", "হবিগঞ্জ", "সুনামগঞ্জ"],
+    rangpur: ["রংপুর", "দিনাজপুর", "ঠাকুরগাঁও", "নীলফামারী", "পঞ্চগড়", "কুড়িগ্রাম", "লালমনিরহাট", "গাইবান্ধা"],
+    mymensingh: ["ময়মনসিংহ", "জামালপুর", "নেত্রকোনা", "শেরপুর"]
+  };
 
-      districtSelect.innerHTML = '<option disabled selected>জেলা নির্বাচন করুন</option>';
+  function loadDistricts() {
+    const division = document.getElementById("division").value;
+    const districtSelect = document.getElementById("district");
 
-      if (districts[division]) {
-        districtSelect.disabled = false;
-        districts[division].forEach(district => {
-          const option = document.createElement("option");
-          option.value = district;
-          option.innerText = district;
-          districtSelect.appendChild(option);
-        });
-      } else {
-        districtSelect.disabled = true;
-      }
+    districtSelect.innerHTML = '<option disabled selected>জেলা নির্বাচন করুন</option>';
+
+    if (districts[division]) {
+      districtSelect.disabled = false;
+      districts[division].forEach(district => {
+        const option = document.createElement("option");
+        option.value = district;
+        option.innerText = district;
+        districtSelect.appendChild(option);
+      });
+    } else {
+      districtSelect.disabled = true;
     }
-  </script>
+  }
+
+  function sendEmail(e) {
+    e.preventDefault();
+    emailjs.sendForm('service_cp2jdva', 'template_qsu0t34', e.target)
+      .then(function(response) {
+        alert("✅ সফলভাবে জমা হয়েছে! ইমেইল চেক করুন।");
+        e.target.reset();
+        document.getElementById('district').disabled = true;
+      }, function(error) {
+        alert("❌ সমস্যা হয়েছে! আবার চেষ্টা করুন।");
+      });
+  }
+</script>
+
 </body>
 </html>
