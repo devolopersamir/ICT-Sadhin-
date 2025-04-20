@@ -9,8 +9,6 @@
     * {
       font-family: 'SolaimanLipi', sans-serif;
       box-sizing: border-box;
-      margin: 0;
-      padding: 0;
     }
     body {
       background: linear-gradient(135deg, #d0e4ff, #f0f4ff);
@@ -28,17 +26,6 @@
       padding: 30px;
       max-width: 500px;
       width: 100%;
-      animation: fadeIn 0.5s ease;
-    }
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
     }
     .form-container h2 {
       text-align: center;
@@ -55,11 +42,6 @@
       border-radius: 12px;
       font-size: 16px;
     }
-    input:focus, select:focus {
-      border-color: #3b82f6;
-      box-shadow: 0 0 8px rgba(59, 130, 246, 0.3);
-      outline: none;
-    }
     button {
       width: 100%;
       padding: 14px;
@@ -69,27 +51,17 @@
       border-radius: 12px;
       font-size: 16px;
       cursor: pointer;
-      transition: background-color 0.3s ease, transform 0.2s;
-    }
-    button:hover {
-      background-color: #1d4ed8;
-      transform: translateY(-1px);
-    }
-    @media (max-width: 480px) {
-      .form-container {
-        padding: 20px;
-      }
     }
   </style>
 </head>
 <body>
   <div class="form-container">
     <h2>আইসিটি স্বাধীন কুইজ প্রতিযোগিতা<br>ক্যাম্পাস লিডার রেজিস্ট্রেশন - ২০২৫</h2>
-    
+
     <input type="text" placeholder="পূর্ণ নাম">
     <input type="number" placeholder="বয়স">
     <input type="text" placeholder="মোবাইল নম্বর">
-    
+
     <select>
       <option disabled selected>শ্রেণি নির্বাচন করুন</option>
       <option>৬ষ্ঠ</option>
@@ -102,29 +74,20 @@
 
     <input type="text" placeholder="স্কুল/কলেজের নাম">
 
-    <select>
+    <select id="division" onchange="loadDistricts()">
       <option disabled selected>বিভাগ নির্বাচন করুন</option>
-      <option>ঢাকা</option>
-      <option>চট্টগ্রাম</option>
-      <option>রাজশাহী</option>
-      <option>খুলনা</option>
-      <option>বরিশাল</option>
-      <option>সিলেট</option>
-      <option>রংপুর</option>
-      <option>ময়মনসিংহ</option>
+      <option value="dhaka">ঢাকা</option>
+      <option value="chattogram">চট্টগ্রাম</option>
+      <option value="rajshahi">রাজশাহী</option>
+      <option value="khulna">খুলনা</option>
+      <option value="barisal">বরিশাল</option>
+      <option value="sylhet">সিলেট</option>
+      <option value="rangpur">রংপুর</option>
+      <option value="mymensingh">ময়মনসিংহ</option>
     </select>
 
-    <select>
+    <select id="district">
       <option disabled selected>জেলা নির্বাচন করুন</option>
-      <option>ঢাকা</option>
-      <option>চট্টগ্রাম</option>
-      <option>রাজশাহী</option>
-      <option>খুলনা</option>
-      <option>সিলেট</option>
-      <option>বরিশাল</option>
-      <option>রংপুর</option>
-      <option>ময়মনসিংহ</option>
-      <!-- এখানে চাইলে ৬৪ জেলার লিস্ট যোগ করে দিতে পারি -->
     </select>
 
     <input type="email" placeholder="ইমেইল">
@@ -132,5 +95,33 @@
 
     <button onclick="alert('তথ্য গ্রহণ করা হয়েছে')">জমা দিন</button>
   </div>
+
+  <script>
+    const districts = {
+      dhaka: ["ঢাকা", "গাজীপুর", "নারায়ণগঞ্জ", "টাঙ্গাইল", "মুন্সীগঞ্জ", "মানিকগঞ্জ", "রাজবাড়ী", "ফরিদপুর", "মাদারীপুর", "গোপালগঞ্জ", "কিশোরগঞ্জ", "নরসিংদী"],
+      chattogram: ["চট্টগ্রাম", "কক্সবাজার", "খাগড়াছড়ি", "রাঙামাটি", "বান্দরবান", "ব্রাহ্মণবাড়িয়া", "কুমিল্লা", "নোয়াখালী", "লক্ষ্মীপুর", "ফেনী", "চাঁদপুর"],
+      rajshahi: ["রাজশাহী", "নওগাঁ", "নাটোর", "চাঁপাইনবাবগঞ্জ", "বগুড়া", "জয়পুরহাট", "পাবনা", "সিরাজগঞ্জ"],
+      khulna: ["খুলনা", "যশোর", "নড়াইল", "বাগেরহাট", "চুয়াডাঙ্গা", "মাগুরা", "মেহেরপুর", "সাতক্ষীরা", "কুষ্টিয়া", "ঝিনাইদহ"],
+      barisal: ["বরিশাল", "পটুয়াখালী", "ভোলা", "বরগুনা", "পিরোজপুর", "ঝালকাঠি"],
+      sylhet: ["সিলেট", "মৌলভীবাজার", "হবিগঞ্জ", "সুনামগঞ্জ"],
+      rangpur: ["রংপুর", "দিনাজপুর", "ঠাকুরগাঁও", "নীলফামারী", "পঞ্চগড়", "কুড়িগ্রাম", "লালমনিরহাট", "গাইবান্ধা"],
+      mymensingh: ["ময়মনসিংহ", "জামালপুর", "নেত্রকোনা", "শেরপুর"]
+    };
+
+    function loadDistricts() {
+      const division = document.getElementById("division").value;
+      const districtSelect = document.getElementById("district");
+
+      districtSelect.innerHTML = '<option disabled selected>জেলা নির্বাচন করুন</option>';
+      if (districts[division]) {
+        districts[division].forEach(district => {
+          const option = document.createElement("option");
+          option.value = district;
+          option.innerText = district;
+          districtSelect.appendChild(option);
+        });
+      }
+    }
+  </script>
 </body>
 </html>
