@@ -52,6 +52,9 @@
       font-size: 16px;
       cursor: pointer;
     }
+    select:disabled {
+      background-color: #e5e5e5;
+    }
   </style>
 </head>
 <body>
@@ -75,7 +78,7 @@
     <input type="text" placeholder="স্কুল/কলেজের নাম">
 
     <select id="division" onchange="loadDistricts()">
-      <option disabled selected>বিভাগ নির্বাচন করুন</option>
+      <option value="" disabled selected>বিভাগ নির্বাচন করুন</option>
       <option value="dhaka">ঢাকা</option>
       <option value="chattogram">চট্টগ্রাম</option>
       <option value="rajshahi">রাজশাহী</option>
@@ -86,8 +89,8 @@
       <option value="mymensingh">ময়মনসিংহ</option>
     </select>
 
-    <select id="district">
-      <option disabled selected>জেলা নির্বাচন করুন</option>
+    <select id="district" disabled>
+      <option disabled selected>প্রথমে বিভাগ নির্বাচন করুন</option>
     </select>
 
     <input type="email" placeholder="ইমেইল">
@@ -113,13 +116,17 @@
       const districtSelect = document.getElementById("district");
 
       districtSelect.innerHTML = '<option disabled selected>জেলা নির্বাচন করুন</option>';
+
       if (districts[division]) {
+        districtSelect.disabled = false;
         districts[division].forEach(district => {
           const option = document.createElement("option");
           option.value = district;
           option.innerText = district;
           districtSelect.appendChild(option);
         });
+      } else {
+        districtSelect.disabled = true;
       }
     }
   </script>
