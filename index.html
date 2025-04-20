@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="bn">
+<!DOCTYPE html><html lang="bn">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -62,60 +61,84 @@
     select:disabled {
       background-color: #e5e5e5;
     }
+    .popup {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background-color: #10b981;
+      color: white;
+      padding: 16px 22px;
+      border-radius: 12px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      animation: slideIn 0.5s ease-out;
+      z-index: 999;
+    }
+    .popup.show {
+      display: flex;
+    }
+    .popup button {
+      background: transparent;
+      border: none;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+    }
+    @keyframes slideIn {
+      from { transform: translateY(100px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
   </style>
 </head>
-<body>
-
-<div class="form-container">
-  <h2>আইসিটি স্বাধীন কুইজ প্রতিযোগিতা<br>ক্যাম্পাস লিডার রেজিস্ট্রেশন - ২০২৫</h2>
-
-  <form id="regForm" onsubmit="sendEmail(event)">
+<body><div class="form-container">
+  <h2>আইসিটি স্বাধীন কুইজ প্রতিযোগিতা<br>ক্যাম্পাস লিডার রেজিস্ট্রেশন - ২০২৫</h2>  <form id="regForm" onsubmit="sendEmail(event)">
     <input type="text" name="full_name" placeholder="পূর্ণ নাম" required>
     <input type="number" name="age" placeholder="বয়স" required>
-    <input type="text" name="mobile" placeholder="মোবাইল নম্বর" required>
+    <input type="text" name="mobile" placeholder="মোবাইল নম্বর" required><select name="class" required>
+  <option disabled selected>শ্রেণি নির্বাচন করুন</option>
+  <option>৬ষ্ঠ</option>
+  <option>৭ম</option>
+  <option>৮ম</option>
+  <option>৯ম</option>
+  <option>১০ম</option>
+  <option>কলেজ</option>
+</select>
 
-    <select name="class" required>
-      <option disabled selected>শ্রেণি নির্বাচন করুন</option>
-      <option>৬ষ্ঠ</option>
-      <option>৭ম</option>
-      <option>৮ম</option>
-      <option>৯ম</option>
-      <option>১০ম</option>
-      <option>কলেজ</option>
-    </select>
+<input type="text" name="institution" placeholder="স্কুল/কলেজের নাম" required>
 
-    <input type="text" name="institution" placeholder="স্কুল/কলেজের নাম" required>
+<select name="division" id="division" onchange="loadDistricts()" required>
+  <option value="" disabled selected>বিভাগ নির্বাচন করুন</option>
+  <option value="dhaka">ঢাকা</option>
+  <option value="chattogram">চট্টগ্রাম</option>
+  <option value="rajshahi">রাজশাহী</option>
+  <option value="khulna">খুলনা</option>
+  <option value="barisal">বরিশাল</option>
+  <option value="sylhet">সিলেট</option>
+  <option value="rangpur">রংপুর</option>
+  <option value="mymensingh">ময়মনসিংহ</option>
+</select>
 
-    <select name="division" id="division" onchange="loadDistricts()" required>
-      <option value="" disabled selected>বিভাগ নির্বাচন করুন</option>
-      <option value="dhaka">ঢাকা</option>
-      <option value="chattogram">চট্টগ্রাম</option>
-      <option value="rajshahi">রাজশাহী</option>
-      <option value="khulna">খুলনা</option>
-      <option value="barisal">বরিশাল</option>
-      <option value="sylhet">সিলেট</option>
-      <option value="rangpur">রংপুর</option>
-      <option value="mymensingh">ময়মনসিংহ</option>
-    </select>
+<select name="district" id="district" disabled required>
+  <option disabled selected>জেলা নির্বাচন করুন</option>
+</select>
 
-    <select name="district" id="district" disabled required>
-      <option disabled selected>জেলা নির্বাচন করুন</option>
-    </select>
+<input type="email" name="email" placeholder="ইমেইল" required>
+<input type="text" name="whatsapp" placeholder="হোয়াটসঅ্যাপ নম্বর">
 
-    <input type="email" name="email" placeholder="ইমেইল" required>
-    <input type="text" name="whatsapp" placeholder="হোয়াটসঅ্যাপ নম্বর">
+<button type="submit">জমা দিন</button>
 
-    <button type="submit">জমা দিন</button>
   </form>
-</div>
-
-<script>
-  // EmailJS Init
+</div><div class="popup" id="successPopup">
+  <span>✅ সফলভাবে জমা হয়েছে! ইমেইল চেক করুন।</span>
+  <button onclick="closePopup()">×</button>
+</div><script>
   (function() {
     emailjs.init("zcUdlLGlE-VYIZj9E");
   })();
 
-  // Districts Object
   const districts = {
     dhaka: ["ঢাকা", "গাজীপুর", "নারায়ণগঞ্জ", "টাঙ্গাইল", "মুন্সীগঞ্জ", "মানিকগঞ্জ", "রাজবাড়ী", "ফরিদপুর", "মাদারীপুর", "গোপালগঞ্জ", "কিশোরগঞ্জ", "নরসিংদী"],
     chattogram: ["চট্টগ্রাম", "কক্সবাজার", "খাগড়াছড়ি", "রাঙামাটি", "বান্দরবান", "ব্রাহ্মণবাড়িয়া", "কুমিল্লা", "নোয়াখালী", "লক্ষ্মীপুর", "ফেনী", "চাঁদপুর"],
@@ -130,7 +153,6 @@
   function loadDistricts() {
     const division = document.getElementById("division").value;
     const districtSelect = document.getElementById("district");
-
     districtSelect.innerHTML = '<option disabled selected>জেলা নির্বাচন করুন</option>';
 
     if (districts[division]) {
@@ -146,18 +168,26 @@
     }
   }
 
+  function showPopup() {
+    const popup = document.getElementById('successPopup');
+    popup.classList.add('show');
+    setTimeout(() => popup.classList.remove('show'), 5000);
+  }
+
+  function closePopup() {
+    document.getElementById('successPopup').classList.remove('show');
+  }
+
   function sendEmail(e) {
     e.preventDefault();
     emailjs.sendForm('service_cp2jdva', 'template_qsu0t34', e.target)
       .then(function(response) {
-        alert("✅ সফলভাবে জমা হয়েছে! ইমেইল চেক করুন।");
+        showPopup();
         e.target.reset();
         document.getElementById('district').disabled = true;
       }, function(error) {
         alert("❌ সমস্যা হয়েছে! আবার চেষ্টা করুন।");
       });
   }
-</script>
-
-</body>
+</script></body>
 </html>
