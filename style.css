@@ -6,22 +6,29 @@
 }
 
 body {
-  background-color: #f5f5f5;
+  background-color: #fdfdfd;
   color: #333;
+  line-height: 1.6;
 }
 
+/* Sticky Header */
 header {
-  background-color: #2c2c6c;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background-color: #1f1f3c;
   padding: 15px 30px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   color: white;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
 header .logo {
-  font-size: 24px;
-  font-weight: 600;
+  font-size: 26px;
+  font-weight: 700;
+  color: #ffca28;
 }
 
 nav a {
@@ -29,32 +36,66 @@ nav a {
   margin: 0 10px;
   text-decoration: none;
   font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+nav a:hover {
+  color: #ffca28;
 }
 
 nav .signup-btn {
-  background-color: #6200ea;
+  background-color: #ffca28;
+  color: #1f1f3c;
   padding: 6px 12px;
   border-radius: 4px;
+  font-weight: bold;
 }
 
 .hero {
-  background: url('https://i.ibb.co/VgzPt1V/world-map-bg.png') no-repeat center center/cover;
+  background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.5)), url('https://i.ibb.co/VgzPt1V/world-map-bg.png') no-repeat center center/cover;
   padding: 100px 30px;
   text-align: center;
   color: white;
-  background-color: #2c2c6c;
+}
+
+.hero h1 {
+  font-size: 48px;
+  animation: fadeInUp 1s ease forwards;
 }
 
 .hero h1 span {
   background-image: linear-gradient(45deg, #ff8a00, #e52e71);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  font-weight: 700;
+  font-weight: 800;
+}
+
+.hero p {
+  font-size: 18px;
+  margin-top: 10px;
+  animation: fadeInUp 1.2s ease forwards;
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 section {
-  padding: 60px 20px;
+  padding: 70px 20px;
   text-align: center;
+}
+
+h2 {
+  font-size: 32px;
+  margin-bottom: 30px;
+  color: #1f1f3c;
 }
 
 .feature-items,
@@ -64,24 +105,36 @@ section {
   justify-content: center;
   gap: 20px;
   flex-wrap: wrap;
-  margin-top: 30px;
 }
 
 .feature-box,
 .sponsor {
   background-color: white;
-  padding: 20px 30px;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  font-weight: 500;
+  padding: 25px 30px;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+  font-weight: 600;
+  min-width: 180px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-box:hover,
+.sponsor:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
 }
 
 .gallery-images img {
-  width: 200px;
+  width: 220px;
   height: 150px;
   object-fit: cover;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  transition: transform 0.3s ease;
+}
+
+.gallery-images img:hover {
+  transform: scale(1.05);
 }
 
 .contact form {
@@ -90,29 +143,39 @@ section {
   display: flex;
   flex-direction: column;
   gap: 15px;
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
 }
 
 .contact input,
 .contact textarea {
   padding: 12px;
-  border: 1px solid #ccc;
+  border: 1px solid #ddd;
   border-radius: 6px;
   font-size: 16px;
 }
 
 .contact button {
   padding: 12px;
-  background-color: #2c2c6c;
+  background-color: #1f1f3c;
   color: white;
   border: none;
   font-weight: bold;
   border-radius: 6px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.contact button:hover {
+  background-color: #2c2c6c;
 }
 
 footer {
   text-align: center;
-  padding: 20px;
-  background-color: #2c2c6c;
-  color: white;
+  padding: 25px;
+  background-color: #1f1f3c;
+  color: #ddd;
+  font-size: 14px;
 }
