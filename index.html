@@ -1,214 +1,72 @@
-<!DOCTYPE html><html lang="bn">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ক্যাম্পাস লিডার রেজিস্ট্রেশন</title>
-  <link href="https://fonts.maateen.me/solaiman-lipi/font.css" rel="stylesheet" />
-  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-  <style>
-    * {
-      font-family: 'SolaimanLipi', sans-serif;
-      box-sizing: border-box;
-    }
-    body {
-      background: linear-gradient(135deg, #d0e4ff, #f0f4ff);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-    }
-    .form-container {
-      background: rgba(255, 255, 255, 0.7);
-      backdrop-filter: blur(8px);
-      border-radius: 20px;
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
-      padding: 30px;
-      max-width: 500px;
-      width: 100%;
-    }
-    .form-container h2 {
-      text-align: center;
-      font-size: 22px;
-      color: #1e3a8a;
-      margin-bottom: 25px;
-      line-height: 1.5;
-    }
-    @media (max-width: 480px) {
-      .form-container h2 {
-        font-size: 18px;
-        line-height: 1.4;
-      }
-    }
-    input, select {
-      width: 100%;
-      padding: 12px;
-      margin-bottom: 15px;
-      border: 1px solid #ccc;
-      border-radius: 12px;
-      font-size: 16px;
-    }
-    button {
-      width: 100%;
-      padding: 14px;
-      background-color: #2563eb;
-      color: white;
-      border: none;
-      border-radius: 12px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-    select:disabled {
-      background-color: #e5e5e5;
-    }
-    .popup {
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
-      background-color: #10b981;
-      color: white;
-      padding: 16px 22px;
-      border-radius: 12px;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-      display: none;
-      align-items: center;
-      justify-content: space-between;
-      gap: 15px;
-      animation: slideIn 0.5s ease-out;
-      z-index: 999;
-    }
-    .popup.show {
-      display: flex;
-    }
-    .popup button {
-      background: transparent;
-      border: none;
-      color: white;
-      font-size: 18px;
-      cursor: pointer;
-    }
-    @keyframes slideIn {
-      from { transform: translateY(100px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bangladesh Youth ICT Forum</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="form-container">
-    <h2>আইসিটি স্বাধীন কুইজ প্রতিযোগিতা<br>ক্যাম্পাস লিডার রেজিস্ট্রেশন - ২০২৫</h2>
-    <form id="regForm" onsubmit="sendEmail(event)">
-      <input type="text" name="full_name" placeholder="পূর্ণ নাম" required>
-      <input type="number" name="age" placeholder="বয়স" required>
-      <input type="text" name="mobile" placeholder="মোবাইল নম্বর" required>
-      <select name="class" required>
-        <option disabled selected>শ্রেণি নির্বাচন করুন</option>
-        <option>৬ষ্ঠ</option>
-        <option>৭ম</option>
-        <option>৮ম</option>
-        <option>৯ম</option>
-        <option>১০ম</option>
-        <option>কলেজ</option>
-      </select>
-      <input type="text" name="institution" placeholder="স্কুল/কলেজের নাম" required>
-      <select name="division" id="division" onchange="loadDistricts()" required>
-        <option value="" disabled selected>বিভাগ নির্বাচন করুন</option>
-        <option value="dhaka">ঢাকা</option>
-        <option value="chattogram">চট্টগ্রাম</option>
-        <option value="rajshahi">রাজশাহী</option>
-        <option value="khulna">খুলনা</option>
-        <option value="barisal">বরিশাল</option>
-        <option value="sylhet">সিলেট</option>
-        <option value="rangpur">রংপুর</option>
-        <option value="mymensingh">ময়মনসিংহ</option>
-      </select>
-      <select name="district" id="district" disabled required>
-        <option disabled selected>জেলা নির্বাচন করুন</option>
-      </select>
-      <input type="email" name="email" placeholder="ইমেইল" required>
-      <input type="text" name="whatsapp" placeholder="হোয়াটসঅ্যাপ নম্বর">
-      <button type="submit">জমা দিন</button>
+  <header>
+    <div class="logo">BYIF</div>
+    <nav>
+      <a href="#">Home</a>
+      <a href="#featured">Featured</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#sponsors">Sponsors</a>
+      <a href="#contact">Contact</a>
+      <a href="#" class="login-btn">Login</a>
+      <a href="#" class="signup-btn">Signup</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-content">
+      <h1><span>YOUTH</span> DEVELOPMENT</h1>
+      <p>Bangladesh Youth ICT Forum - Empowering the Next Generation</p>
+    </div>
+  </section>
+
+  <section id="featured" class="featured">
+    <h2>FEATURED</h2>
+    <div class="feature-items">
+      <div class="feature-box">Tech Training</div>
+      <div class="feature-box">Coding Contest</div>
+      <div class="feature-box">Help Desk Service</div>
+    </div>
+  </section>
+
+  <section id="gallery" class="gallery">
+    <h2>GALLERY</h2>
+    <div class="gallery-images">
+      <img src="https://via.placeholder.com/200x150" alt="Gallery Image 1">
+      <img src="https://via.placeholder.com/200x150" alt="Gallery Image 2">
+      <img src="https://via.placeholder.com/200x150" alt="Gallery Image 3">
+    </div>
+  </section>
+
+  <section id="sponsors" class="sponsors">
+    <h2>SPONSORS</h2>
+    <div class="sponsor-logos">
+      <div class="sponsor">Tech Foundation</div>
+      <div class="sponsor">EduCare</div>
+      <div class="sponsor">Digital Bangla</div>
+    </div>
+  </section>
+
+  <section id="contact" class="contact">
+    <h2>CONTACT US</h2>
+    <form>
+      <input type="text" placeholder="Your Name" required>
+      <input type="email" placeholder="Your Email" required>
+      <textarea placeholder="Your Message" required></textarea>
+      <button type="submit">Send Message</button>
     </form>
-  </div>  <div class="popup" id="successPopup">
-    <span>✅ সফলভাবে জমা হয়েছে! ইমেইল চেক করুন।</span>
-    <button onclick="closePopup()">×</button>
-  </div>  <script>
-    (function() {
-      emailjs.init("zcUdlLGlE-VYIZj9E");
-    })();
+  </section>
 
-    const districts = {
-      dhaka: ["ঢাকা", "গাজীপুর", "নারায়ণগঞ্জ", "টাঙ্গাইল", "মুন্সীগঞ্জ", "মানিকগঞ্জ", "রাজবাড়ী", "ফরিদপুর", "মাদারীপুর", "গোপালগঞ্জ", "কিশোরগঞ্জ", "নরসিংদী"],
-      chattogram: ["চট্টগ্রাম", "কক্সবাজার", "খাগড়াছড়ি", "রাঙামাটি", "বান্দরবান", "ব্রাহ্মণবাড়িয়া", "কুমিল্লা", "নোয়াখালী", "লক্ষ্মীপুর", "ফেনী", "চাঁদপুর"],
-      rajshahi: ["রাজশাহী", "নওগাঁ", "নাটোর", "চাঁপাইনবাবগঞ্জ", "বগুড়া", "জয়পুরহাট", "পাবনা", "সিরাজগঞ্জ"],
-      khulna: ["খুলনা", "যশোর", "নড়াইল", "বাগেরহাট", "চুয়াডাঙ্গা", "মাগুরা", "মেহেরপুর", "সাতক্ষীরা", "কুষ্টিয়া", "ঝিনাইদহ"],
-      barisal: ["বরিশাল", "পটুয়াখালী", "ভোলা", "বরগুনা", "পিরোজপুর", "ঝালকাঠি"],
-      sylhet: ["সিলেট", "মৌলভীবাজার", "হবিগঞ্জ", "সুনামগঞ্জ"],
-      rangpur: ["রংপুর", "দিনাজপুর", "ঠাকুরগাঁও", "নীলফামারী", "পঞ্চগড়", "কুড়িগ্রাম", "লালমনিরহাট", "গাইবান্ধা"],
-      mymensingh: ["ময়মনসিংহ", "জামালপুর", "নেত্রকোনা", "শেরপুর"]
-    };
-
-    function loadDistricts() {
-      const division = document.getElementById("division").value;
-      const districtSelect = document.getElementById("district");
-      districtSelect.innerHTML = '<option disabled selected>জেলা নির্বাচন করুন</option>';
-      if (districts[division]) {
-        districtSelect.disabled = false;
-        districts[division].forEach(district => {
-          const option = document.createElement("option");
-          option.value = district;
-          option.innerText = district;
-          districtSelect.appendChild(option);
-        });
-      } else {
-        districtSelect.disabled = true;
-      }
-    }
-
-    function showPopup() {
-      const popup = document.getElementById('successPopup');
-      popup.classList.add('show');
-      setTimeout(() => popup.classList.remove('show'), 5000);
-    }
-
-    function closePopup() {
-      document.getElementById('successPopup').classList.remove('show');
-    }
-  </script>  <!-- Firebase + Email Submit -->  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyBem5ogP47-em5G-0IBH1Y-QNWaRr5i1ls",
-      authDomain: "sadhincampusleader.firebaseapp.com",
-      projectId: "sadhincampusleader",
-      storageBucket: "sadhincampusleader.firebasestorage.app",
-      messagingSenderId: "748883752992",
-      appId: "1:748883752992:web:65ed94d6c3f16f25e72445",
-      measurementId: "G-CKY3HFJ10C"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    window.sendEmail = async function(e) {
-      e.preventDefault();
-      const form = e.target;
-      const formData = new FormData(form);
-      const data = Object.fromEntries(formData.entries());
-
-      try {
-        await addDoc(collection(db, "campus_leader_entries"), data);
-        emailjs.sendForm('service_cp2jdva', 'template_qsu0t34', form)
-          .then(() => {
-            showPopup();
-            form.reset();
-            document.getElementById('district').disabled = true;
-          }, () => {
-            alert("❌ ইমেইল পাঠাতে সমস্যা হয়েছে!");
-          });
-      } catch (error) {
-        alert("❌ Firebase-এ সংরক্ষণ ব্যর্থ।");
-      }
-    }
-  </script></body>
+  <footer>
+    <p>&copy; 2025 Bangladesh Youth ICT Forum</p>
+  </footer>
+</body>
 </html>
