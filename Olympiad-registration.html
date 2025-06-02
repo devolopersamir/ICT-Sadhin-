@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>অলিম্পিয়াড রেজিস্ট্রেশন</title>
+  <link href="https://fonts.maateen.me/solaiman-lipi/font.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'SolaimanLipi', sans-serif;
+      background: linear-gradient(to right, #1e3c72, #2a5298);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+      color: white;
+    }
+
+    .form-container {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      max-width: 500px;
+      width: 100%;
+      backdrop-filter: blur(8px);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 24px;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 10px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      font-size: 16px;
+    }
+
+    input::placeholder {
+      color: #ccc;
+    }
+
+    button {
+      margin-top: 25px;
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(90deg, #00c9ff, #92fe9d);
+      border: none;
+      border-radius: 10px;
+      font-size: 18px;
+      color: black;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      background: linear-gradient(90deg, #92fe9d, #00c9ff);
+      transform: scale(1.02);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-container">
+    <h2>ডিজিটাল বাংলাদেশ অলিম্পিয়াড ২০২৫ - রেজিস্ট্রেশন</h2>
+    <form id="olympiadForm">
+      <label for="name">পূর্ণ নাম</label>
+      <input type="text" id="name" name="name" placeholder="আপনার নাম লিখুন" required>
+
+      <label for="email">ইমেইল</label>
+      <input type="email" id="email" name="email" placeholder="example@email.com" required>
+
+      <label for="phone">মোবাইল নম্বর</label>
+      <input type="text" id="phone" name="phone" placeholder="০১XXXXXXXXX" required>
+
+      <label for="institution">প্রতিষ্ঠানের নাম</label>
+      <input type="text" id="institution" name="institution" placeholder="বিদ্যালয়/কলেজ/বিশ্ববিদ্যালয়" required>
+
+      <label for="class">শ্রেণি / বর্ষ</label>
+      <select id="class" name="class" required>
+        <option value="">-- নির্বাচন করুন --</option>
+        <option>৬ষ্ঠ - ৮ম শ্রেণি</option>
+        <option>৯ম - ১০ম শ্রেণি</option>
+        <option>এইচএসসি / সমমান</option>
+        <option>বিশ্ববিদ্যালয়</option>
+      </select>
+
+      <label for="district">জেলা</label>
+      <input type="text" id="district" name="district" placeholder="আপনার জেলা" required>
+
+      <button type="submit">রেজিস্ট্রেশন সাবমিট করুন</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById("olympiadForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      alert("আপনার রেজিস্ট্রেশন সফলভাবে গ্রহণ করা হয়েছে! ✅");
+      this.reset();
+    });
+  </script>
+
+</body>
+</html>
