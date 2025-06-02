@@ -1,9 +1,10 @@
-<!DOCTYPE html><html lang="bn">
+<!DOCTYPE html>
+<html lang="bn">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>পার্টিসিপেট লগইন</title>
-  <link href="https://fonts.maateen.me/solaiman-lipi/font.css" rel="stylesheet">
+  <link href="https://fonts.maateen.me/solaiman-lipi/font.css" rel="stylesheet" />
   <style>
     body {
       margin: 0;
@@ -15,90 +16,120 @@
       justify-content: center;
       align-items: center;
       color: white;
-    }.login-box {
-  background: rgba(255, 255, 255, 0.07);
-  padding: 50px 40px;
-  border-radius: 20px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(10px);
-  text-align: center;
-  width: 340px;
-}
-
-.login-box h2 {
-  margin-bottom: 30px;
-  font-size: 26px;
-  border-bottom: 1px solid #ccc;
-  padding-bottom: 10px;
-}
-
-input[type="text"],
-input[type="password"] {
-  width: 100%;
-  padding: 14px;
-  margin: 12px 0;
-  border: none;
-  border-radius: 10px;
-  font-size: 16px;
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
-  outline: none;
-}
-
-input::placeholder {
-  color: #ddd;
-}
-
-.login-btn {
-  width: 100%;
-  padding: 14px;
-  border: none;
-  border-radius: 10px;
-  background: linear-gradient(90deg, #a044ff, #6a3093);
-  color: white;
-  font-size: 18px;
-  cursor: pointer;
-  margin-top: 20px;
-  transition: all 0.3s ease;
-}
-
-.login-btn:hover {
-  background: linear-gradient(90deg, #833ab4, #fd1d1d);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-}
-
-.links {
-  margin-top: 20px;
-}
-
-.links a {
-  display: block;
-  margin: 8px 0;
-  color: #ddd;
-  text-decoration: underline;
-  font-size: 15px;
-  transition: color 0.3s;
-}
-
-.links a:hover {
-  color: #ffffff;
-}
-
+    }
+    .login-box {
+      background: rgba(255, 255, 255, 0.07);
+      padding: 50px 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(10px);
+      text-align: center;
+      width: 340px;
+    }
+    .login-box h2 {
+      margin-bottom: 30px;
+      font-size: 26px;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 10px;
+    }
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 14px;
+      margin: 12px 0;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      outline: none;
+    }
+    input::placeholder {
+      color: #ddd;
+    }
+    .login-btn {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(90deg, #a044ff, #6a3093);
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: all 0.3s ease;
+    }
+    .login-btn:hover {
+      background: linear-gradient(90deg, #833ab4, #fd1d1d);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+    .links {
+      margin-top: 20px;
+    }
+    .links a {
+      display: block;
+      margin: 8px 0;
+      color: #ddd;
+      text-decoration: underline;
+      font-size: 15px;
+      transition: color 0.3s;
+      cursor: pointer;
+    }
+    .links a:hover {
+      color: #ffffff;
+    }
   </style>
 </head>
 <body>
   <div class="login-box">
     <h2>পার্টিসিপেট লগইন</h2>
-    <form action="#" method="post">
-      <input type="text" name="username" placeholder="ইউজারনেম" required>
-      <input type="password" name="password" placeholder="পাসওয়ার্ড" required>
+    <form id="loginForm">
+      <input type="email" name="email" placeholder="ইমেইল" required />
+      <input type="password" name="password" placeholder="পাসওয়ার্ড" required />
       <button type="submit" class="login-btn">লগইন করুন</button>
     </form>
     <div class="links">
-      <a href="#">রেজিস্ট্রেশন করুন</a>
-      <a href="#">পাসওয়ার্ড ভুলে গেছেন?</a>
+      <a href="registration.html">রেজিস্ট্রেশন করুন</a>
+      <a href="reset-password.html">পাসওয়ার্ড ভুলে গেছেন?</a>
     </div>
   </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
+
+  <script>
+    // Firebase config (তোমার রেজিস্ট্রেশন পেজের মতোই)
+    const firebaseConfig = {
+      apiKey: "AIzaSyDZvxLAykn1zQg_EXEUe8JGdNtjNUr1T7k",
+      authDomain: "dgbologin.firebaseapp.com",
+      projectId: "dgbologin",
+      storageBucket: "dgbologin.firebasestorage.app",
+      messagingSenderId: "663923479502",
+      appId: "1:663923479502:web:10d763434a82f731c3919f",
+      measurementId: "G-YDYJFWD1QS",
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    const form = document.getElementById("loginForm");
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const email = form.email.value;
+      const password = form.password.value;
+
+      auth.signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          alert("সফলভাবে লগইন হয়েছে!");
+          // লগইন সফল হলে redirect, ধরুন home.html
+          window.location.href = "home.html";
+        })
+        .catch((error) => {
+          alert("ত্রুটি: " + error.message);
+        });
+    });
+  </script>
 </body>
 </html>
