@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>হোম পেইজ</title>
+  <link href="https://fonts.maateen.me/solaiman-lipi/font.css" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'SolaimanLipi', sans-serif;
+      background: linear-gradient(to right, #283c86, #45a247);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      text-align: center;
+    }
+
+    .home-box {
+      background: rgba(255, 255, 255, 0.08);
+      padding: 40px 30px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(8px);
+      width: 360px;
+    }
+
+    .home-box h2 {
+      font-size: 26px;
+      margin-bottom: 20px;
+    }
+
+    .user-email {
+      font-size: 18px;
+      margin-bottom: 30px;
+      color: #f0f0f0;
+    }
+
+    .logout-btn {
+      padding: 12px 25px;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(90deg, #ff512f, #dd2476);
+      color: white;
+      font-size: 17px;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .logout-btn:hover {
+      background: linear-gradient(90deg, #e94057, #8a2387);
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+  <div class="home-box">
+    <h2>স্বাগতম!</h2>
+    <div class="user-email" id="userEmail">লোড হচ্ছে...</div>
+    <button class="logout-btn" id="logoutBtn">লগআউট</button>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
+
+  <script>
+    // Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyDZvxLAykn1zQg_EXEUe8JGdNtjNUr1T7k",
+      authDomain: "dgbologin.firebaseapp.com",
+      projectId: "dgbologin",
+      storageBucket: "dgbologin.firebasestorage.app",
+      messagingSenderId: "663923479502",
+      appId: "1:663923479502:web:10d763434a82f731c3919f",
+      measurementId: "G-YDYJFWD1QS"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    // Check login status
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        document.getElementById("userEmail").innerText = "আপনার ইমেইল: " + user.email;
+      } else {
+        // User not logged in
+        window.location.href = "participate.html";
+      }
+    });
+
+    // Logout button
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      auth.signOut()
+        .then(() => {
+          alert("আপনি সফলভাবে লগআউট করেছেন।");
+          window.location.href = "participate.html";
+        })
+        .catch(error => {
+          alert("লগআউট করতে সমস্যা হয়েছে: " + error.message);
+        });
+    });
+  </script>
+</body>
+</html>
