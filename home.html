@@ -18,9 +18,15 @@
     }
 
     h1 {
-      margin-bottom: 40px;
+      margin-bottom: 20px;
       font-size: 30px;
       text-align: center;
+    }
+
+    #user-info {
+      margin-bottom: 30px;
+      font-size: 18px;
+      color: #ccc;
     }
 
     .card-container {
@@ -55,7 +61,7 @@
       margin-bottom: 20px;
     }
 
-    .card a, .card button {
+    .card a {
       padding: 10px 20px;
       background: linear-gradient(to right, #00c6ff, #0072ff);
       border: none;
@@ -67,42 +73,92 @@
       transition: background 0.3s;
     }
 
-    .card a:hover, .card button:hover {
+    .card a:hover {
       background: linear-gradient(to right, #0072ff, #00c6ff);
+    }
+
+    .logout-btn {
+      margin-top: 30px;
+      background: crimson;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+    }
+
+    .logout-btn:hover {
+      background: darkred;
     }
   </style>
 </head>
 <body>
 
   <h1>ডিজিটাল বাংলাদেশ অলিম্পিয়াড ২০২৫</h1>
+  <div id="user-info">লোড হচ্ছে...</div>
 
   <div class="card-container">
-    
     <div class="card">
       <h2>রেজিস্ট্রেশন</h2>
-      <p>অলিম্পিয়াডে অংশ নিতে নিচের বাটনে ক্লিক করে আপনার তথ্য দিন।</p>
+      <p>অলিম্পিয়াডে অংশ নিতে নিচের বাটনে ক্লিক করুন।</p>
       <a href="olympiad-registration.html">রেজিস্ট্রেশন করুন</a>
     </div>
 
     <div class="card">
       <h2>পরীক্ষা দিন</h2>
-      <p>প্রশ্নপত্রে অংশগ্রহণ করুন ও আপনার দক্ষতা যাচাই করুন।</p>
-      <a href="exam.html">পরীক্ষা শুরু করুন</a>
+      <p>আপনার প্রস্তুতি যাচাই করতে পরীক্ষা দিন।</p>
+      <a href="exam.html">পরীক্ষা দিন</a>
     </div>
 
     <div class="card">
       <h2>পার্টিসিপেট যোগ করুন</h2>
-      <p>আপনার অংশগ্রহণ নিশ্চিত করতে লগইন করে তথ্য যুক্ত করুন।</p>
+      <p>আপনার অংশগ্রহণ নিশ্চিত করতে লগইন করুন।</p>
       <a href="participate.html">লগইন করুন</a>
     </div>
 
     <div class="card">
       <h2>প্রোফাইল আপডেট</h2>
-      <p>আপনার ব্যক্তিগত তথ্য ও যোগাযোগ ঠিকানা হালনাগাদ করুন।</p>
+      <p>ব্যক্তিগত তথ্য আপডেট করতে প্রোফাইল সম্পাদন করুন।</p>
       <a href="profile.html">প্রোফাইল সম্পাদনা</a>
     </div>
-
   </div>
+
+  <button class="logout-btn" onclick="logout()">লগআউট</button>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDZvxLAykn1zQg_EXEUe8JGdNtjNUr1T7k",
+      authDomain: "dgbologin.firebaseapp.com",
+      projectId: "dgbologin",
+      storageBucket: "dgbologin.appspot.com",
+      messagingSenderId: "663923479502",
+      appId: "1:663923479502:web:10d763434a82f731c3919f",
+      measurementId: "G-YDYJFWD1QS"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    // চেক করা ইউজার লগইন আছে কিনা
+    auth.onAuthStateChanged((user) => {
+      const userInfo = document.getElementById("user-info");
+      if (user) {
+        userInfo.innerText = "স্বাগতম, " + (user.displayName || user.email);
+      } else {
+        window.location.href = "participate.html";
+      }
+    });
+
+    function logout() {
+      auth.signOut().then(() => {
+        window.location.href = "participate.html";
+      });
+    }
+  </script>
 
 </body>
 </html>
