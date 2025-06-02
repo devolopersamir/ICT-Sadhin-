@@ -3,49 +3,77 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>হোম পেইজ</title>
+  <title>হোম</title>
   <link href="https://fonts.maateen.me/solaiman-lipi/font.css" rel="stylesheet">
   <style>
-    body {
+    * {
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
       font-family: 'SolaimanLipi', sans-serif;
-      background: linear-gradient(to right, #283c86, #45a247);
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      background: linear-gradient(to right, #2b5876, #4e4376);
       color: white;
-      text-align: center;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
     }
 
-    .home-box {
-      background: rgba(255, 255, 255, 0.08);
-      padding: 40px 30px;
-      border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-      backdrop-filter: blur(8px);
-      width: 360px;
-    }
-
-    .home-box h2 {
-      font-size: 26px;
-      margin-bottom: 20px;
+    h1 {
+      font-size: 34px;
+      margin-bottom: 10px;
     }
 
     .user-email {
       font-size: 18px;
+      color: #ddd;
       margin-bottom: 30px;
-      color: #f0f0f0;
+    }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      width: 100%;
+      max-width: 800px;
+      margin-bottom: 30px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease;
+      text-align: center;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card h3 {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      font-size: 15px;
+      color: #ccc;
     }
 
     .logout-btn {
-      padding: 12px 25px;
+      background: linear-gradient(90deg, #ff416c, #ff4b2b);
       border: none;
       border-radius: 10px;
-      background: linear-gradient(90deg, #ff512f, #dd2476);
+      padding: 12px 30px;
       color: white;
-      font-size: 17px;
+      font-size: 16px;
       cursor: pointer;
       transition: 0.3s ease;
     }
@@ -57,18 +85,32 @@
   </style>
 </head>
 <body>
-  <div class="home-box">
-    <h2>স্বাগতম!</h2>
-    <div class="user-email" id="userEmail">লোড হচ্ছে...</div>
-    <button class="logout-btn" id="logoutBtn">লগআউট</button>
+
+  <h1>স্বাগতম হোম পেইজে</h1>
+  <div class="user-email" id="userEmail">লোড হচ্ছে...</div>
+
+  <div class="dashboard">
+    <div class="card">
+      <h3>📊 একটিভিটি</h3>
+      <p>আপনার সাম্প্রতিক কার্যক্রম এখানে দেখা যাবে।</p>
+    </div>
+    <div class="card">
+      <h3>🔐 প্রোফাইল</h3>
+      <p>আপনার প্রোফাইল আপডেট করতে এখানে যান।</p>
+    </div>
+    <div class="card">
+      <h3>📨 বার্তা</h3>
+      <p>আপনার ইনবক্সে নতুন বার্তা আছে।</p>
+    </div>
   </div>
 
-  <!-- Firebase SDK -->
+  <button class="logout-btn" id="logoutBtn">লগআউট</button>
+
+  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
 
   <script>
-    // Firebase config
     const firebaseConfig = {
       apiKey: "AIzaSyDZvxLAykn1zQg_EXEUe8JGdNtjNUr1T7k",
       authDomain: "dgbologin.firebaseapp.com",
@@ -82,26 +124,21 @@
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
-    // Check login status
     auth.onAuthStateChanged(user => {
       if (user) {
         document.getElementById("userEmail").innerText = "আপনার ইমেইল: " + user.email;
       } else {
-        // User not logged in
         window.location.href = "participate.html";
       }
     });
 
-    // Logout button
     document.getElementById("logoutBtn").addEventListener("click", () => {
-      auth.signOut()
-        .then(() => {
-          alert("আপনি সফলভাবে লগআউট করেছেন।");
-          window.location.href = "participate.html";
-        })
-        .catch(error => {
-          alert("লগআউট করতে সমস্যা হয়েছে: " + error.message);
-        });
+      auth.signOut().then(() => {
+        alert("লগআউট সফল!");
+        window.location.href = "participate.html";
+      }).catch(error => {
+        alert("লগআউট ত্রুটি: " + error.message);
+      });
     });
   </script>
 </body>
