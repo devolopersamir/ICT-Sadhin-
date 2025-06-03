@@ -1,101 +1,105 @@
-<!DOCTYPE html><html lang="bn">
+<!DOCTYPE html>
+<html lang="bn">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>অলিম্পিয়াড রেজিস্ট্রেশন</title>
+  <title>Olympiad রেজিস্ট্রেশন</title>
   <link href="https://fonts.maateen.me/solaiman-lipi/font.css" rel="stylesheet">
   <style>
     body {
-      margin: 0;
-      padding: 0;
       font-family: 'SolaimanLipi', sans-serif;
-      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      background: linear-gradient(to right, #1a1a40, #4b0082);
       color: white;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
     }
-    .form-container {
-      background: rgba(255, 255, 255, 0.1);
-      padding: 40px;
-      border-radius: 15px;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
-      width: 360px;
+    .form-box {
+      background: rgba(255,255,255,0.1);
+      padding: 30px;
+      border-radius: 16px;
+      width: 340px;
+      backdrop-filter: blur(10px);
     }
-    h2 {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-    input, select, button {
+    input, button {
       width: 100%;
       padding: 12px;
-      margin-bottom: 15px;
+      margin: 10px 0;
       border: none;
-      border-radius: 8px;
+      border-radius: 10px;
       font-size: 16px;
     }
-    button {
-      background: linear-gradient(to right, #ff512f, #dd2476);
+    input {
+      background: rgba(255,255,255,0.2);
       color: white;
-      font-weight: bold;
-      cursor: pointer;
-      transition: 0.3s;
     }
-    button:hover {
-      background: linear-gradient(to right, #2193b0, #6dd5ed);
+    input::placeholder {
+      color: #ddd;
+    }
+    button {
+      background: linear-gradient(90deg, #ff6a00, #ee0979);
+      color: white;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <div class="form-container">
-    <h2>ডিজিটাল বাংলাদেশ অলিম্পিয়াড ২০২৫</h2>
-    <form id="olympiadForm">
-      <input type="text" name="fullName" placeholder="পূর্ণ নাম" required>
-      <input type="email" name="email" placeholder="ইমেইল" required>
-      <input type="text" name="phone" placeholder="মোবাইল নাম্বার" required>
-      <select name="category" required>
-        <option value="">শ্রেণি নির্বাচন করুন</option>
-        <option value="school">স্কুল</option>
-        <option value="college">কলেজ</option>
-        <option value="university">বিশ্ববিদ্যালয়</option>
-      </select>
-      <button type="submit">রেজিস্ট্রেশন করুন (১৯ টাকা)</button>
-    </form>
-  </div>  <!-- Firebase SDK -->  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>  <script>
-    const firebaseConfig = {
-      apiKey: "YOUR_FIREBASE_API_KEY",
-      authDomain: "YOUR_FIREBASE_AUTH_DOMAIN",
-      projectId: "YOUR_FIREBASE_PROJECT_ID",
-      storageBucket: "YOUR_FIREBASE_STORAGE_BUCKET",
-      messagingSenderId: "YOUR_FIREBASE_MESSAGING_SENDER_ID",
-      appId: "YOUR_FIREBASE_APP_ID"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-  </script>  <script>
-    document.getElementById('olympiadForm').addEventListener('submit', function (e) {
-      e.preventDefault();
-      const form = e.target;
-      const data = {
-        fullName: form.fullName.value,
-        email: form.email.value,
-        phone: form.phone.value,
-        category: form.category.value
-      };
+  <div class="form-box">
+    <h2>রেজিস্ট্রেশন করুন</h2>
+    <input type="text" id="name" placeholder="আপনার নাম" required>
+    <input type="email" id="email" placeholder="ইমেইল" required>
+    <input type="text" id="phone" placeholder="ফোন নম্বর" required>
+    <button onclick="startPayment()">রেজিস্ট্রেশন করুন (১৯ টাকা)</button>
+  </div>
 
-      // 👉 এখানে RupantorPay ইনিশিয়েট করার কোড যুক্ত হবে
-      alert("পেমেন্ট গেটওয়ে ইনিশিয়েট হচ্ছে...");
+  <script>
+    function startPayment() {
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const phone = document.getElementById("phone").value;
 
-      // পেমেন্ট সফল হলে Firebase Firestore এ সেভ করুন
-      db.collection("registrations").add(data)
-        .then(() => {
-          alert("রেজিস্ট্রেশন সফলভাবে সম্পন্ন হয়েছে!");
-          form.reset();
+      if (!name || !email || !phone) {
+        alert("সব ঘর পূরণ করুন");
+        return;
+      }
+
+      const transactionId = "DBO_" + Date.now();
+
+      fetch("https://payment.rupantorpay.com/api/payment/checkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          store_id: "samirtalukder",
+          store_passwd: "Samuthe10@",
+          total_amount: 19,
+          currency: "BDT",
+          tran_id: transactionId,
+          success_url: "https://yourdomain.com/payment-success.html",
+          fail_url: "https://yourdomain.com/payment-fail.html",
+          cancel_url: "https://yourdomain.com/payment-cancel.html",
+          cus_name: name,
+          cus_email: email,
+          cus_phone: phone,
+          product_name: "Olympiad Registration",
+          product_category: "Event",
+          product_profile: "general"
         })
-        .catch((error) => {
-          alert("রেজিস্ট্রেশন ব্যর্থ: " + error.message);
-        });
-    });
-  </script></body>
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.GatewayPageURL) {
+          window.location.href = data.GatewayPageURL;
+        } else {
+          alert("পেমেন্ট শুরু করা যায়নি!");
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        alert("সার্ভারে ত্রুটি!");
+      });
+    }
+  </script>
+</body>
 </html>
