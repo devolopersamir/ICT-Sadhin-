@@ -1,128 +1,192 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>অ্যাডমিন প্যানেল - স্বাধীন ক্যাম্পাস লিডার</title>
-  <link href="https://fonts.maateen.me/solaiman-lipi/font.css" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <title>অ্যাডমিন ড্যাশবোর্ড</title>
+  <link href="https://fonts.maateen.me/solaiman-lipi/font.css" rel="stylesheet" />
   <style>
     body {
       font-family: 'SolaimanLipi', sans-serif;
-      background: #f5f5f5;
-      margin: 0;
-      padding: 0;
-    }
-    .container {
-      max-width: 800px;
-      margin: auto;
-      padding: 20px;
-      background: #fff;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      margin-top: 40px;
-      border-radius: 8px;
-    }
-    h2 {
-      text-align: center;
-      color: #2c3e50;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
-    th, td {
-      border: 1px solid #ddd;
-      padding: 8px;
-      text-align: left;
-    }
-    th {
-      background-color: #2c3e50;
+      background: #1a1a40;
       color: white;
+      padding: 20px;
+      max-width: 700px;
+      margin: auto;
     }
-    .logout-btn {
-      background: crimson;
+    input, textarea {
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 8px;
+      border-radius: 6px;
+      border: none;
+      font-size: 16px;
+    }
+    label {
+      margin-top: 12px;
+      display: block;
+    }
+    button {
+      background: #6a3093;
       color: white;
       border: none;
-      padding: 8px 16px;
-      float: right;
-      margin-top: 10px;
+      padding: 10px 16px;
       cursor: pointer;
-      border-radius: 4px;
+      border-radius: 6px;
+      font-size: 18px;
+    }
+    button:hover {
+      background: #833ab4;
+    }
+    .card-edit {
+      background: #2d2d5a;
+      padding: 12px;
+      border-radius: 12px;
+      margin-bottom: 20px;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <button class="logout-btn" onclick="logout()">লগআউট</button>
-    <h2>স্বাগতম অ্যাডমিন!</h2>
-    <table id="data-table">
-      <thead>
-        <tr>
-          <th>নাম</th>
-          <th>বয়স</th>
-          <th>মোবাইল</th>
-          <th>ইমেইল</th>
-          <th>শ্রেণি</th>
-          <th>স্কুল/কলেজ</th>
-          <th>জেলা</th>
-          <th>বিভাগ</th>
-          <th>হোয়াটসঅ্যাপ</th>
-        </tr>
-      </thead>
-      <tbody id="table-body">
-      </tbody>
-    </table>
+
+  <h1>অ্যাডমিন ড্যাশবোর্ড</h1>
+  <p>নিচে কার্ডগুলো আপডেট করুন। ড্যাশবোর্ড দেখানোর অপশন টগল করুন।</p>
+
+  <div id="loginSection">
+    <input type="password" id="adminPass" placeholder="অ্যাডমিন পাসওয়ার্ড দিন" />
+    <button onclick="loginAdmin()">লগইন করুন</button>
   </div>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+  <div id="dashboardSection" style="display:none;">
+    <label>
+      <input type="checkbox" id="toggleDashboard" />
+      ড্যাশবোর্ড দেখাবেন?
+    </label>
 
+    <div id="cardsContainer"></div>
+
+    <button onclick="addCard()">নতুন কার্ড যোগ করুন</button>
+    <button onclick="saveDashboard()">সেভ করুন</button>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
+
+  <script>
+    // Firebase config (নিজের দিয়ে বদলে নিবে)
     const firebaseConfig = {
-      apiKey: "AIzaSyBem5ogP47-em5G-0IBH1Y-QNWaRr5i1ls",
-      authDomain: "sadhincampusleader.firebaseapp.com",
-      projectId: "sadhincampusleader",
-      storageBucket: "sadhincampusleader.firebasestorage.app",
-      messagingSenderId: "748883752992",
-      appId: "1:748883752992:web:65ed94d6c3f16f25e72445",
-      measurementId: "G-CKY3HFJ10C",
-      databaseURL: "https://sadhincampusleader-default-rtdb.firebaseio.com"
+      apiKey: "AIzaSyDZvxLAykn1zQg_EXEUe8JGdNtjNUr1T7k",
+      authDomain: "dgbologin.firebaseapp.com",
+      projectId: "dgbologin",
+      storageBucket: "dgbologin.firebasestorage.app",
+      messagingSenderId: "663923479502",
+      appId: "1:663923479502:web:10d763434a82f731c3919f",
+      measurementId: "G-YDYJFWD1QS"
     };
 
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
 
-    const dataRef = ref(db, 'registrations');
-    onValue(dataRef, snapshot => {
-      const data = snapshot.val();
-      const dataArray = data ? Object.values(data) : [];
-      renderTable(dataArray);
-    });
+    const ADMIN_PASSWORD = "DboAdmin2025";
+    const loginSection = document.getElementById("loginSection");
+    const dashboardSection = document.getElementById("dashboardSection");
+    const cardsContainer = document.getElementById("cardsContainer");
+    const toggleDashboard = document.getElementById("toggleDashboard");
 
-    function renderTable(data) {
-      const tbody = document.getElementById("table-body");
-      tbody.innerHTML = "";
-      data.forEach(item => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-          <td>${item.name}</td>
-          <td>${item.age}</td>
-          <td>${item.phone}</td>
-          <td>${item.email}</td>
-          <td>${item.class}</td>
-          <td>${item.institution}</td>
-          <td>${item.district}</td>
-          <td>${item.division}</td>
-          <td>${item.whatsapp || ''}</td>
+    let dashboardData = {
+      cards: [],
+      showDashboard: true,
+    };
+
+    function loginAdmin() {
+      const inputPass = document.getElementById("adminPass").value;
+      if (inputPass === ADMIN_PASSWORD) {
+        loginSection.style.display = "none";
+        dashboardSection.style.display = "block";
+        loadDashboard();
+      } else {
+        alert("ভুল পাসওয়ার্ড!");
+      }
+    }
+
+    async function loadDashboard() {
+      const docRef = db.collection("dashboard").doc("config");
+      const doc = await docRef.get();
+      if (doc.exists) {
+        dashboardData = doc.data();
+      } else {
+        dashboardData = { cards: [], showDashboard: true };
+      }
+      toggleDashboard.checked = dashboardData.showDashboard;
+      renderCards();
+    }
+
+    function renderCards() {
+      cardsContainer.innerHTML = "";
+      dashboardData.cards.forEach((card, index) => {
+        const cardDiv = document.createElement("div");
+        cardDiv.className = "card-edit";
+
+        cardDiv.innerHTML = `
+          <label>শিরোনাম:</label>
+          <input type="text" value="${card.title}" data-index="${index}" data-field="title" />
+          
+          <label>বর্ণনা:</label>
+          <textarea rows="2" data-index="${index}" data-field="description">${card.description}</textarea>
+          
+          <label>বাটনের লেখা:</label>
+          <input type="text" value="${card.buttonText}" data-index="${index}" data-field="buttonText" />
+          
+          <label>লিংক URL:</label>
+          <input type="text" value="${card.url}" data-index="${index}" data-field="url" />
+          
+          <label>
+            <input type="checkbox" data-index="${index}" data-field="visible" ${card.visible ? "checked" : ""} />
+            কার্ড দেখানো হবে?
+          </label>
+          <button onclick="removeCard(${index})" style="margin-top:8px; background:#cc4444;">কার্ড মুছুন</button>
         `;
-        tbody.appendChild(row);
+
+        cardsContainer.appendChild(cardDiv);
+      });
+
+      // Add event listeners for inputs
+      cardsContainer.querySelectorAll("input, textarea").forEach(input => {
+        input.addEventListener("input", handleInputChange);
       });
     }
 
-    function logout() {
-      alert("আপনি লগআউট হয়েছেন।");
-      window.location.reload();
+    function handleInputChange(e) {
+      const index = e.target.getAttribute("data-index");
+      const field = e.target.getAttribute("data-field");
+
+      if (field === "visible") {
+        dashboardData.cards[index][field] = e.target.checked;
+      } else {
+        dashboardData.cards[index][field] = e.target.value;
+      }
+    }
+
+    function addCard() {
+      dashboardData.cards.push({
+        title: "",
+        description: "",
+        buttonText: "",
+        url: "",
+        visible: true,
+      });
+      renderCards();
+    }
+
+    function removeCard(index) {
+      dashboardData.cards.splice(index, 1);
+      renderCards();
+    }
+
+    async function saveDashboard() {
+      dashboardData.showDashboard = toggleDashboard.checked;
+      await db.collection("dashboard").doc("config").set(dashboardData);
+      alert("ড্যাশবোর্ড আপডেট করা হয়েছে!");
     }
   </script>
+
 </body>
 </html>
