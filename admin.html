@@ -1,192 +1,161 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-  <meta charset="UTF-8" />
-  <title>অ্যাডমিন ড্যাশবোর্ড</title>
-  <link href="https://fonts.maateen.me/solaiman-lipi/font.css" rel="stylesheet" />
-  <style>
-    body {
-      font-family: 'SolaimanLipi', sans-serif;
-      background: #1a1a40;
-      color: white;
-      padding: 20px;
-      max-width: 700px;
-      margin: auto;
-    }
-    input, textarea {
-      width: 100%;
-      margin-bottom: 10px;
-      padding: 8px;
-      border-radius: 6px;
-      border: none;
-      font-size: 16px;
-    }
-    label {
-      margin-top: 12px;
-      display: block;
-    }
-    button {
-      background: #6a3093;
-      color: white;
-      border: none;
-      padding: 10px 16px;
-      cursor: pointer;
-      border-radius: 6px;
-      font-size: 18px;
-    }
-    button:hover {
-      background: #833ab4;
-    }
-    .card-edit {
-      background: #2d2d5a;
-      padding: 12px;
-      border-radius: 12px;
-      margin-bottom: 20px;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Admin Panel - Campus Ambassadors</title>
+<style>
+  body { font-family: Arial, sans-serif; background:#f4f4f4; padding: 20px; }
+  h2 { color: #333; }
+  form { margin-bottom: 20px; background: white; padding: 15px; border-radius: 8px; }
+  input, button { padding: 10px; margin: 5px 0; width: 100%; }
+  table { width: 100%; border-collapse: collapse; background: white; }
+  th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+  th { background: #6a3093; color: white; }
+  button.edit, button.delete { width: auto; margin-right: 5px; cursor: pointer; }
+</style>
 </head>
 <body>
 
-  <h1>অ্যাডমিন ড্যাশবোর্ড</h1>
-  <p>নিচে কার্ডগুলো আপডেট করুন। ড্যাশবোর্ড দেখানোর অপশন টগল করুন।</p>
+<h2>ক্যাম্পাস অ্যাম্বাসেডর এডমিন প্যানেল</h2>
 
-  <div id="loginSection">
-    <input type="password" id="adminPass" placeholder="অ্যাডমিন পাসওয়ার্ড দিন" />
-    <button onclick="loginAdmin()">লগইন করুন</button>
-  </div>
+<div id="login-section">
+  <input type="password" id="adminPass" placeholder="এডমিন পাসওয়ার্ড লিখুন" />
+  <button id="loginBtn">লগইন</button>
+  <p id="loginMsg" style="color:red;"></p>
+</div>
 
-  <div id="dashboardSection" style="display:none;">
-    <label>
-      <input type="checkbox" id="toggleDashboard" />
-      ড্যাশবোর্ড দেখাবেন?
-    </label>
+<div id="admin-panel" style="display:none;">
+  <form id="addAmbassadorForm">
+    <input type="text" id="name" placeholder="নাম" required />
+    <input type="text" id="institution" placeholder="প্রতিষ্ঠান" required />
+    <input type="text" id="idcode" placeholder="আইডি কোড" required />
+    <input type="password" id="password" placeholder="পাসওয়ার্ড" required />
+    <button type="submit">অ্যাম্বাসেডর যোগ করুন</button>
+  </form>
 
-    <div id="cardsContainer"></div>
+  <table>
+    <thead>
+      <tr>
+        <th>নাম</th>
+        <th>প্রতিষ্ঠান</th>
+        <th>আইডি কোড</th>
+        <th>অ্যাকশন</th>
+      </tr>
+    </thead>
+    <tbody id="ambassadorsList"></tbody>
+  </table>
+</div>
 
-    <button onclick="addCard()">নতুন কার্ড যোগ করুন</button>
-    <button onclick="saveDashboard()">সেভ করুন</button>
-  </div>
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
 
-  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyDZvxLAykn1zQg_EXEUe8JGdNtjNUr1T7k",
+    authDomain: "dgbologin.firebaseapp.com",
+    projectId: "dgbologin",
+    storageBucket: "dgbologin.firebasestorage.app",
+    messagingSenderId: "663923479502",
+    appId: "1:663923479502:web:10d763434a82f731c3919f",
+    measurementId: "G-YDYJFWD1QS"
+  };
 
-  <script>
-    // Firebase config (নিজের দিয়ে বদলে নিবে)
-    const firebaseConfig = {
-      apiKey: "AIzaSyDZvxLAykn1zQg_EXEUe8JGdNtjNUr1T7k",
-      authDomain: "dgbologin.firebaseapp.com",
-      projectId: "dgbologin",
-      storageBucket: "dgbologin.firebasestorage.app",
-      messagingSenderId: "663923479502",
-      appId: "1:663923479502:web:10d763434a82f731c3919f",
-      measurementId: "G-YDYJFWD1QS"
-    };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
 
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
+  // Admin Password (Change this to your own strong password)
+  const ADMIN_PASSWORD = "Admin2025!";
 
-    const ADMIN_PASSWORD = "DboAdmin2025";
-    const loginSection = document.getElementById("loginSection");
-    const dashboardSection = document.getElementById("dashboardSection");
-    const cardsContainer = document.getElementById("cardsContainer");
-    const toggleDashboard = document.getElementById("toggleDashboard");
+  const loginSection = document.getElementById("login-section");
+  const adminPanel = document.getElementById("admin-panel");
+  const loginBtn = document.getElementById("loginBtn");
+  const loginMsg = document.getElementById("loginMsg");
 
-    let dashboardData = {
-      cards: [],
-      showDashboard: true,
-    };
-
-    function loginAdmin() {
-      const inputPass = document.getElementById("adminPass").value;
-      if (inputPass === ADMIN_PASSWORD) {
-        loginSection.style.display = "none";
-        dashboardSection.style.display = "block";
-        loadDashboard();
-      } else {
-        alert("ভুল পাসওয়ার্ড!");
-      }
+  loginBtn.addEventListener("click", () => {
+    const pass = document.getElementById("adminPass").value;
+    if (pass === ADMIN_PASSWORD) {
+      loginSection.style.display = "none";
+      adminPanel.style.display = "block";
+      loadAmbassadors();
+    } else {
+      loginMsg.textContent = "ভুল পাসওয়ার্ড!";
     }
+  });
 
-    async function loadDashboard() {
-      const docRef = db.collection("dashboard").doc("config");
-      const doc = await docRef.get();
-      if (doc.exists) {
-        dashboardData = doc.data();
-      } else {
-        dashboardData = { cards: [], showDashboard: true };
-      }
-      toggleDashboard.checked = dashboardData.showDashboard;
-      renderCards();
-    }
+  const addForm = document.getElementById("addAmbassadorForm");
+  addForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const name = document.getElementById("name").value.trim();
+    const institution = document.getElementById("institution").value.trim();
+    const idcode = document.getElementById("idcode").value.trim();
+    const password = document.getElementById("password").value.trim();
 
-    function renderCards() {
-      cardsContainer.innerHTML = "";
-      dashboardData.cards.forEach((card, index) => {
-        const cardDiv = document.createElement("div");
-        cardDiv.className = "card-edit";
+    if (!name || !institution || !idcode || !password) return alert("সব ফিল্ড পূরণ করুন");
 
-        cardDiv.innerHTML = `
-          <label>শিরোনাম:</label>
-          <input type="text" value="${card.title}" data-index="${index}" data-field="title" />
-          
-          <label>বর্ণনা:</label>
-          <textarea rows="2" data-index="${index}" data-field="description">${card.description}</textarea>
-          
-          <label>বাটনের লেখা:</label>
-          <input type="text" value="${card.buttonText}" data-index="${index}" data-field="buttonText" />
-          
-          <label>লিংক URL:</label>
-          <input type="text" value="${card.url}" data-index="${index}" data-field="url" />
-          
-          <label>
-            <input type="checkbox" data-index="${index}" data-field="visible" ${card.visible ? "checked" : ""} />
-            কার্ড দেখানো হবে?
-          </label>
-          <button onclick="removeCard(${index})" style="margin-top:8px; background:#cc4444;">কার্ড মুছুন</button>
-        `;
-
-        cardsContainer.appendChild(cardDiv);
+    try {
+      await db.collection("campus_ambassadors").doc(idcode).set({
+        name,
+        institution,
+        password
       });
-
-      // Add event listeners for inputs
-      cardsContainer.querySelectorAll("input, textarea").forEach(input => {
-        input.addEventListener("input", handleInputChange);
-      });
+      alert("অ্যাম্বাসেডর যোগ করা হয়েছে");
+      addForm.reset();
+      loadAmbassadors();
+    } catch (error) {
+      alert("ত্রুটি: " + error.message);
     }
+  });
 
-    function handleInputChange(e) {
-      const index = e.target.getAttribute("data-index");
-      const field = e.target.getAttribute("data-field");
+  async function loadAmbassadors() {
+    const list = document.getElementById("ambassadorsList");
+    list.innerHTML = "";
+    const snapshot = await db.collection("campus_ambassadors").get();
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${data.name}</td>
+        <td>${data.institution}</td>
+        <td>${doc.id}</td>
+        <td>
+          <button class="edit" onclick="editAmbassador('${doc.id}', '${data.name}', '${data.institution}', '${data.password}')">Edit</button>
+          <button class="delete" onclick="deleteAmbassador('${doc.id}')">Delete</button>
+        </td>
+      `;
+      list.appendChild(tr);
+    });
+  }
 
-      if (field === "visible") {
-        dashboardData.cards[index][field] = e.target.checked;
-      } else {
-        dashboardData.cards[index][field] = e.target.value;
-      }
-    }
+  window.editAmbassador = function(id, name, institution, password) {
+    const newName = prompt("নতুন নাম লিখুন:", name);
+    if (newName === null) return;
+    const newInstitution = prompt("নতুন প্রতিষ্ঠান লিখুন:", institution);
+    if (newInstitution === null) return;
+    const newPassword = prompt("নতুন পাসওয়ার্ড লিখুন:", password);
+    if (newPassword === null) return;
 
-    function addCard() {
-      dashboardData.cards.push({
-        title: "",
-        description: "",
-        buttonText: "",
-        url: "",
-        visible: true,
-      });
-      renderCards();
-    }
+    db.collection("campus_ambassadors").doc(id).update({
+      name: newName,
+      institution: newInstitution,
+      password: newPassword
+    }).then(() => {
+      alert("আপডেট সফল");
+      loadAmbassadors();
+    }).catch(err => alert("ত্রুটি: " + err.message));
+  };
 
-    function removeCard(index) {
-      dashboardData.cards.splice(index, 1);
-      renderCards();
-    }
-
-    async function saveDashboard() {
-      dashboardData.showDashboard = toggleDashboard.checked;
-      await db.collection("dashboard").doc("config").set(dashboardData);
-      alert("ড্যাশবোর্ড আপডেট করা হয়েছে!");
-    }
-  </script>
+  window.deleteAmbassador = function(id) {
+    if (!confirm("আপনি কি নিশ্চিত ডিলিট করতে চান?")) return;
+    db.collection("campus_ambassadors").doc(id).delete()
+      .then(() => {
+        alert("ডিলিট সম্পন্ন");
+        loadAmbassadors();
+      })
+      .catch(err => alert("ত্রুটি: " + err.message));
+  };
+</script>
 
 </body>
 </html>
