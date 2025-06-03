@@ -1,122 +1,101 @@
-<!DOCTYPE html>
-<html lang="bn">
+<!DOCTYPE html><html lang="bn">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>অলিম্পিয়াড রেজিস্ট্রেশন</title>
   <link href="https://fonts.maateen.me/solaiman-lipi/font.css" rel="stylesheet">
   <style>
     body {
-      font-family: 'SolaimanLipi', sans-serif;
-      background: linear-gradient(to right, #1e3c72, #2a5298);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
       margin: 0;
-      padding: 20px;
+      padding: 0;
+      font-family: 'SolaimanLipi', sans-serif;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
       color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
     }
-
     .form-container {
       background: rgba(255, 255, 255, 0.1);
       padding: 40px;
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-      max-width: 500px;
-      width: 100%;
-      backdrop-filter: blur(8px);
+      border-radius: 15px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+      width: 360px;
     }
-
     h2 {
       text-align: center;
       margin-bottom: 30px;
-      font-size: 24px;
-      border-bottom: 1px solid #ccc;
-      padding-bottom: 10px;
     }
-
-    label {
-      display: block;
-      margin-bottom: 5px;
-      margin-top: 15px;
-      font-weight: bold;
-    }
-
-    input, select {
+    input, select, button {
       width: 100%;
       padding: 12px;
-      border-radius: 8px;
+      margin-bottom: 15px;
       border: none;
-      outline: none;
-      background: rgba(255, 255, 255, 0.2);
-      color: white;
+      border-radius: 8px;
       font-size: 16px;
     }
-
-    input::placeholder {
-      color: #ccc;
-    }
-
     button {
-      margin-top: 25px;
-      width: 100%;
-      padding: 14px;
-      background: linear-gradient(90deg, #00c9ff, #92fe9d);
-      border: none;
-      border-radius: 10px;
-      font-size: 18px;
-      color: black;
+      background: linear-gradient(to right, #ff512f, #dd2476);
+      color: white;
+      font-weight: bold;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: 0.3s;
     }
-
     button:hover {
-      background: linear-gradient(90deg, #92fe9d, #00c9ff);
-      transform: scale(1.02);
+      background: linear-gradient(to right, #2193b0, #6dd5ed);
     }
   </style>
 </head>
 <body>
-
   <div class="form-container">
-    <h2>ডিজিটাল বাংলাদেশ অলিম্পিয়াড ২০২৫ - রেজিস্ট্রেশন</h2>
+    <h2>ডিজিটাল বাংলাদেশ অলিম্পিয়াড ২০২৫</h2>
     <form id="olympiadForm">
-      <label for="name">পূর্ণ নাম</label>
-      <input type="text" id="name" name="name" placeholder="আপনার নাম লিখুন" required>
-
-      <label for="email">ইমেইল</label>
-      <input type="email" id="email" name="email" placeholder="example@email.com" required>
-
-      <label for="phone">মোবাইল নম্বর</label>
-      <input type="text" id="phone" name="phone" placeholder="০১XXXXXXXXX" required>
-
-      <label for="institution">প্রতিষ্ঠানের নাম</label>
-      <input type="text" id="institution" name="institution" placeholder="বিদ্যালয়/কলেজ/বিশ্ববিদ্যালয়" required>
-
-      <label for="class">শ্রেণি / বর্ষ</label>
-      <select id="class" name="class" required>
-        <option value="">-- নির্বাচন করুন --</option>
-        <option>৬ষ্ঠ - ৮ম শ্রেণি</option>
-        <option>৯ম - ১০ম শ্রেণি</option>
-        <option>এইচএসসি / সমমান</option>
-        <option>বিশ্ববিদ্যালয়</option>
+      <input type="text" name="fullName" placeholder="পূর্ণ নাম" required>
+      <input type="email" name="email" placeholder="ইমেইল" required>
+      <input type="text" name="phone" placeholder="মোবাইল নাম্বার" required>
+      <select name="category" required>
+        <option value="">শ্রেণি নির্বাচন করুন</option>
+        <option value="school">স্কুল</option>
+        <option value="college">কলেজ</option>
+        <option value="university">বিশ্ববিদ্যালয়</option>
       </select>
-
-      <label for="district">জেলা</label>
-      <input type="text" id="district" name="district" placeholder="আপনার জেলা" required>
-
-      <button type="submit">রেজিস্ট্রেশন সাবমিট করুন</button>
+      <button type="submit">রেজিস্ট্রেশন করুন (১৯ টাকা)</button>
     </form>
-  </div>
-
-  <script>
-    document.getElementById("olympiadForm").addEventListener("submit", function(e) {
+  </div>  <!-- Firebase SDK -->  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>  <script>
+    const firebaseConfig = {
+      apiKey: "YOUR_FIREBASE_API_KEY",
+      authDomain: "YOUR_FIREBASE_AUTH_DOMAIN",
+      projectId: "YOUR_FIREBASE_PROJECT_ID",
+      storageBucket: "YOUR_FIREBASE_STORAGE_BUCKET",
+      messagingSenderId: "YOUR_FIREBASE_MESSAGING_SENDER_ID",
+      appId: "YOUR_FIREBASE_APP_ID"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+  </script>  <script>
+    document.getElementById('olympiadForm').addEventListener('submit', function (e) {
       e.preventDefault();
-      alert("আপনার রেজিস্ট্রেশন সফলভাবে গ্রহণ করা হয়েছে! ✅");
-      this.reset();
-    });
-  </script>
+      const form = e.target;
+      const data = {
+        fullName: form.fullName.value,
+        email: form.email.value,
+        phone: form.phone.value,
+        category: form.category.value
+      };
 
-</body>
+      // 👉 এখানে RupantorPay ইনিশিয়েট করার কোড যুক্ত হবে
+      alert("পেমেন্ট গেটওয়ে ইনিশিয়েট হচ্ছে...");
+
+      // পেমেন্ট সফল হলে Firebase Firestore এ সেভ করুন
+      db.collection("registrations").add(data)
+        .then(() => {
+          alert("রেজিস্ট্রেশন সফলভাবে সম্পন্ন হয়েছে!");
+          form.reset();
+        })
+        .catch((error) => {
+          alert("রেজিস্ট্রেশন ব্যর্থ: " + error.message);
+        });
+    });
+  </script></body>
 </html>
