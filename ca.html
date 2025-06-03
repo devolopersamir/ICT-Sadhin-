@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <title>ক্যাম্পাস অ্যাম্বাসেডর লগইন</title>
+  <link href="https://fonts.maateen.me/solaiman-lipi/font.css" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'SolaimanLipi', sans-serif;
+      background: linear-gradient(to right, #003973, #E5E5BE);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+    }
+    .login-box {
+      background: rgba(0, 0, 0, 0.4);
+      padding: 40px;
+      border-radius: 15px;
+      width: 340px;
+      text-align: center;
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+    }
+    .login-btn {
+      width: 100%;
+      padding: 12px;
+      background: #ff6a00;
+      border: none;
+      border-radius: 8px;
+      font-size: 18px;
+      color: white;
+      cursor: pointer;
+    }
+    #msg {
+      margin-top: 15px;
+      color: #ffd700;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-box">
+    <h2>ক্যাম্পাস অ্যাম্বাসেডর লগইন</h2>
+    <input type="text" id="idCode" placeholder="ID Code (যেমন: DBO3268)">
+    <input type="password" id="password" placeholder="পাসওয়ার্ড">
+    <button class="login-btn" onclick="login()">লগইন করুন</button>
+    <div id="msg"></div>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
+
+  <script>
+    // ✅ Firebase Config (আপনার দেওয়া অনুযায়ী)
+    const firebaseConfig = {
+      apiKey: "AIzaSyDZvxLAykn1zQg_EXEUe8JGdNtjNUr1T7k",
+      authDomain: "dgbologin.firebaseapp.com",
+      projectId: "dgbologin",
+      storageBucket: "dgbologin.firebasestorage.app",
+      messagingSenderId: "663923479502",
+      appId: "1:663923479502:web:10d763434a82f731c3919f",
+      measurementId: "G-YDYJFWD1QS"
+    };
+
+    // ✅ Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // 🔐 Login Function
+    function login() {
+      const idCode = document.getElementById("idCode").value.trim();
+      const password = document.getElementById("password").value;
+      const msg = document.getElementById("msg");
+
+      if (!idCode || !password) {
+        msg.innerText = "সব তথ্য দিন।";
+        return;
+      }
+
+      db.collection("campus_ambassadors").doc(idCode).get().then(doc => {
+        if (!doc.exists) {
+          msg.innerText = "ID Code ভুল!";
+        } else {
+          const data = doc.data();
+          if (data.password === password) {
+            msg.innerText = "সফলভাবে লগইন হয়েছে!";
+            localStorage.setItem("caId", idCode);
+            window.location.href = "ca-dashboard.html";
+          } else {
+            msg.innerText = "পাসওয়ার্ড ভুল!";
+          }
+        }
+      }).catch(error => {
+        msg.innerText = "ত্রুটি: " + error.message;
+      });
+    }
+  </script>
+</body>
+</html>
